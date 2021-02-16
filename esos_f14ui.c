@@ -110,7 +110,7 @@ inline BOOL esos_uiF14_isRpgTurning ( void ) {
     return (esos_uiF14_getRpgVelocity_i16() != 0);
 }
 
-//is the encoder turning between 1 and 10?
+//is the new-old delta between 1 and 10?
 inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
   static char sz_reportSlow[64];
   sz_reportSlow = "Turning slow";
@@ -122,7 +122,7 @@ inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
   ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 }
 
-//is the encoder turning between 11 and 24?
+//is the new-old delta between 11 and 24?
 inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
   static char sz_reportMed[64];
   sz_reportMed = "Turning medium";
@@ -133,7 +133,7 @@ inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
   ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 }
 
-//is the encoder turning above 25?
+//is the new-old delta above 25?
 inline BOOL esos_uiF14_isRpgTurningFast( void ) {
   static char sz_reportFast[64];
   sz_reportFast = "Turning fast";

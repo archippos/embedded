@@ -110,7 +110,7 @@ inline BOOL esos_uiF14_isRpgTurning ( void ) {
     return (esos_uiF14_getRpgVelocity_i16() != 0);
 }
 
-//is the encoder turning between a certain non-zero number and a maximum value?
+//is the encoder turning between 1 and 10?
 inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
   static char sz_reportSlow[64];
   sz_reportSlow = "Turning slow";
@@ -122,22 +122,22 @@ inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
   ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 }
 
-//is the encoder turning between a minimum and maximum threshold?
+//is the encoder turning between 11 and 24?
 inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
   static char sz_reportMed[64];
   sz_reportMed = "Turning medium";
-  // code for medium goes here
+  // code for determining medium goes here
   //code for console output
   ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportMed);
   ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 }
 
-//is the encoder turning above a minimum threshold?
+//is the encoder turning above 25?
 inline BOOL esos_uiF14_isRpgTurningFast( void ) {
   static char sz_reportFast[64];
   sz_reportFast = "Turning fast";
-  // code for speedy boi goes here
+  // code for determining speedy boi goes here
   //code for console output
   ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportFast);

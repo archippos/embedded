@@ -38,10 +38,7 @@ PREPARED FOR: KEITH POWELL
 
 
 #else
-//#define   CONFIG_LED3()   printf("Called CONFIG_LED3()\n");
-//uint8_t     LED1 = 0;
-//uint8_t     LED2 = 0;
-//uint8_t     LED3 = 0;      // LED3 is initially "on"
+
 
 
 

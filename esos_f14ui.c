@@ -1,9 +1,9 @@
 /*******************************************************************
- * 
+ *
  * C code framework for ESOS user-interface (UI) service
- * 
+ *
  *    requires the EMBEDDED SYSTEMS target rev. F14
- * 
+ *
  * ****************************************************************/
 # include esos_f14ui.h;
 
@@ -99,34 +99,44 @@ inline void esos_uiF14_flashLED1( uint16_t u16_period) {
 
 // PUBLIC RPG FUNCTIONS
 
+//gets data from the encoder
 inline uint16_t esos_uiF14_getRpgValue_u16 ( void ) {
     return _st_esos_uiF14Data.u16_RPGCounter;
 }
 
+//determines whether or not the encoder is turning
 inline BOOL esos_uiF14_isRpgTurning ( void ) {
+  //if it's turning, velocity is not 0
     return (esos_uiF14_getRpgVelocity_i16() != 0);
 }
 
+//is the encoder turning between a certain non-zero number and a maximum value?
 inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
+  //TODO: use getRpgVelocity for this (ditto on medium and fast)
   // not yet implemented
 }
 
+//is the encoder turning between a minimum and maximum threshold?
 inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
   // not yet implemented
 }
 
+//is the encoder turning above a minimum threshold?
 inline BOOL esos_uiF14_isRpgTurningFast( void ) {
   // not yet implemented
 }
 
+//determines if the encoder turning clockwise
 inline BOOL esos_uiF14_isRpgTurningCW( void ) {
   // not yet implemented
 }
 
+//is the encoder turning counterclockwise
 inline BOOL esos_uiF14_isRpgTurningCCW( void ) {
   // not yet implemented
 }
 
+//obtains the velocity of the encoder
 int16_t esos_uiF14_getRpgVelocity_i16( void ) {
   // not yet implemented
 }
@@ -141,7 +151,7 @@ void config_esos_uiF14() {
 
 // UIF14 task to manage user-interface
 ESOS_USER_TASK( __esos_uiF14_task ){
-  
+
   ESOS_TASK_BEGIN();
   while(TRUE) {
     // do your UI stuff here
@@ -151,6 +161,6 @@ ESOS_USER_TASK( __esos_uiF14_task ){
 }
 
 void user_init(void){
-	
-	
+
+
 }

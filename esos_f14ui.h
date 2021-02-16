@@ -37,6 +37,8 @@ typedef struct {
 #define __ESOS_TICKS_TO_MS(x)           (x/1)
 #define __ESOS_MS_TO_TICKS(x)           (x*1)
 #define __ESOS_UIF14_UI_PERIOD_MS       10
+#define __DOUBLE_PRESS_TIME (250)
+
 
 // PRIVATE DATA
 

@@ -140,6 +140,7 @@ void user_init(void) {
 #endif
 
   // configure our hardware as needed by the tasks
+  /*
   CONFIG_LED1();
   CONFIG_LED2();
   CONFIG_LED3();
@@ -148,6 +149,8 @@ void user_init(void) {
   CONFIG_SW2();
   CONFIG_SW3();
 
+  */
+  config_esos_uiF14();
   // user_init() should register at least one user task
 
   //calls task

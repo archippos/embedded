@@ -105,30 +105,20 @@ int16_t esos_uiF14_getRPGVelocity_i16 (void);
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_RELEASED()             ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW1Released() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED_AND_RELEASED() do {            /
                             ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED();           /
-                            ESOS_TASK_WAIT_UNTIL_UIF14_SW1_RELEASED();          /
-                            esos_uiF14_isSW1DoublePressed() = FALSE;
+                            ESOS_TASK_WAIT_UNTIL_UIF14_SW1_RELEASED();
                           } while (0)
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_DOUBLE_PRESSED()  do{
-                            esos_uiF14_isSW1DoublePressed() = FALSE;
-                            ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED_AND_RELEASED();
-                            ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED_AND_RELEASED();
-                            //ESOS_WAIT_TICKS(250);
-                            esos_uiF14_isSW1DoublePressed() = TRUE;
+                            ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW1DoublePressed() );
                           } while (0)
 
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED()              ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW2Pressed() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_RELEASED()             ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW2Released() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED_AND_RELEASED() do {
                             ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED();           /
-                            ESOS_TASK_WAIT_UNTIL_UIF14_SW2_RELEASED();          /
-                            esos_uiF14_isSW2DoublePressed() = FALSE;			/
+                            ESOS_TASK_WAIT_UNTIL_UIF14_SW2_RELEASED();   	/
             						  } while (0)
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_DOUBLE_PRESSED()       do {
-                            esos_uiF14_isSW2DoublePressed() = FALSE;
-                            ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED_AND_RELEASED();
-                            ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED_AND_RELEASED();
-                            //ESOS_WAIT_TICKS(250);
-                            esos_uiF14_isSW2DoublePressed() = TRUE;		/
+                            ESOS_TASK_WAIT_UNTIL(esos_uiF14_isSW2DoublePressed());
 						             } while (0)
 
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED()              ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW3Pressed() )
@@ -139,11 +129,7 @@ int16_t esos_uiF14_getRPGVelocity_i16 (void);
                           esos_uiF14_isSW3DoublePressed() = FALSE;			/
                         } while (0)
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW3_DOUBLE_PRESSED()       do {
-                          esos_uiF14_isSW3DoublePressed() = FALSE;
-                          ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED_AND_RELEASED();
-                          ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED_AND_RELEASED();
-                          //ESOS_WAIT_TICKS(250);
-                          esos_uiF14_isSW3DoublePressed() = TRUE;		/
+                          ESOS_TASK_WAIT_UNTIL(esos_uiF14_isSW3DoublePressed());
         						   } while (0)
 
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_UNTIL_TURNS()          // not yet implemented

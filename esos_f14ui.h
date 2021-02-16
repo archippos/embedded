@@ -1,9 +1,9 @@
 /*******************************************************************
- * 
+ *
  * C header file for ESOS user-interface (UI) service
- * 
+ *
  *    requires the EMBEDDED SYSTEMS target rev. F14
- * 
+ *
  * ****************************************************************/
 
 #ifndef   ESOS_UIF14_H
@@ -15,20 +15,20 @@ typedef struct {
     BOOL b_SW1Pressed;
     BOOL b_SW1DoublePressed;
     BOOL b_SW2Pressed;
-    BOOL b_SW1DoublePressed;    
+    BOOL b_SW1DoublePressed;
     BOOL b_SW3Pressed;
-    BOOL b_SW1DoublePressed;    
-    
+    BOOL b_SW1DoublePressed;
+
     BOOL b_RPGAHigh;
     BOOL b_RPGBHigh;
-    
+
     BOOL b_LED1On;
-    uint16_t u16_LED1FlashPeriod;    
+    uint16_t u16_LED1FlashPeriod;
     BOOL b_LED2On;
-    uint16_t u16_LED2FlashPeriod;        
+    uint16_t u16_LED2FlashPeriod;
     BOOL b_LED3On;
-    uint16_t u16_LED3FlashPeriod;        
-    
+    uint16_t u16_LED3FlashPeriod;
+
     uint16_t u16_RPGCounter;
     uint16_t u16_lastRPGCounter;
 } _st_esos_uiF14Data_t;
@@ -38,8 +38,8 @@ typedef struct {
 #define __ESOS_MS_TO_TICKS(x)           (x*1)
 #define __ESOS_UIF14_UI_PERIOD_MS       10
 
-// PRIVATE DATA 
- 
+// PRIVATE DATA
+
 _st_esos_uiF14Data_t _st_esos_uiF14Data;
 
 // PRIVATE FUNCTION PROTOTYPES
@@ -106,33 +106,45 @@ int16_t esos_uiF14_getRPGVelocity_i16 (void);
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED_AND_RELEASED() do {            /
                             ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED();           /
                             ESOS_TASK_WAIT_UNTIL_UIF14_SW1_RELEASED();          /
-                          } while (0) 
-#define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_DOUBLE_PRESSED()     do {              /
-                            ESOS_TASK_WAIT_UNTIL_UIF14_SW1_DOUBLE_PRESSED();           /
-                            ESOS_TASK_WAIT_UNTIL_UIF14_SW1_RELEASED();          /
-                          } while (0)   
+                            esos_uiF14_isSW1DoublePressed() = FALSE;
+                          } while (0)
+#define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_DOUBLE_PRESSED()  do{
+                            esos_uiF14_isSW1DoublePressed() = FALSE;
+                            ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED_AND_RELEASED();
+                            ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED_AND_RELEASED();
+                            //ESOS_WAIT_TICKS(250);
+                            esos_uiF14_isSW1DoublePressed() = TRUE;
+                          } while (0)
 
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED()              ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW2Pressed() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_RELEASED()             ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW2Released() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED_AND_RELEASED() do {
-							ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED();			/
-							ESOS_TASK_WAIT_UNTIL_UIF14_SW2_RELEASED();			/
-						   } while (0)
+                            ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED();           /
+                            ESOS_TASK_WAIT_UNTIL_UIF14_SW2_RELEASED();          /
+                            esos_uiF14_isSW2DoublePressed() = FALSE;			/
+            						  } while (0)
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_DOUBLE_PRESSED()       do {
-							ESOS_TASK_WAIT_UNTIL_UIF14_SW2_DOUBLE_PRESSED();			/
-							ESOS_TASK_WAIT_UNTIL_UIF14_SW2_RELEASED();			/
-						   } while (0)
+                            esos_uiF14_isSW2DoublePressed() = FALSE;
+                            ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED_AND_RELEASED();
+                            ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED_AND_RELEASED();
+                            //ESOS_WAIT_TICKS(250);
+                            esos_uiF14_isSW2DoublePressed() = TRUE;		/
+						             } while (0)
 
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED()              ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW3Pressed() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW3_RELEASED()             ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW3Released() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED_AND_RELEASED() do {
-							ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED();			/
-							ESOS_TASK_WAIT_UNTIL_UIF14_SW3_RELEASED();			/
-						   } while (0)
+                          ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED();           /
+                          ESOS_TASK_WAIT_UNTIL_UIF14_SW3_RELEASED();          /
+                          esos_uiF14_isSW3DoublePressed() = FALSE;			/
+                        } while (0)
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW3_DOUBLE_PRESSED()       do {
-							ESOS_TASK_WAIT_UNTIL_UIF14_SW3_DOUBLE_PRESSED();			/
-							ESOS_TASK_WAIT_UNTIL_UIF14_SW3_RELEASED();			/
-						   } while (0)
+                          esos_uiF14_isSW3DoublePressed() = FALSE;
+                          ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED_AND_RELEASED();
+                          ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED_AND_RELEASED();
+                          //ESOS_WAIT_TICKS(250);
+                          esos_uiF14_isSW3DoublePressed() = TRUE;		/
+        						   } while (0)
 
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_UNTIL_TURNS()          // not yet implemented
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_UNTIL_TURNS_CW()       // not yet implemented

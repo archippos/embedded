@@ -112,28 +112,58 @@ inline BOOL esos_uiF14_isRpgTurning ( void ) {
 
 //is the encoder turning between a certain non-zero number and a maximum value?
 inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
+  static char sz_reportSlow[64];
+  sz_reportSlow = "Turning slow";
   //TODO: use getRpgVelocity for this (ditto on medium and fast)
-  // not yet implemented
+  //code for determining slow goes here
+  // this is the code for console output --carol
+  ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+  ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportSlow);
+  ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 }
 
 //is the encoder turning between a minimum and maximum threshold?
 inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
-  // not yet implemented
+  static char sz_reportMed[64];
+  sz_reportMed = "Turning medium";
+  // code for medium goes here
+  //code for console output
+  ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+  ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportMed);
+  ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 }
 
 //is the encoder turning above a minimum threshold?
 inline BOOL esos_uiF14_isRpgTurningFast( void ) {
-  // not yet implemented
+  static char sz_reportFast[64];
+  sz_reportFast = "Turning fast";
+  // code for speedy boi goes here
+  //code for console output
+  ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+  ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportFast);
+  ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 }
 
 //determines if the encoder turning clockwise
 inline BOOL esos_uiF14_isRpgTurningCW( void ) {
-  // not yet implemented
+  static char sz_reportCW[64];
+  sz_reportCW = "Turning clockwise";
+  // code for determining CW goes here
+  //code for console output
+  ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+  ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportCW);
+  ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 }
 
 //is the encoder turning counterclockwise
 inline BOOL esos_uiF14_isRpgTurningCCW( void ) {
-  // not yet implemented
+  static char sz_reportCCW[64];
+  sz_reportCCW = "Turning counterclockwise";
+  // code for determining ccw goes here
+  //code for console output
+  ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+  ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportCCW);
+  ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 }
 
 //obtains the velocity of the encoder

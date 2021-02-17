@@ -142,7 +142,7 @@ int16_t esos_uiF14_getRPGVelocity_i16 (void);
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST()           ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningFast() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST_CW()        // not yet implemented
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST_CCW()       // not yet implemented
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_SLOW()			  ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningSlow() )
+#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_SLOW()	      ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningSlow() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_MAKES_REV(y)           // not yet implemented
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_MAKES_CW_REV(y)        // not yet implemented
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_MAKES_CCW_REV(y)       // not yet implemented

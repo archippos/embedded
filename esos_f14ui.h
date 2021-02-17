@@ -1,10 +1,17 @@
 /*******************************************************************
- *
+ * 
  * C header file for ESOS user-interface (UI) service
- *
+ * 
  *    requires the EMBEDDED SYSTEMS target rev. F14
- *
+ * 
  * ****************************************************************/
+
+// necessary includes for ESOS functions and types to work
+#include "revF14.h"
+#include "all_generic.h"
+#include "esos.h"
+#include "esos_pic24.h"
+#include "esos_task.h"
 
 #ifndef   ESOS_UIF14_H
 #define ESOS_UIF14_H
@@ -15,20 +22,20 @@ typedef struct {
     BOOL b_SW1Pressed;
     BOOL b_SW1DoublePressed;
     BOOL b_SW2Pressed;
-    BOOL b_SW1DoublePressed;
+    BOOL b_SW2DoublePressed;    
     BOOL b_SW3Pressed;
-    BOOL b_SW1DoublePressed;
-
+    BOOL b_SW3DoublePressed;    
+    
     BOOL b_RPGAHigh;
     BOOL b_RPGBHigh;
-
+    
     BOOL b_LED1On;
-    uint16_t u16_LED1FlashPeriod;
+    uint16_t u16_LED1FlashPeriod;    
     BOOL b_LED2On;
-    uint16_t u16_LED2FlashPeriod;
+    uint16_t u16_LED2FlashPeriod;        
     BOOL b_LED3On;
-    uint16_t u16_LED3FlashPeriod;
-
+    uint16_t u16_LED3FlashPeriod;        
+    
     uint16_t u16_RPGCounter;
     uint16_t u16_lastRPGCounter;
 } _st_esos_uiF14Data_t;
@@ -37,11 +44,10 @@ typedef struct {
 #define __ESOS_TICKS_TO_MS(x)           (x/1)
 #define __ESOS_MS_TO_TICKS(x)           (x*1)
 #define __ESOS_UIF14_UI_PERIOD_MS       10
-#define __DOUBLE_PRESS_TIME (250)
+#define __DOUBLE_PRESS_TIME             250 
 
-
-// PRIVATE DATA
-
+// PRIVATE DATA 
+ 
 _st_esos_uiF14Data_t _st_esos_uiF14Data;
 
 // PRIVATE FUNCTION PROTOTYPES
@@ -52,7 +58,7 @@ void esos_ui_setRPGCounter (uint16_t);
 uint16_t esos_uiF14_getLastRPGCounter (void);
 void esos_ui_setLastRPGCounter (uint16_t);
 
-ESOS_USER_TASK __uiF14_task;
+ESOS_USER_TASK( __esos_uiF14_task );
 
 // PUBLIC API FUNCTION PROTOTYPES
 
@@ -105,45 +111,38 @@ int16_t esos_uiF14_getRPGVelocity_i16 (void);
 
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED()              ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW1Pressed() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_RELEASED()             ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW1Released() )
-#define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED_AND_RELEASED() do {
-                            ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED();
-                            ESOS_TASK_WAIT_UNTIL_UIF14_SW1_RELEASED();
-                          } while (0)
-#define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_DOUBLE_PRESSED()  do{
-                            ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW1DoublePressed() );
-                          } while (0)
+#define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED_AND_RELEASED() do {              \
+                            ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED();           \
+                            ESOS_TASK_WAIT_UNTIL_UIF14_SW1_RELEASED();          \
+                          } while (0) 
+#define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_DOUBLE_PRESSED()       ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW1DoublePressed() )
 
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED()              ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW2Pressed() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_RELEASED()             ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW2Released() )
-#define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED_AND_RELEASED() do {
-                            ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED();
-                            ESOS_TASK_WAIT_UNTIL_UIF14_SW2_RELEASED();
-            						  } while (0)
-#define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_DOUBLE_PRESSED()       do {
-                            ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW2DoublePressed() );
-						             } while (0)
+#define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED_AND_RELEASED() do {				\
+							ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED();			\
+							ESOS_TASK_WAIT_UNTIL_UIF14_SW2_RELEASED();			\
+						   } while (0)
+#define ESOS_TASK_WAIT_UNTIL_UIF14_SW2_DOUBLE_PRESSED()       ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW2DoublePressed() )
 
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED()              ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW3Pressed() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW3_RELEASED()             ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW3Released() )
-#define ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED_AND_RELEASED() do {
-                          ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED();
-                          ESOS_TASK_WAIT_UNTIL_UIF14_SW3_RELEASED();
-                          esos_uiF14_isSW3DoublePressed() = FALSE;
-                        } while (0)
-#define ESOS_TASK_WAIT_UNTIL_UIF14_SW3_DOUBLE_PRESSED()       do {
-                          ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW3DoublePressed() );
-        						   } while (0)
+#define ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED_AND_RELEASED() do {				\
+							ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED();			\
+							ESOS_TASK_WAIT_UNTIL_UIF14_SW3_RELEASED();			\
+						   } while (0)
+#define ESOS_TASK_WAIT_UNTIL_UIF14_SW3_DOUBLE_PRESSED()       ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW3DoublePressed() )
 
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_UNTIL_TURNS()         ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurning() )  // not yet implemented
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_UNTIL_TURNS_CW()      ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningCW() )  // not yet implemented
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_UNTIL_TURNS_CCW()      ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningCCW() ) // not yet implemented
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_MEDIUM()         ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningMedium() ) // not yet implemented
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_MEDIUM_CW()        // may not need this
+#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_UNTIL_TURNS()          ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurning() )
+#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_UNTIL_TURNS_CW()       ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningCW() )
+#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_UNTIL_TURNS_CCW()      ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningCCW() )
+#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_MEDIUM()         ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningMedium() )
+#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_MEDIUM_CW()      // not yet implemented
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_MEDIUM_CCW()     // not yet implemented
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST()           ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningFast() )// not yet implemented
+#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST()           ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningFast() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST_CW()        // not yet implemented
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST_CCW()       // not yet implemented
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_SLOW()           ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningSlow() )
+#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_SLOW()			  ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningSlow() )
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_MAKES_REV(y)           // not yet implemented
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_MAKES_CW_REV(y)        // not yet implemented
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_MAKES_CCW_REV(y)       // not yet implemented

@@ -91,7 +91,7 @@ inline void esos_uiF14_toggleLED1 (void) {
 
 inline void esos_uiF14_flashLED1( uint16_t u16_period) {
     _st_esos_uiF14Data.u16_LED1FlashPeriod = u16_period;
-    return
+    return;
 }
 
 /****** LED2 and LED3 will need similar.  ********/
@@ -175,7 +175,7 @@ int16_t esos_uiF14_getRpgVelocity_i16( void ) {
 
 void config_esos_uiF14() {
   // setup your UI implementation
-  esos_RegisterTask( __uiF14_task );
+  esos_RegisterTask( __esos_uiF14_task );
 }
 
 
@@ -185,12 +185,7 @@ ESOS_USER_TASK( __esos_uiF14_task ){
   ESOS_TASK_BEGIN();
   while(TRUE) {
     // do your UI stuff here
-    ESOS_TASK_WAIT_TICKS( __ESOS_UIF14_UI_PERIOD );
+    ESOS_TASK_WAIT_TICKS( __ESOS_UIF14_UI_PERIOD_MS );
   }
   ESOS_TASK_END();
-}
-
-void user_init(void){
-
-
 }

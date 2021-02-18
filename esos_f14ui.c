@@ -5,6 +5,7 @@
  *    requires the EMBEDDED SYSTEMS target rev. F14
  *
  * ****************************************************************/
+#include    "esos.h"
 #include "esos_f14ui.h";
 #include "revF14.h";
 

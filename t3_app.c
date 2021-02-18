@@ -101,7 +101,12 @@ int RPG_medium_threshold = 10;
 int RPG_fast_threshold = 30;
 
 ESOS_USER_TIMER(heartbeat){
-      LED3 = !LED3;
+      if(esos_uiF14_isLED1On()){
+        esos_uiF14_turnLED2Off();
+      }
+      else{
+        esos_uiF14_turnLED2On();
+      }
 }
 
 ESOS_USER_TASK(l1_task){

@@ -6,6 +6,7 @@
  *
  * ****************************************************************/
 #include "esos_f14ui.h";
+#include "revF14.h";
 
 // PRIVATE FUNCTIONS
 inline void _esos_uiF14_setRPGCounter (uint16_t newValue) {

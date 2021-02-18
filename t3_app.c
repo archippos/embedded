@@ -90,7 +90,15 @@ ESOS_USER_TASK( __simulated_isr ) {
  * \hideinitializer
  */
 
-
+//Creating threshold variables for double presses and RPG counter
+//Threshold values adjusted for 10ms period and TBD
+int SW1_double_threshold = 25;
+int SW2_double_threshold = 25;
+int SW3_double_threshold = 25;
+//RPG thresholds TBD
+int RPG_slow_threshold = 0;
+int RPG_medium_threshold = 10;
+int RPG_fast_threshold = 30;
 
 ESOS_USER_TASK(main_task) {
 
@@ -98,8 +106,157 @@ ESOS_USER_TASK(main_task) {
 
   while (1)
   {
+    //Print out menu with options for encoder and double press periods
+    //Yes I know this looks awful
+    int select;
+    ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+    ESOS_TASK_WAIT_ON_SEND_STRING("What would you like to change?");
+    ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
+    ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+    ESOS_TASK_WAIT_ON_SEND_STRING("1: Switch 1 double press period");
+    ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
+    ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+    ESOS_TASK_WAIT_ON_SEND_STRING("2: Switch 2 double press period");
+    ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+    ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+    ESOS_TASK_WAIT_ON_SEND_STRING("3: Switch 3 double press period");
+    ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+    ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+    ESOS_TASK_WAIT_ON_SEND_STRING("4: RPG slow notification threshold");
+    ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+    ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+    ESOS_TASK_WAIT_ON_SEND_STRING("5: RPG medium notification threshold");
+    ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+    ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+    ESOS_TASK_WAIT_ON_SEND_STRING("6: RPG fast notification threshold" );
+    ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+    ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+    ESOS_TASK_WAIT_ON_SEND_STRING("7: Close menu");
+    ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+    cin >> select;
+    //Begin state machine for menu
+    switch(select) {
+      case 1:
+        //Wait for keyboard input
+        ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+        ESOS_TASK_WAIT_ON_SEND_STRING("Use the up and down arrows to change input");
+        ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+        //PROTOTYPE FOR READING ARROW KEYS
+        if (getch() == '\033') { // if the first value is esc
+          getch(); // skip the [
+          switch(getch()) { // the real value
+              case 'A':
+                  // code for arrow up
+                  break;
+              case 'B':
+                  // code for arrow down
+                  break;
+              default:
+                cout "Invalid button press. Please use the up and down arrow keys." << endl;
+                break;
+          }
+      }
+
+      case 2:
+        //Wait for keyboard input
+        ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+        ESOS_TASK_WAIT_ON_SEND_STRING("Use the up and down arrows to change input");
+        ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+        if (getch() == '\033') { // if the first value is esc
+          getch(); // skip the [
+          switch(getch()) { // the real value
+              case 'A':
+                  // code for arrow up
+                  break;
+              case 'B':
+                  // code for arrow down
+                  break;
+              default:
+                cout "Invalid button press. Please use the up and down arrow keys." << endl;
+                break;
+      case 3:
+        //Wait for keyboard input
+        ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+        ESOS_TASK_WAIT_ON_SEND_STRING("Use the up and down arrows to change input");
+        ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+        if (getch() == '\033') { // if the first value is esc
+          getch(); // skip the [
+          switch(getch()) { // the real value
+              case 'A':
+                  // code for arrow up
+                  break;
+              case 'B':
+                  // code for arrow down
+                  break;
+              default:
+                cout "Invalid button press. Please use the up and down arrow keys." << endl;
+                break;
+      case 4:
+        //Wait for keyboard input
+        ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+        ESOS_TASK_WAIT_ON_SEND_STRING("Use the up and down arrows to change input");
+        ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+        if (getch() == '\033') { // if the first value is esc
+          getch(); // skip the [
+          switch(getch()) { // the real value
+              case 'A':
+                  // code for arrow up
+                  break;
+              case 'B':
+                  // code for arrow down
+                  break;
+              default:
+                cout "Invalid button press. Please use the up and down arrow keys." << endl;
+                break;
+      case 5:
+        //Wait for keyboard input
+        ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+        ESOS_TASK_WAIT_ON_SEND_STRING("Use the up and down arrows to change input");
+        ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+        if (getch() == '\033') { // if the first value is esc
+          getch(); // skip the [
+          switch(getch()) { // the real value
+              case 'A':
+                  // code for arrow up
+                  break;
+              case 'B':
+                  // code for arrow down
+                  break;
+              default:
+                cout "Invalid button press. Please use the up and down arrow keys." << endl;
+                break;
+      case 6:
+        //Wait for keyboard input
+        ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+        ESOS_TASK_WAIT_ON_SEND_STRING("Use the up and down arrows to change input");
+        ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+        if (getch() == '\033') { // if the first value is esc
+          getch(); // skip the [
+          switch(getch()) { // the real value
+              case 'A':
+                  // code for arrow up
+                  break;
+              case 'B':
+                  // code for arrow down
+                  break;
+              default:
+                cout "Invalid button press. Please use the up and down arrow keys." << endl;
+                break;
+      case 7:
+        ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+        ESOS_TASK_WAIT_ON_SEND_STRING("Menu closed");
+        ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+        break;
+    }
 
 #ifdef __linux
     if (LED2) {

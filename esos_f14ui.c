@@ -175,6 +175,15 @@ int16_t esos_uiF14_getRpgVelocity_i16( void ) {
 
 void config_esos_uiF14() {
   // setup your UI implementation
+  CONFIG_LED1();
+  CONFIG_LED2();
+  CONFIG_LED3();
+
+  CONFIG_SW1();
+  CONFIG_SW2();
+  CONFIG_SW3();
+
+  CONFIG_RPG();
   esos_RegisterTask( __esos_uiF14_task );
 }
 

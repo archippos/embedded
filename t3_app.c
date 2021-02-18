@@ -102,9 +102,9 @@ int RPG_fast_threshold = 30;
 
 ESOS_USER_TIMER(heartbeat){
   ESOS_TASK_BEGIN();
-  while (1){
-    LED3 = !LED3;
-  }//end of while
+    while (1){
+      LED3 = !LED3;
+    }//end of while
   ESOS_TASK_END();
 
 }
@@ -135,6 +135,7 @@ ESOS_USER_TASK(menu_task) {
   {
     //Print out menu with options for encoder and double press periods
     //Yes I know this looks awful
+    /*
     int select;
     ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
     ESOS_TASK_WAIT_ON_SEND_STRING("What would you like to change?");
@@ -291,7 +292,7 @@ ESOS_USER_TASK(menu_task) {
       fflush(stdout);
     }
 #endif
-
+*/
     //ESOS_TASK_WAIT_TICKS( 500 );
   } // endof while(TRUE)
   ESOS_TASK_END();

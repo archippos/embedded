@@ -327,7 +327,17 @@ void user_init(void) {
   CONFIG_SW3();
 
   */
-  config_esos_uiF14();
+  //config_esos_uiF14(); need to add this back in
+
+  CONFIG_LED1();
+  CONFIG_LED2();
+  CONFIG_LED3();
+
+  CONFIG_SW1();
+  CONFIG_SW2();
+  CONFIG_SW3();
+
+  CONFIG_RPG();
   // user_init() should register at least one user task
 
   //calls task

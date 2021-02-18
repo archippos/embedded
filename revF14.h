@@ -31,6 +31,6 @@
 #define CONFIG_RPG() {    CONFIG_RB8_AS_DIG_INPUT(); \
                           CONFIG_RB9_AS_DIG_INPUT(); \
                           ENABLE_RB8_PULLUP(); \
-                          ENAABLE_RB9_PULLUP(); \
+                          ENABLE_RB9_PULLUP(); \
                           DELAY(1); \
                       }

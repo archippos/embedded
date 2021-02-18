@@ -100,10 +100,10 @@ int RPG_slow_threshold = 0;
 int RPG_medium_threshold = 10;
 int RPG_fast_threshold = 30;
 
-ESOS_USER_TASK(heartbeat){
+ESOS_USER_TIMER(heartbeat){
   ESOS_TASK_BEGIN();
   while (1){
-
+    LED3 = !LED3;
   }//end of while
   ESOS_TASK_END();
 
@@ -336,7 +336,7 @@ void user_init(void) {
 
   //calls task
   esos_RegisterTask(menu_task);
-  esos_RegisterTask(heartbeat);
+  esos_RegisterTimer(heartbeat, 500);
   esos_RegisterTask(l1_task);
   esos_RegisterTask(l2_task);
 

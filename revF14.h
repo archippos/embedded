@@ -25,5 +25,12 @@
                           }
 #define   SW3             _RC15
 
+#define RPGA          _RB8
+#define RPGB          _RB9
 
-
+#define CONFIG_RPG() {    CONFIG_RB8_AS_DIG_INPUT(); \
+                          CONFIG_RB9_AS_DIG_INPUT(); \
+                          ENABLE_RB8_PULLUP(); \
+                          ENAABLE_RB9_PULLUP(); \
+                          DELAY(1); \
+                      }

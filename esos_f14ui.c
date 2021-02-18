@@ -197,7 +197,7 @@ inline BOOL esos_uiF14_isRpgTurning ( void ) {
   //if it's turning, velocity is not 0
   if (esos_uiF14_getRpgVelocity_i16() != 0) {
 		return TRUE;
-	} else {return FALSE;} 
+	} else {return FALSE;}
 }
 
 //is the new-old delta between 1 and 10?
@@ -210,6 +210,7 @@ inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
   // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportSlow);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+  // return;
 }
 
 //is the new-old delta between 11 and 24?
@@ -221,6 +222,7 @@ inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
   // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportMed);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+  // return;
 }
 
 //is the new-old delta above 25?
@@ -232,6 +234,7 @@ inline BOOL esos_uiF14_isRpgTurningFast( void ) {
   // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportFast);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+  // return;
 }
 
 //determines if the encoder turning clockwise
@@ -243,6 +246,7 @@ inline BOOL esos_uiF14_isRpgTurningCW( void ) {
   // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportCW);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+  // return;
 }
 
 //is the encoder turning counterclockwise
@@ -254,6 +258,7 @@ inline BOOL esos_uiF14_isRpgTurningCCW( void ) {
   // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportCCW);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+  // return;
 }
 
 //obtains the velocity of the encoder
@@ -274,7 +279,7 @@ void config_esos_uiF14() {
   CONFIG_SW3();
 
   CONFIG_RPG();
-  
+
   esos_RegisterTask( __esos_uiF14_task );
 }
 
@@ -282,21 +287,21 @@ void config_esos_uiF14() {
 // UIF14 task to manage user-interface
 ESOS_USER_TASK( __esos_uiF14_task ){
 
-	
+
   ESOS_TASK_BEGIN();
   while(TRUE) {
     // do your UI stuff here
 	_esos_uiF14_setSW1Pressed();
 	_esos_uiF14_setSW2Pressed();
-	_esos_uiF14_setSW3Pressed();	
-	
+	_esos_uiF14_setSW3Pressed();
+
 	if ( esos_uiF14_isLED1On() ) {
 		LED1 = 1;
 	} else {
 		LED1 = 0;
 	}
 
-	
+
     ESOS_TASK_WAIT_TICKS( __ESOS_UIF14_UI_PERIOD_MS );
   }
   ESOS_TASK_END();

@@ -32,5 +32,5 @@
                           CONFIG_RB9_AS_DIG_INPUT(); \
                           ENABLE_RB8_PULLUP(); \
                           ENABLE_RB9_PULLUP(); \
-                          DELAY(1); \
+                          DELAY_US(1); \
                       }

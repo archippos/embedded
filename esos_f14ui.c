@@ -5,7 +5,7 @@
  *    requires the EMBEDDED SYSTEMS target rev. F14
  *
  * ****************************************************************/
-# include esos_f14ui.h;
+#include "esos_f14ui.h";
 
 // PRIVATE FUNCTIONS
 inline void _esos_uiF14_setRPGCounter (uint16_t newValue) {

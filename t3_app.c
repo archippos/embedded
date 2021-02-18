@@ -100,7 +100,34 @@ int RPG_slow_threshold = 0;
 int RPG_medium_threshold = 10;
 int RPG_fast_threshold = 30;
 
-ESOS_USER_TASK(main_task) {
+ESOS_USER_TASK(heartbeat){
+  ESOS_TASK_BEGIN();
+  while (1){
+
+  }//end of while
+  ESOS_TASK_END();
+
+}
+
+ESOS_USER_TASK(l1_task){
+  ESOS_TASK_BEGIN();
+  while (1){
+
+  }//end of while
+  ESOS_TASK_END();
+
+}
+
+ESOS_USER_TASK(l2_task){
+  ESOS_TASK_BEGIN();
+  while (1){
+
+  }//end of while
+  ESOS_TASK_END();
+
+}
+
+ESOS_USER_TASK(menu_task) {
 
   ESOS_TASK_BEGIN();
 
@@ -308,8 +335,10 @@ void user_init(void) {
   // user_init() should register at least one user task
 
   //calls task
-  esos_RegisterTask(main_task);
-
+  esos_RegisterTask(menu_task);
+  esos_RegisterTask(heartbeat);
+  esos_RegisterTask(l1_task);
+  esos_RegisterTask(l2_task);
 
 
 

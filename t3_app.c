@@ -101,12 +101,7 @@ int RPG_medium_threshold = 10;
 int RPG_fast_threshold = 30;
 
 ESOS_USER_TIMER(heartbeat){
-  ESOS_TASK_BEGIN();
-    while (1){
       LED3 = !LED3;
-    }//end of while
-  ESOS_TASK_END();
-
 }
 
 ESOS_USER_TASK(l1_task){

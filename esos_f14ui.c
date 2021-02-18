@@ -183,9 +183,9 @@ void config_esos_uiF14() {
 ESOS_USER_TASK( __esos_uiF14_task ){
 
   ESOS_TASK_BEGIN();
-  while(TRUE) {
+  while(1) {
     // do your UI stuff here
     ESOS_TASK_WAIT_TICKS( __ESOS_UIF14_UI_PERIOD_MS );
-  }
+  }// end while
   ESOS_TASK_END();
 }

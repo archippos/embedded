@@ -10,7 +10,7 @@ PREPARED FOR: KEITH POWELL
 #include    "esos.h"
 #include "revF14.h"
 #include "esos_f14ui.h"
-#include "esos_f14ui.c"
+//#include "esos_f14ui.c"
 #ifdef __linux
 #include    "esos_pc.h"
 #include    "esos_pc_stdio.h"

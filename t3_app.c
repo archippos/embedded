@@ -117,10 +117,10 @@ ESOS_USER_TASK(l2_task){
   ESOS_TASK_BEGIN();
   while (1){
         if(esos_uiF14_isRPGTurning()){
-          LED2 = 1;
+          esos_uiF14_turnLED2On();
         }
         else{
-          LED2 = 0;
+          esos_uiF14_turnLED2Off();
         }
   }//end of while
   ESOS_TASK_END();

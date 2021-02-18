@@ -102,18 +102,18 @@ inline void esos_uiF14_flashLED1( uint16_t u16_period) {
 // PUBLIC RPG FUNCTIONS
 
 //gets data from the encoder
-inline uint16_t esos_uiF14_getRpgValue_u16 ( void ) {
+inline uint16_t esos_uiF14_getRPGValue_u16 ( void ) {
     return _st_esos_uiF14Data.u16_RPGCounter;
 }
 
 //determines whether or not the encoder is turning
-inline BOOL esos_uiF14_isRpgTurning ( void ) {
+inline BOOL esos_uiF14_isRPGTurning ( void ) {
   //if it's turning, velocity is not 0
     return (esos_uiF14_getRpgVelocity_i16() != 0);
 }
 
 //is the new-old delta between 1 and 10?
-inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
+inline BOOL esos_uiF14_isRPGTurningSlow( void ) {
   static char sz_reportSlow[64];
   sz_reportSlow = "Turning slow";
   //TODO: use getRpgVelocity for this (ditto on medium and fast)
@@ -125,7 +125,7 @@ inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
 }
 
 //is the new-old delta between 11 and 24?
-inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
+inline BOOL esos_uiF14_isRPGTurningMedium( void ) {
   static char sz_reportMed[64];
   sz_reportMed = "Turning medium";
   // code for determining medium goes here

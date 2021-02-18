@@ -116,7 +116,12 @@ ESOS_USER_TASK(l1_task){
 ESOS_USER_TASK(l2_task){
   ESOS_TASK_BEGIN();
   while (1){
-
+        if(esos_uiF14_isRPGTurning()){
+          LED2 = 1;
+        }
+        else{
+          LED2 = 0;
+        }
   }//end of while
   ESOS_TASK_END();
 

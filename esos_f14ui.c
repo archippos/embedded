@@ -149,7 +149,6 @@ inline void esos_uiF14_flashLED2( uint16_t u16_period) {
 }
 
 // LED3
-
 inline BOOL esos_uiF14_isLED3On (void) {
     return (_st_esos_uiF14Data.b_LED3On==TRUE);
 }
@@ -226,59 +225,29 @@ inline BOOL esos_uiF14_isRpgTurning ( void ) {
 
 //is the new-old delta between 1 and 10?
 inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
-  // static char sz_reportSlow[64];
-  // sz_reportSlow = "Turning slow";
-  // this is the code for console output --carol
-  // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-  // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportSlow);
-  // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
   uint16_t vel = ABS(_st_esos_uiF14Data.i16_RPGVelocity);
   return esos_uiF14_getRPGSlowThreshold() <= vel && vel < esos_uiF14_getRPGMediumThreshold();
 }
 
 //is the new-old delta between 11 and 24?
 inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
-  // static char sz_reportMed[64];
-  // sz_reportMed = "Turning medium";
-  //code for console output
-  // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-  // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportMed);
-  // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
   uint16_t vel = ABS(_st_esos_uiF14Data.i16_RPGVelocity);
 	return esos_uiF14_getRPGMediumThreshold() <= vel && vel < esos_uiF14_getRPGFastThreshold();
 }
 
 //is the new-old delta above 25?
 inline BOOL esos_uiF14_isRpgTurningFast( void ) {
-  // static char sz_reportFast[64];
-  // sz_reportFast = "Turning fast";
-  //code for console output
-  // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-  // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportFast);
-  // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
   return esos_uiF14_getRPGFastThreshold() < ABS(_st_esos_uiF14Data.u16_RPGVelocity);
 }
 
 //determines if the encoder turning clockwise
 inline BOOL esos_uiF14_isRpgTurningCW( void ) {
-  // static char sz_reportCW[64];
-  // sz_reportCW = "Turning clockwise";
-  //code for console output
-  // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-  // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportCW);
-  // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
   uint16_t vel = _st_esos_uiF14Data.i16_RPGVelocity;
   return (vel > 0) && (esos_uiF14_getRPGSlowThreshold() <= ABS(vel));
 }
 
 //is the encoder turning counterclockwise
 inline BOOL esos_uiF14_isRpgTurningCCW( void ) {
-  // static char sz_reportCCW[64];
-  // sz_reportCCW = "Turning counterclockwise";
-  //code for console output
-  // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-  // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportCCW);
-  // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
   uint16_t vel = _st_esos_uiF14Data.i16_RPGVelocity;
   return (vel < 0) && (esos_uiF14_getRPGSlowThreshold() <= ABS(vel));
 }
@@ -288,21 +257,45 @@ int16_t esos_uiF14_getRpgVelocity_i16( void ) {
 	return (esos_uiF14_getRpgValue_u16 - esos_uiF14_getLastRpgValue_u16);
 }
 
+
+
 // UIF14 INITIALIZATION FUNCTION
 
 void config_esos_uiF14() {
   // setup your UI implementation
-  CONFIG_LED1();
-  CONFIG_LED2();
-  CONFIG_LED3();
+  //CONFIG_LED1();
+  //CONFIG_LED2();
+  //CONFIG_LED3();
 
-  CONFIG_SW1();
-  CONFIG_SW2();
-  CONFIG_SW3();
+  //CONFIG_SW1();
+  //CONFIG_SW2();
+  //CONFIG_SW3();
 
-  CONFIG_RPG();
+  //CONFIG_RPG();
 
   esos_RegisterTask( __esos_uiF14_task );
+  //set up the led flash periods
+  _st_esos_uiF14Data.u16_LED1FlashPeriod = 0;
+  _st_esos_uiF14Data.u16_LED2FlashPeriod = 0;
+  _st_esos_uiF14Data.u16_LED3FlashPeriod = 0;
+  //set up the switch press intervals
+  _st_esos_uiF14Data.u16_timeBetweenSW1Presses = 0;
+  _st_esos_uiF14Data.u16_timeBetweenSW2Presses = 0;
+  _st_esos_uiF14Data.u16_timeBetweenSW3Presses = 0;
+  //set up the thresholds for RPG speeds
+  _st_esos_uiF14Data.u16_RPGFastSpeed = 250; // 250ms
+  _st_esos_uiF14Data.u16_RPGMediumSpeed = 1500; // 1.5s
+  _st_esos_uiF14Data.u16_RPGSlowSpeed = 3000; // 3s
+  _st_esos_uiF14Data.u16_RPGCounter = _st_esos_uiF14Data.u16_RPGSlowSpeed;
+  _st_esos_uiF14Data.u16_lastRPGCounter = _st_esos_uiF14Data.u16_RPGSlowSpeed;
+  //we don't know anything about RPG velocity, so set all to false
+  _st_esos_uiF14Data.b_isRPGSlow = FALSE;
+  _st_esos_uiF14Data.b_isRPGMedium = FALSE;
+  _st_esos_uiF14Data.b_isRPGFast = FALSE;
+  //set value of double press to 250ms
+  _st_esos_uiF14Data.u16_doublePressPeriodSW1 = __ESOS_DOUBLE_PRESS_TIME_MULT;
+  _st_esos_uiF14Data.u16_doublePressPeriodSW2 = __ESOS_DOUBLE_PRESS_TIME_MULT;
+  _st_esos_uiF14Data.u16_doublePressPeriodSW3 = __ESOS_DOUBLE_PRESS_TIME_MULT;
 }
 
 // UIF14 task to manage user-interface

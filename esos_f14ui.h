@@ -20,11 +20,11 @@
 #define __ESOS_TICKS_TO_MS(x)           (x/1)
 #define __ESOS_MS_TO_TICKS(x)           (x*1)
 #define __ESOS_UIF14_UI_PERIOD_MS       10
-#define __DOUBLE_PRESS_TIME             250         //250ms = period for double press
+#define __DOUBLE_PRESS_TIME_MULT        250         //250ms = period for double press
 #define __ESOS_UIF14_RPG_CLICKS_PER_REV 12          //12 clicks per 360*
-#define __ESOS_UIF14_DEFAULT_RPGS_THRESHOLD (10)    //threshold for slow
-#define __ESOS_UIF14_DEFAULT_RPGM_THRESHOLD (24)    //threshold for med
-#define __ESOS_UIF14_DEFAULT_RPGF_THRESHOLD (35)    //threshold for fast
+//#define __ESOS_UIF14_DEFAULT_RPGS_THRESHOLD (10)    //threshold for slow
+//#define __ESOS_UIF14_DEFAULT_RPGM_THRESHOLD (24)    //threshold for med
+//#define __ESOS_UIF14_DEFAULT_RPGF_THRESHOLD (35)    //threshold for fast
 
 // STRUCTURES
 
@@ -80,6 +80,7 @@ void esos_ui_setRPGCounter (uint16_t);
 uint16_t esos_uiF14_getLastRPGCounter (void);
 void esos_ui_setLastRPGCounter (uint16_t);
 
+//TODO: should this be "__uiF14_task" instead?
 ESOS_USER_TASK( __esos_uiF14_task );
 
 // PUBLIC API FUNCTION PROTOTYPES

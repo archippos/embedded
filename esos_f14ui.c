@@ -18,6 +18,10 @@ inline void _esos_uiF14_setLastRPGCounter (uint16_t newValue) {
     return;
 }
 
+// ------------------------
+// PUBLIC SWITCH FUNCTIONS
+// ------------------------
+
 inline void _esos_uiF14_setSW1Pressed (void) {
 	if (!SW1) {
 		_st_esos_uiF14Data.b_SW1Pressed = TRUE;
@@ -41,10 +45,6 @@ inline void _esos_uiF14_setSW3Pressed (void) {
 		_st_esos_uiF14Data.b_SW3Pressed = FALSE;
 	}
 }
-
-// ------------------------
-// PUBLIC SWITCH FUNCTIONS
-// ------------------------
 
 // Switch 1
 inline BOOL esos_uiF14_isSW1Pressed (void) {
@@ -179,7 +179,33 @@ inline void esos_uiF14_flashLED3( uint16_t u16_period) {
 }
 
 
-/****** RED, GREEN, and YELLOW functions need to be created *******/
+/****** RED, GREEN, and YELLOW functions*******/
+inline void esos_uiF14_turnRedLEDOn (void) {
+    //Red LED = LED1
+    esos_uiF14_turnLED1On();
+}
+
+inline void esos_uiF14_turnRedLEDOff (void) {
+    esos_uiF14_turnLED1Off();
+}
+
+inline void esos_uiF14_turnGreenLEDOn (void) {
+    //Green LED = LED3
+    esos_uiF14_turnLED3On();
+}
+
+inline void esos_uiF14_turnGreenLEDOff (void) {
+    esos_uiF14_turnLED3Off();
+}
+
+inline void esos_uiF14_turnYellowLEDOn (void) {
+    //Yellow LED = LED2
+    esos_uiF14_turnLED2On();
+}
+
+inline void esos_uiF14_turnYellowLEDOff (void) {
+    esos_uiF14_turnLED2Off();
+}
 
 // PUBLIC RPG FUNCTIONS
 

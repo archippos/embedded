@@ -9,7 +9,6 @@ PREPARED FOR: KEITH POWELL
 
 #include "esos_f14ui.h"
 #include    "esos_pic24.h"
-#include    "esos_pic24_rs232.h"
 # include "revF14.h"
 
 uint16_t _DOUBLE_DELAY = 500;

@@ -5,18 +5,17 @@
  *    requires the EMBEDDED SYSTEMS target rev. F14
  *
  * ****************************************************************/
+#include "revF14.h"
 #include "esos_f14ui.h"
-#define ABS(x) (x < 0 ? -x : x)
+//#define ABS(x) (x < 0 ? -x : x);
 
 // PRIVATE FUNCTIONS
 inline void _esos_uiF14_setRPGCounter (uint16_t newValue) {
-    _st_esos_uiF14Data.u16_RPGCounter = newValue;
-    return;
+    return _st_esos_uiF14Data.u16_RPGCounter = newValue;
 }
 
 inline void _esos_uiF14_setLastRPGCounter (uint16_t newValue) {
-    _st_esos_uiF14Data.u16_lastRPGCounter = newValue;
-    return;
+    return _st_esos_uiF14Data.u16_lastRPGCounter = newValue;
 }
 
 // ------------------------

@@ -1,10 +1,6 @@
 #ifndef REVF14_H
 #define REVF14_H
 
-#ifndef __dsPIC33EP512GP806__
-#define __dsPIC33EP512GP806__
-#endif
-
 #include "pic24_all.h"
 
 //set up the LEDs: led1

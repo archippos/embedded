@@ -63,7 +63,7 @@ ESOS_CHILD_TASK(_WAIT_SENSOR_QUICK_READ, uint16_t* pu16_data)
 {
 	ESOS_TASK_BEGIN();
 
-    esos_sensor_initiate_hw(); //where does this come from
+    esos_sensor_configure_hw(); //where does this come from
     ESOS_TASK_WAIT_WHILE(esos_sensor_is_converting_hw());
     *pu16_data = esos_sensor_getvalue_u16_hw();
 

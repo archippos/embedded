@@ -184,20 +184,18 @@ inline void esos_uiF14_flashLED3( uint16_t u16_period) {
 // PUBLIC RPG FUNCTIONS
 
 //gets data from the encoder
-inline uint16_t esos_uiF14_getRpgValue_u16 ( void ) {
+inline uint16_t esos_uiF14_getRpgValue_u16(void) {
     return _st_esos_uiF14Data.u16_RPGCounter;
 }
 
-inline uint16_t esos_uiF14_getLastRpgValue_u16 ( void ) {
+inline uint16_t esos_uiF14_getLastRpgValue_u16 (void) {
     return _st_esos_uiF14Data.u16_lastRPGCounter;
 }
 
 //determines whether or not the encoder is turning
 inline BOOL esos_uiF14_isRpgTurning ( void ) {
   //if it's turning, velocity is not 0
-  if (esos_uiF14_getRpgVelocity_i16() != 0) {
-		return TRUE;
-	} else {return FALSE;}
+  return (esos_uiF14_getRpgVelocity_i16() != 0);
 }
 
 //is the new-old delta between 1 and 10?
@@ -211,6 +209,8 @@ inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportSlow);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
   // return;    //we'll need two returns (true/false) based on what the speed is
+  uint16_t vel = ABS(_st_esos_uiF14Data.i16_RPGVelocity);
+  return esos_uiF14_getRPGSlowThreshold() <= vel && vel < esos_uiF14_getRPGMediumThreshold();
 }
 
 //is the new-old delta between 11 and 24?
@@ -223,6 +223,8 @@ inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportMed);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
   // return;    //we'll need two returns (true/false) based on what the speed is
+  uint16_t vel = ABS(_st_esos_uiF14Data.i16_RPGVelocity);
+	return esos_uiF14_getRPGMediumThreshold() <= vel && vel < esos_uiF14_getRPGFastThreshold();
 }
 
 //is the new-old delta above 25?
@@ -235,6 +237,7 @@ inline BOOL esos_uiF14_isRpgTurningFast( void ) {
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportFast);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
   // return;    //we'll need two returns (true/false) based on what the speed is
+  return esos_uiF14_getRPGFastThreshold() < ABS(_st_esos_uiF14Data.u16_RPGVelocity);
 }
 
 //determines if the encoder turning clockwise
@@ -247,6 +250,8 @@ inline BOOL esos_uiF14_isRpgTurningCW( void ) {
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportCW);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
   // return;    //we'll need two returns (true/false) based on what the direction is
+  uint16_t vel = _st_esos_uiF14Data.i16_RPGVelocity;
+  return (vel > 0) && (esos_uiF14_getRPGSlowThreshold() <= ABS(vel));
 }
 
 //is the encoder turning counterclockwise
@@ -259,6 +264,8 @@ inline BOOL esos_uiF14_isRpgTurningCCW( void ) {
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportCCW);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
   // return;    //we'll need two returns (true/false) based on what the direction is
+  uint16_t vel = _st_esos_uiF14Data.i16_RPGVelocity;
+  return (vel < 0) && (esos_uiF14_getRPGSlowThreshold() <= ABS(vel));
 }
 
 //obtains the velocity of the encoder

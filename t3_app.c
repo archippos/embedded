@@ -9,8 +9,6 @@ PREPARED FOR: KEITH POWELL
 
 #include  "esos.h"
 #include  "esos_pic24.h"
-//#include  "esos_pic24_rs232.h"
-
 #include "esos_f14ui.c"
 #include "revF14.h"
 
@@ -31,7 +29,7 @@ ESOS_USER_TASK( heartbeat_led ) {
 	ESOS_TASK_END();
 }
 
-ESOS_USER_TASK( SW1_state ) {
+ESOS_USER_TASK(SW1_STATE) {
 
 	ESOS_TASK_BEGIN();
 	while(TRUE) {
@@ -48,7 +46,7 @@ ESOS_USER_TASK( SW1_state ) {
 
 }
 
-ESOS_USER_TASK( SW2_state ) {
+ESOS_USER_TASK(SW2_STATE) {
 
 	ESOS_TASK_BEGIN();
 	while(TRUE) {
@@ -65,7 +63,7 @@ ESOS_USER_TASK( SW2_state ) {
 
 }
 
-ESOS_USER_TASK( SW3_state ) {
+ESOS_USER_TASK(SW3_STATE) {
 
 	ESOS_TASK_BEGIN();
 	while(TRUE) {
@@ -82,11 +80,9 @@ ESOS_USER_TASK( SW3_state ) {
 
 }
 
-ESOS_USER_TASK( SW1_double_state ) {
-
-
+ESOS_USER_TASK(SW1_DOUBLE_STATE) {
 	ESOS_TASK_BEGIN();
-
+  while(TRUE) {
 		ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED();
 		ESOS_TASK_WAIT_UNTIL_UIF14_SW1_RELEASED();
 		ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED();
@@ -95,13 +91,11 @@ ESOS_USER_TASK( SW1_double_state ) {
 		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 		ESOS_TASK_WAIT_ON_SEND_STRING("SW1 is double pressed\n");
 		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-
-
+  }
 	ESOS_TASK_END();
-
 }
 
-ESOS_USER_TASK( LED1_task ) {
+ESOS_USER_TASK(LED1_TASK) {
 
 	ESOS_TASK_BEGIN();
 	while(TRUE) {
@@ -116,6 +110,7 @@ ESOS_USER_TASK( LED1_task ) {
 }
 
 //task to have led2 flash as rpg turns
+//TODO: fix reference errors in compile
 ESOS_USER_TASK (LED2_RPG_TASK) {
   ESOS_TASK_BEGIN();
 
@@ -139,7 +134,7 @@ ESOS_USER_TASK (LED2_RPG_TASK) {
 }
 
 // task for the serial port menu
-ESOS_USER_TASK( menu_task ) {
+ESOS_USER_TASK(MENU_TASK) {
 	static uint8_t u8_char;
 	static uint8_t u8_updown = 'z';
 	static uint8_t u8_hold;
@@ -171,12 +166,9 @@ ESOS_USER_TASK( menu_task ) {
 		ESOS_TASK_WAIT_ON_SEND_STRING("d: RPG fast notification threshold\n\n" );
 		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
-
-
 		state = 1;
 
 		} else {  // other options
-
 
 		ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
 		ESOS_TASK_WAIT_ON_GET_UINT8(u8_char);
@@ -494,15 +486,16 @@ ESOS_USER_TASK( menu_task ) {
 // user intialization
 void user_init(void) {
 
-	__esos_unsafe_PutString( HELLO_MSG );
+	__esos_unsafe_PutString(HELLO_MSG);
 
 	config_esos_uiF14();
 
 	esos_RegisterTask( heartbeat_led );
-	esos_RegisterTask( LED1_task );
-	esos_RegisterTask( SW1_state );
-	esos_RegisterTask( SW2_state );
-	esos_RegisterTask( SW3_state );
-	esos_RegisterTask( SW1_double_state );
-	esos_RegisterTask( menu_task );
+	esos_RegisterTask(LED1_TASK);
+	esos_RegisterTask(SW1_STATE);
+	esos_RegisterTask(SW2_STATE);
+	esos_RegisterTask(SW3_STATE);
+  esos_RegisterTask(LED2_RPG_TASK);
+	esos_RegisterTask(SW1_DOUBLE_STATE);
+	esos_RegisterTask(MENU_TASK);
 }

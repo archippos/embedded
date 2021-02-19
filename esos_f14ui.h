@@ -16,6 +16,16 @@
 #ifndef   ESOS_UIF14_H
 #define   ESOS_UIF14_H
 
+// DEFINEs and CONSTANTs
+#define __ESOS_TICKS_TO_MS(x)           (x/1)
+#define __ESOS_MS_TO_TICKS(x)           (x*1)
+#define __ESOS_UIF14_UI_PERIOD_MS       10
+#define __DOUBLE_PRESS_TIME             250         //250ms = period for double press
+#define __ESOS_UIF14_RPG_CLICKS_PER_REV 12          //12 clicks per 360*
+#define __ESOS_UIF14_DEFAULT_RPGS_THRESHOLD (10)    //threshold for slow
+#define __ESOS_UIF14_DEFAULT_RPGM_THRESHOLD (24)    //threshold for med
+#define __ESOS_UIF14_DEFAULT_RPGF_THRESHOLD (35)    //threshold for fast
+
 // STRUCTURES
 
 typedef struct {
@@ -38,13 +48,14 @@ typedef struct {
 
     uint16_t u16_RPGCounter;
     uint16_t u16_lastRPGCounter;
-} _st_esos_uiF14Data_t;
 
-// DEFINEs and CONSTANTs
-#define __ESOS_TICKS_TO_MS(x)           (x/1)
-#define __ESOS_MS_TO_TICKS(x)           (x*1)
-#define __ESOS_UIF14_UI_PERIOD_MS       10
-#define __DOUBLE_PRESS_TIME             250
+    int16_t i16_RPGCounter;
+    int16_t i16_RPGVelocity;
+
+    int16_t u16_RPGSlowThreshold;
+    int16_t u16_RPGMediumThreshold;
+    int16_t u16_RPGFastThreshold;
+} _st_esos_uiF14Data_t;
 
 // PRIVATE DATA
 
@@ -142,12 +153,12 @@ int16_t esos_uiF14_getRPGVelocity_i16 (void);
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_MEDIUM()         ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningMedium() );
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_MEDIUM_CW()
         ESOS_TASK_WAIT_UNTIL(esos_uiF14_isRPGTurningMedium() && esos_uiF14_isRPGTurningCW());
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_MEDIUM_CCW()
+#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_MEDIUM_CCW() \
         ESOS_TASK_WAIT_UNTIL(esos_uiF14_isRPGTurningMedium() && esos_uiF14_isRPGTurningCCW());
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST()           ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningFast() );
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST_CW()
+#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST_CW() \
         ESOS_TASK_WAIT_UNTIL(esos_uiF14_isRPGTurningFast() && esos_uiF14_isRPGTurningCW());
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST_CCW()
+#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST_CCW() \
         ESOS_TASK_WAIT_UNTIL(esos_uiF14_isRPGTurningFast() && esos_uiF14_isRPGTurningCCW());
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_SLOW()			      ESOS_TASK_WAIT_UNTIL( esos_uiF14_isRPGTurningSlow() );
 

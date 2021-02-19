@@ -321,6 +321,23 @@ ESOS_USER_TASK( __esos_uiF14_task ){
 		LED1 = 0;
 	}
 
+  //double press stuff for sw1
+  if (esos_uiF14_isSW1Released() && SW1_changed \
+                      && _st_esos_uiF14Data.u16_timeBetweenSW1Presses \
+                      >= _st_esos_uiF14Data.u16_doublePressPeriodSW1)
+  //TODO: should doublepress time be __DOUBLE_PRESS_TIME?
+          //reset timer if button not pressed in time
+          _st_esos_uiF14Data.u16_timeBetweenSW1Presses = 0;
+          _st_esos_uiF14Data.b_SW1DoublePressed = 0;
+      }
+      else if (esos_uiF14_isSW1Pressed() && SW1_changed \
+                      && _st_esos_uiF14Data.u16_timeBetweenSW1Presses <= _st_esos_uiF14Data.u16_doublePressPeriodSW1 \
+                      && _st_esos_uiF14Data.u16_timeBetweenSW1Presses >= 20)
+      {
+          //called if the button has been double pressed
+          _st_esos_uiF14Data.u16_timeBetweenSW1Presses = 0;
+          _st_esos_uiF14Data.b_SW1DoublePressed = 1;
+      }
 
     ESOS_TASK_WAIT_TICKS( __ESOS_UIF14_UI_PERIOD_MS );
   }

@@ -181,7 +181,7 @@ inline void esos_uiF14_flashLED3( uint16_t u16_period) {
 
 /****** RED, GREEN, and YELLOW functions*******/
 inline void esos_uiF14_turnRedLEDOn (void) {
-    //Red LED = LED1
+    //red LED = LED1
     esos_uiF14_turnLED1On();
 }
 
@@ -190,7 +190,7 @@ inline void esos_uiF14_turnRedLEDOff (void) {
 }
 
 inline void esos_uiF14_turnGreenLEDOn (void) {
-    //Green LED = LED3
+    //green LED = LED3
     esos_uiF14_turnLED3On();
 }
 
@@ -199,7 +199,7 @@ inline void esos_uiF14_turnGreenLEDOff (void) {
 }
 
 inline void esos_uiF14_turnYellowLEDOn (void) {
-    //Yellow LED = LED2
+    //yellow LED = LED2
     esos_uiF14_turnLED2On();
 }
 
@@ -228,13 +228,10 @@ inline BOOL esos_uiF14_isRpgTurning ( void ) {
 inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
   // static char sz_reportSlow[64];
   // sz_reportSlow = "Turning slow";
-  // //TODO: use getRpgVelocity for this (ditto on medium and fast)
-  // //code for determining slow goes here
   // // this is the code for console output --carol
   // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportSlow);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-  // return;    //we'll need two returns (true/false) based on what the speed is
   uint16_t vel = ABS(_st_esos_uiF14Data.i16_RPGVelocity);
   return esos_uiF14_getRPGSlowThreshold() <= vel && vel < esos_uiF14_getRPGMediumThreshold();
 }
@@ -243,12 +240,10 @@ inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
 inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
   // static char sz_reportMed[64];
   // sz_reportMed = "Turning medium";
-  // // code for determining medium goes here
-  // //code for console output
+  //code for console output
   // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportMed);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-  // return;    //we'll need two returns (true/false) based on what the speed is
   uint16_t vel = ABS(_st_esos_uiF14Data.i16_RPGVelocity);
 	return esos_uiF14_getRPGMediumThreshold() <= vel && vel < esos_uiF14_getRPGFastThreshold();
 }
@@ -257,12 +252,10 @@ inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
 inline BOOL esos_uiF14_isRpgTurningFast( void ) {
   // static char sz_reportFast[64];
   // sz_reportFast = "Turning fast";
-  // // code for determining speedy boi goes here
-  // //code for console output
+  //code for console output
   // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportFast);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-  // return;    //we'll need two returns (true/false) based on what the speed is
   return esos_uiF14_getRPGFastThreshold() < ABS(_st_esos_uiF14Data.u16_RPGVelocity);
 }
 
@@ -270,12 +263,10 @@ inline BOOL esos_uiF14_isRpgTurningFast( void ) {
 inline BOOL esos_uiF14_isRpgTurningCW( void ) {
   // static char sz_reportCW[64];
   // sz_reportCW = "Turning clockwise";
-  // // code for determining CW goes here
-  // //code for console output
+  //code for console output
   // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportCW);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-  // return;    //we'll need two returns (true/false) based on what the direction is
   uint16_t vel = _st_esos_uiF14Data.i16_RPGVelocity;
   return (vel > 0) && (esos_uiF14_getRPGSlowThreshold() <= ABS(vel));
 }
@@ -284,12 +275,10 @@ inline BOOL esos_uiF14_isRpgTurningCW( void ) {
 inline BOOL esos_uiF14_isRpgTurningCCW( void ) {
   // static char sz_reportCCW[64];
   // sz_reportCCW = "Turning counterclockwise";
-  // // code for determining ccw goes here
-  // //code for console output
+  //code for console output
   // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportCCW);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-  // return;    //we'll need two returns (true/false) based on what the direction is
   uint16_t vel = _st_esos_uiF14Data.i16_RPGVelocity;
   return (vel < 0) && (esos_uiF14_getRPGSlowThreshold() <= ABS(vel));
 }
@@ -316,10 +305,8 @@ void config_esos_uiF14() {
   esos_RegisterTask( __esos_uiF14_task );
 }
 
-
 // UIF14 task to manage user-interface
 ESOS_USER_TASK( __esos_uiF14_task ){
-
 
   ESOS_TASK_BEGIN();
   while(TRUE) {

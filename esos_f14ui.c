@@ -6,6 +6,7 @@
  *
  * ****************************************************************/
 #include "esos_f14ui.h"
+#define ABS(x) (x < 0 ? -x : x)
 
 // PRIVATE FUNCTIONS
 inline void _esos_uiF14_setRPGCounter (uint16_t newValue) {
@@ -264,28 +265,33 @@ inline BOOL esos_uiF14_isRpgTurningCCW( void ) {
 }
 
 //obtains the velocity of the encoder
+//returns -1 for ccw, 1 for cw, 0 for no spin
 int16_t esos_uiF14_getRpgVelocity_i16( void ) {
 	return (esos_uiF14_getRpgValue_u16 - esos_uiF14_getLastRpgValue_u16);
 }
 
 //these are for testing:
 //test slow period (manual set)
+//below medium means we're slow
 inline void esos_uiF14_setRPGTurningSlow( uint16_t vel) {
   if (vel <= _st_esos_uiF14Data.u16_RPGMediumSpeed) return;
   _st_esos_uiF14Data.u16_RPGSlowSpeed = vel;
 }
 //test medium speed (manual set)
+//between fast and slow means we're medium
 inline void esos_uiF14_setRPGTurningMedium( uint16_t vel) {
   if (vel >= _st_esos_uiF14Data.u16_RPGSlowSpeed) return;
   if (vel <= _st_esos_uiF14Data.u16_RPGFastSpeed) return;
   _st_esos_uiF14Data.u16_RPGMediumSpeed = vel;
 }
 //test fast speed (manual set)
+//above medium means we're SPEEDY SPEEDY
 inline void esos_uiF14_setRPGTurningFast( uint16_t vel) {
   if (vel >= _st_esos_uiF14Data.u16_RPGMediumSpeed) return;
   _st_esos_uiF14Data.u16_RPGFastSpeed = vel;
 }
 
+//TODO: write a func to interpret numbers passed to the console?
 
 // UIF14 INITIALIZATION FUNCTION
 
@@ -306,10 +312,17 @@ void config_esos_uiF14() {
   _st_esos_uiF14Data.u16_LED1FlashPeriod = 0;
   _st_esos_uiF14Data.u16_LED2FlashPeriod = 0;
   _st_esos_uiF14Data.u16_LED3FlashPeriod = 0;
+  _st_esos_uiF14Data.u16_LED1FlashCounter = 0;
+  _st_esos_uiF14Data.u16_LED2FlashCounter = 0;
+  _st_esos_uiF14Data.u16_LED3FlashCounter = 0;
   //set up the switch press intervals
   _st_esos_uiF14Data.u16_timeBetweenSW1Presses = 0;
   _st_esos_uiF14Data.u16_timeBetweenSW2Presses = 0;
   _st_esos_uiF14Data.u16_timeBetweenSW3Presses = 0;
+  //set value of double press to 250ms for ALL switches
+  _st_esos_uiF14Data.u16_doublePressPeriodSW1 = __ESOS_DOUBLE_PRESS_TIME_MULT;
+  _st_esos_uiF14Data.u16_doublePressPeriodSW2 = __ESOS_DOUBLE_PRESS_TIME_MULT;
+  _st_esos_uiF14Data.u16_doublePressPeriodSW3 = __ESOS_DOUBLE_PRESS_TIME_MULT;
   //set up the thresholds for RPG speeds
   _st_esos_uiF14Data.u16_RPGFastSpeed = 250; // 250ms
   _st_esos_uiF14Data.u16_RPGMediumSpeed = 1500; // 1.5s
@@ -320,10 +333,6 @@ void config_esos_uiF14() {
   _st_esos_uiF14Data.b_isRPGSlow = FALSE;
   _st_esos_uiF14Data.b_isRPGMedium = FALSE;
   _st_esos_uiF14Data.b_isRPGFast = FALSE;
-  //set value of double press to 250ms
-  _st_esos_uiF14Data.u16_doublePressPeriodSW1 = __ESOS_DOUBLE_PRESS_TIME_MULT;
-  _st_esos_uiF14Data.u16_doublePressPeriodSW2 = __ESOS_DOUBLE_PRESS_TIME_MULT;
-  _st_esos_uiF14Data.u16_doublePressPeriodSW3 = __ESOS_DOUBLE_PRESS_TIME_MULT;
 }
 
 // UIF14 task to manage user-interface
@@ -332,6 +341,7 @@ ESOS_USER_TASK( __esos_uiF14_task ){
   ESOS_TASK_BEGIN();
   while(TRUE) {
     // do your UI stuff here
+    /*
 	_esos_uiF14_setSW1Pressed();
 	_esos_uiF14_setSW2Pressed();
 	_esos_uiF14_setSW3Pressed();
@@ -341,7 +351,11 @@ ESOS_USER_TASK( __esos_uiF14_task ){
 	} else {
 		LED1 = 0;
 	}
-
+  */
+  //go ahead and zero out these values there pardner...
+  _st_esos_uiF14Data.b_SW1DoublePressed = 0;
+  _st_esos_uiF14Data.b_SW2DoublePressed = 0;
+  _st_esos_uiF14Data.b_SW3DoublePressed = 0;
   //double press stuff for sw1
   if (esos_uiF14_isSW1Released() && SW1_changed \
                       && _st_esos_uiF14Data.u16_timeBetweenSW1Presses \

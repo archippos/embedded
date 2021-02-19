@@ -22,9 +22,6 @@
 //#include "esos_f14ui.c"
 */
 
-//#ifndef   ESOS_UIF14_H
-#define   ESOS_UIF14_H
-
 // DEFINEs and CONSTANTs
 #define __ESOS_TICKS_TO_MS(x)           (x/1)
 #define __ESOS_MS_TO_TICKS(x)           (x*1)
@@ -131,20 +128,20 @@ inline void esos_uiF14_turnGreenLEDOff(void);
 inline void esos_uiF14_turnYellowLEDOn(void);
 inline void esos_uiF14_turnYellowLEDOff(void);
 
-inline void esos_uiF14_setSW1DoublePressPeriod(uint16_t);
-inline void esos_uiF14_setSW2DoublePressPeriod(uint16_t);
-inline void esos_uiF14_setSW3DoublePressPeriod(uint16_t);
+inline void esos_uiF14_setSW1DoublePressPeriod (uint16_t);
+inline void esos_uiF14_setSW2DoublePressPeriod (uint16_t);
+inline void esos_uiF14_setSW3DoublePressPeriod (uint16_t);
 
 inline uint16_t esos_uiF14_getRPGValue_u16(void);
-inline BOOL esos_uiF14_isRPGTurning(void);
-inline BOOL esos_uiF14_isRPGTurningSlow(void);
-inline BOOL esos_uiF14_isRPGTurningMedium(void);
-inline BOOL esos_uiF14_isRPGTurningFast(void);
+inline BOOL esos_uiF14_isRPGTurning (void);
+inline BOOL esos_uiF14_isRPGTurningSlow (void);
+inline BOOL esos_uiF14_isRPGTurningMedium (void);
+inline BOOL esos_uiF14_isRPGTurningFast (void);
 inline void esos_uiF14_setRPGTurningSlow(uint16_t);
 inline void esos_uiF14_setRPGTurningMedium(uint16_t);
 inline void esos_uiF14_setRPGTurningFast(uint16_t);
-inline BOOL esos_uiF14_isRPGTurningCW(void);
-inline BOOL esos_uiF14_isRPGTurningCCW(void);
+inline BOOL esos_uiF14_isRPGTurningCW (void);
+inline BOOL esos_uiF14_isRPGTurningCCW (void);
 
 inline void config_esos_uiF14();
 int16_t esos_uiF14_getRPGVelocity_i16 (void);

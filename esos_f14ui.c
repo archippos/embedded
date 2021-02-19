@@ -10,7 +10,7 @@
 
  #include "revF14.h"
  #include "esos_f14ui.h"
-#define ABS(x) (x < 0 ? -x : x);
+//#define ABS(x) (x < 0 ? -x : x);
 
 // PRIVATE FUNCTIONS
 inline void _esos_uiF14_setRPGCounter (uint16_t newValue) {
@@ -223,53 +223,53 @@ inline void esos_uiF14_turnYellowLEDOff (void) {
 // PUBLIC RPG FUNCTIONS
 
 //gets data from the encoder
-inline uint16_t esos_uiF14_getRPGValue_u16(void) {
+inline uint16_t esos_uiF14_getRpgValue_u16(void) {
     return _st_esos_uiF14Data.u16_RPGCounter;
 }
 
-inline uint16_t esos_uiF14_getLastRPGValue_u16 (void) {
+inline uint16_t esos_uiF14_getLastRpgValue_u16 (void) {
     return _st_esos_uiF14Data.u16_lastRPGCounter;
 }
 
 //determines whether or not the encoder is turning
-inline BOOL esos_uiF14_isRPGTurning ( void ) {
+inline BOOL esos_uiF14_isRpgTurning ( void ) {
   //if it's turning, velocity is not 0
   return (esos_uiF14_getRpgVelocity_i16() != 0);
 }
 
 //is the new-old delta between 1 and 10?
-inline BOOL esos_uiF14_isRPGTurningSlow( void ) {
+inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
   uint16_t vel = ABS(_st_esos_uiF14Data.i16_RPGVelocity);
-  return (esos_uiF14_getRPGSlowThreshold() <= vel && vel < esos_uiF14_getRPGMediumThreshold());
+  return esos_uiF14_getRPGSlowThreshold() <= vel && vel < esos_uiF14_getRPGMediumThreshold();
 }
 
 //is the new-old delta between 11 and 24?
-inline BOOL esos_uiF14_isRPGTurningMedium( void ) {
+inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
   uint16_t vel = ABS(_st_esos_uiF14Data.i16_RPGVelocity);
-	return (esos_uiF14_getRPGMediumThreshold() <= vel && vel < esos_uiF14_getRPGFastThreshold());
+	return esos_uiF14_getRPGMediumThreshold() <= vel && vel < esos_uiF14_getRPGFastThreshold();
 }
 
 //is the new-old delta above 25?
-inline BOOL esos_uiF14_isRPGTurningFast( void ) {
-  return (esos_uiF14_getRPGFastThreshold() < ABS(_st_esos_uiF14Data.u16_RPGVelocity));
+inline BOOL esos_uiF14_isRpgTurningFast( void ) {
+  return esos_uiF14_getRPGFastThreshold() < ABS(_st_esos_uiF14Data.u16_RPGVelocity);
 }
 
 //determines if the encoder turning clockwise
-inline BOOL esos_uiF14_isRPGTurningCW( void ) {
+inline BOOL esos_uiF14_isRpgTurningCW( void ) {
   uint16_t vel = _st_esos_uiF14Data.i16_RPGVelocity;
-  return ((vel > 0) && (esos_uiF14_getRPGSlowThreshold() <= ABS(vel)));
+  return (vel > 0) && (esos_uiF14_getRPGSlowThreshold() <= ABS(vel));
 }
 
 //is the encoder turning counterclockwise
-inline BOOL esos_uiF14_isRPGTurningCCW( void ) {
+inline BOOL esos_uiF14_isRpgTurningCCW( void ) {
   uint16_t vel = _st_esos_uiF14Data.i16_RPGVelocity;
-  return ((vel < 0) && (esos_uiF14_getRPGSlowThreshold() <= ABS(vel)));
+  return (vel < 0) && (esos_uiF14_getRPGSlowThreshold() <= ABS(vel));
 }
 
 //obtains the velocity of the encoder
 //returns -1 for ccw, 1 for cw, 0 for no spin
-int16_t esos_uiF14_getRpgVelocity_i16( void ) {
-	return (esos_uiF14_getRpgValue_u16 - esos_uiF14_getLastRpgValue_u16);
+inline int16_t esos_uiF14_getRpgVelocity_i16(void) {
+	return _st_esos_uiF14Data.i16_RPGVelocity;
 }
 
 //these are for testing:

@@ -351,125 +351,125 @@ ESOS_USER_TASK(__esos_uiF14_task) {
   while(TRUE) {
     // do your UI stuff here
     /*
-	_esos_uiF14_setSW1Pressed();
-	_esos_uiF14_setSW2Pressed();
-	_esos_uiF14_setSW3Pressed();
+  	_esos_uiF14_setSW1Pressed();
+  	_esos_uiF14_setSW2Pressed();
+  	_esos_uiF14_setSW3Pressed();
 
-	if ( esos_uiF14_isLED1On() ) {
-		LED1 = 1;
-	} else {
-		LED1 = 0;
-	}
-  */
-  //go ahead and zero out these values there pardner...
-  _st_esos_uiF14Data.b_SW1DoublePressed = 0;
-  _st_esos_uiF14Data.b_SW2DoublePressed = 0;
-  _st_esos_uiF14Data.b_SW3DoublePressed = 0;
-  //TODO: do we need to do debouncing? or can we bounce that booty like a basketball
-  //double press stuff for sw1
-  if (esos_uiF14_isSW1Released() && SW1_changed \
-                      && _st_esos_uiF14Data.u16_timeBetweenSW1Presses \
-                      >= _st_esos_uiF14Data.u16_doublePressPeriodSW1)
-          //TODO: should doublepress time be __DOUBLE_PRESS_TIME?
+  	if ( esos_uiF14_isLED1On() ) {
+  		LED1 = 1;
+  	} else {
+  		LED1 = 0;
+  	}
+    */
+    //go ahead and zero out these values there pardner...
+    _st_esos_uiF14Data.b_SW1DoublePressed = 0;
+    _st_esos_uiF14Data.b_SW2DoublePressed = 0;
+    _st_esos_uiF14Data.b_SW3DoublePressed = 0;
+    //TODO: do we need to do debouncing? or can we bounce that booty like a basketball
+    //double press stuff for sw1
+    if (esos_uiF14_isSW1Released() && SW1_changed \
+                        && _st_esos_uiF14Data.u16_timeBetweenSW1Presses \
+                        >= _st_esos_uiF14Data.u16_doublePressPeriodSW1)
+            //TODO: should doublepress time be __DOUBLE_PRESS_TIME?
+            //reset timer if button not pressed in time
+            _st_esos_uiF14Data.u16_timeBetweenSW1Presses = 0;
+            _st_esos_uiF14Data.b_SW1DoublePressed = 0;
+        }
+        else if (esos_uiF14_isSW1Pressed() && SW1_changed \
+                        && _st_esos_uiF14Data.u16_timeBetweenSW1Presses <= _st_esos_uiF14Data.u16_doublePressPeriodSW1 \
+                        && _st_esos_uiF14Data.u16_timeBetweenSW1Presses >= 250) //verify this is how it works
+        {
+            //button was double pressed
+            _st_esos_uiF14Data.u16_timeBetweenSW1Presses = 0;
+            _st_esos_uiF14Data.b_SW1DoublePressed = 1;
+        }
+
+    //double press stuff for s2
+    if (esos_uiF14_isSW2Released() && SW2_changed \
+                      && _st_esos_uiF14Data.u16_timeBetweenSW2Presses \
+                      >= _st_esos_uiF14Data.u16_doublePressPeriodSW2)
+      {
           //reset timer if button not pressed in time
-          _st_esos_uiF14Data.u16_timeBetweenSW1Presses = 0;
-          _st_esos_uiF14Data.b_SW1DoublePressed = 0;
+          _st_esos_uiF14Data.u16_timeBetweenSW2Presses = 0;
+          _st_esos_uiF14Data.b_SW2DoublePressed = 0;
       }
-      else if (esos_uiF14_isSW1Pressed() && SW1_changed \
-                      && _st_esos_uiF14Data.u16_timeBetweenSW1Presses <= _st_esos_uiF14Data.u16_doublePressPeriodSW1 \
-                      && _st_esos_uiF14Data.u16_timeBetweenSW1Presses >= 250) //verify this is how it works
+      else if (esos_uiF14_isSW2Pressed() && SW2_changed \
+                      && _st_esos_uiF14Data.u16_timeBetweenSW2Presses <= _st_esos_uiF14Data.u16_doublePressPeriodSW2 \
+                      && _st_esos_uiF14Data.u16_timeBetweenSW2Presses >= 250) //verify this is how it works
       {
           //button was double pressed
-          _st_esos_uiF14Data.u16_timeBetweenSW1Presses = 0;
-          _st_esos_uiF14Data.b_SW1DoublePressed = 1;
+          _st_esos_uiF14Data.u16_timeBetweenSW2Presses = 0;
+          _st_esos_uiF14Data.b_SW2DoublePressed = 1;
       }
 
-  //double press stuff for s2
-  if (esos_uiF14_isSW2Released() && SW2_changed \
-                    && _st_esos_uiF14Data.u16_timeBetweenSW2Presses \
-                    >= _st_esos_uiF14Data.u16_doublePressPeriodSW2)
-    {
-        //reset timer if button not pressed in time
-        _st_esos_uiF14Data.u16_timeBetweenSW2Presses = 0;
-        _st_esos_uiF14Data.b_SW2DoublePressed = 0;
-    }
-    else if (esos_uiF14_isSW2Pressed() && SW2_changed \
-                    && _st_esos_uiF14Data.u16_timeBetweenSW2Presses <= _st_esos_uiF14Data.u16_doublePressPeriodSW2 \
-                    && _st_esos_uiF14Data.u16_timeBetweenSW2Presses >= 250) //verify this is how it works
-    {
-        //button was double pressed
-        _st_esos_uiF14Data.u16_timeBetweenSW2Presses = 0;
-        _st_esos_uiF14Data.b_SW2DoublePressed = 1;
-    }
-
-    //now double press stuff for SW3
-    if (esos_uiF14_isSW3Released() && SW3_changed \
-                   && _st_esos_uiF14Data.u16_timeBetweenSW3Presses \
-                   >= _st_esos_uiF14Data.u16_doublePressPeriodSW3)
-    {
-        //reset timer if button not pressed in time
-        _st_esos_uiF14Data.u16_timeBetweenSW3Presses = 0;
-        _st_esos_uiF14Data.b_SW3DoublePressed = 0;
-    }
-    else if (esos_uiF14_isSW3Pressed() && SW3_changed \
-                && _st_esos_uiF14Data.u16_timeBetweenSW3Presses <= _st_esos_uiF14Data.u16_doublePressPeriodSW3 \
-                && _st_esos_uiF14Data.u16_timeBetweenSW3Presses >= 250)  //verify this is how it works
-    {
-        //button was double pressed
-        _st_esos_uiF14Data.u16_timeBetweenSW3Presses = 0;
-        _st_esos_uiF14Data.b_SW3DoublePressed = 1;
-    }
-
-    //i guess we gotta handle some RPGs or smth bro. idk
-    //inc the counter
-    _st_esos_uiF14Data.u16_RPGCounter += __ESOS_UIF14_UI_PERIOD_MS;
-    //if it's gte then set = 65500
-    if (_st_esos_uiF14Data.u16_RPGCounter >= 65500) _st_esos_uiF14Data.u16_RPGCounter = 65500;
-    //oh hey stuff is going on ig
-    if (RPGA != RPGB && _st_esos_uiF14Data.u16_RPGCounter >= _st_esos_uiF14Data.u16_RPGFastSpeed)
-    {
-      //take the diff
-      _st_esos_uiF14Data.u16_RPGCounter = _st_esos_uiF14Data.u16_RPGCounter - _st_esos_uiF14Data.u16_lastRPGCounter;
-      //we have what we need, now update lastRPGCounter to latest value
-      _st_esos_uiF14Data.u16_lastRPGCounter = _st_esos_uiF14Data.u16_RPGCounter;
-      //figure out velocity of rpg
-      if (_st_esos_uiF14Data.b_RPGAHigh == RPGB)
+      //now double press stuff for SW3
+      if (esos_uiF14_isSW3Released() && SW3_changed \
+                     && _st_esos_uiF14Data.u16_timeBetweenSW3Presses \
+                     >= _st_esos_uiF14Data.u16_doublePressPeriodSW3)
       {
-        _st_esos_uiF14Data.i16_RPGVelocity = -1; //CCW baybee
-      } else {
-        _st_esos_uiF14Data.i16_RPGVelocity = 1;  //CW  baybee
+          //reset timer if button not pressed in time
+          _st_esos_uiF14Data.u16_timeBetweenSW3Presses = 0;
+          _st_esos_uiF14Data.b_SW3DoublePressed = 0;
       }
-      _st_esos_uiF14Data.b_RPGAHigh = RPGA;
-      _st_esos_uiF14Data.b_RPGBHigh = RPGB;
+      else if (esos_uiF14_isSW3Pressed() && SW3_changed \
+                  && _st_esos_uiF14Data.u16_timeBetweenSW3Presses <= _st_esos_uiF14Data.u16_doublePressPeriodSW3 \
+                  && _st_esos_uiF14Data.u16_timeBetweenSW3Presses >= 250)  //verify this is how it works
+      {
+          //button was double pressed
+          _st_esos_uiF14Data.u16_timeBetweenSW3Presses = 0;
+          _st_esos_uiF14Data.b_SW3DoublePressed = 1;
+      }
+
+      //i guess we gotta handle some RPGs or smth bro. idk
+      //inc the counter
+      _st_esos_uiF14Data.u16_RPGCounter += __ESOS_UIF14_UI_PERIOD_MS;
+      //if it's gte then set = 65500
+      if (_st_esos_uiF14Data.u16_RPGCounter >= 65500) _st_esos_uiF14Data.u16_RPGCounter = 65500;
+      //oh hey stuff is going on ig
+      if (RPGA != RPGB && _st_esos_uiF14Data.u16_RPGCounter >= _st_esos_uiF14Data.u16_RPGFastSpeed)
+      {
+        //take the diff
+        _st_esos_uiF14Data.u16_RPGCounter = _st_esos_uiF14Data.u16_RPGCounter - _st_esos_uiF14Data.u16_lastRPGCounter;
+        //we have what we need, now update lastRPGCounter to latest value
+        _st_esos_uiF14Data.u16_lastRPGCounter = _st_esos_uiF14Data.u16_RPGCounter;
+        //figure out velocity of rpg
+        if (_st_esos_uiF14Data.b_RPGAHigh == RPGB)
+        {
+          _st_esos_uiF14Data.i16_RPGVelocity = -1; //CCW baybee
+        } else {
+          _st_esos_uiF14Data.i16_RPGVelocity = 1;  //CW  baybee
+        }
+        _st_esos_uiF14Data.b_RPGAHigh = RPGA;
+        _st_esos_uiF14Data.b_RPGBHigh = RPGB;
       } else {
         //not turning. sad!
-       _st_esos_uiF14Data.i16_RPGVelocity = 0;
+        _st_esos_uiF14Data.i16_RPGVelocity = 0;
       }
 
-  //i have a need. a need for (rpg) speed.
-  if (_st_esos_uiF14Data.u16_RPGCounter <= _st_esos_uiF14Data.u16_RPGFastSpeed)
-  {
-      _st_esos_uiF14Data.b_isRPGFast = TRUE;    //if above is true, then we're speedy
-      _st_esos_uiF14Data.b_isRPGMedium = FALSE;
-      _st_esos_uiF14Data.b_isRPGSlow = FALSE;
-  } else if ( _st_esos_uiF14Data.u16_RPGCounter > _st_esos_uiF14Data.u16_RPGFastSpeed \
-          && _st_esos_uiF14Data.u16_RPGCounter <= _st_esos_uiF14Data.u16_RPGMediumSpeed)
-  {
-      _st_esos_uiF14Data.b_isRPGFast = FALSE;
-      _st_esos_uiF14Data.b_isRPGMedium = TRUE;  //if above is true, then we're medium-y
-      _st_esos_uiF14Data.b_isRPGSlow = FALSE;
-  } else if ( _st_esos_uiF14Data.u16_RPGCounter > _st_esos_uiF14Data.u16_RPGMediumSpeed \
-          && _st_esos_uiF14Data.u16_RPGCounter <= _st_esos_uiF14Data.u16_RPGSlowSpeed)
-  {
-      _st_esos_uiF14Data.b_isRPGFast = FALSE;
-      _st_esos_uiF14Data.b_isRPGMedium = FALSE;
-      _st_esos_uiF14Data.b_isRPGSlow = TRUE;    //if above is true, then we're slow.
-  } else {
-      _st_esos_uiF14Data.b_isRPGFast = FALSE;
-      _st_esos_uiF14Data.b_isRPGMedium = FALSE;
-      _st_esos_uiF14Data.b_isRPGSlow = FALSE;
-      //otherwise, we're not moving at all
-  }
+    //i have a need. a need for (rpg) speed.
+    if (_st_esos_uiF14Data.u16_RPGCounter <= _st_esos_uiF14Data.u16_RPGFastSpeed)
+    {
+        _st_esos_uiF14Data.b_isRPGFast = TRUE;    //if above is true, then we're speedy
+        _st_esos_uiF14Data.b_isRPGMedium = FALSE;
+        _st_esos_uiF14Data.b_isRPGSlow = FALSE;
+    } else if ( _st_esos_uiF14Data.u16_RPGCounter > _st_esos_uiF14Data.u16_RPGFastSpeed \
+            && _st_esos_uiF14Data.u16_RPGCounter <= _st_esos_uiF14Data.u16_RPGMediumSpeed)
+    {
+        _st_esos_uiF14Data.b_isRPGFast = FALSE;
+        _st_esos_uiF14Data.b_isRPGMedium = TRUE;  //if above is true, then we're medium-y
+        _st_esos_uiF14Data.b_isRPGSlow = FALSE;
+    } else if ( _st_esos_uiF14Data.u16_RPGCounter > _st_esos_uiF14Data.u16_RPGMediumSpeed \
+            && _st_esos_uiF14Data.u16_RPGCounter <= _st_esos_uiF14Data.u16_RPGSlowSpeed)
+    {
+        _st_esos_uiF14Data.b_isRPGFast = FALSE;
+        _st_esos_uiF14Data.b_isRPGMedium = FALSE;
+        _st_esos_uiF14Data.b_isRPGSlow = TRUE;    //if above is true, then we're slow.
+    } else {
+        _st_esos_uiF14Data.b_isRPGFast = FALSE;
+        _st_esos_uiF14Data.b_isRPGMedium = FALSE;
+        _st_esos_uiF14Data.b_isRPGSlow = FALSE;
+        //otherwise, we're not moving at all
+    }
 
     ESOS_TASK_WAIT_TICKS( __ESOS_UIF14_UI_PERIOD_MS );
   }

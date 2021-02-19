@@ -239,19 +239,26 @@ inline BOOL esos_uiF14_isRpgTurning(void) {
 
 //is the new-old delta between 1 and 10?
 inline BOOL esos_uiF14_isRpgTurningSlow(void) {
+  /*
   uint16_t vel = ABS(_st_esos_uiF14Data.i16_RPGVelocity);
   return esos_uiF14_getRPGSlowThreshold() <= vel && vel < esos_uiF14_getRPGMediumThreshold();
+  */
+  return _st_esos_uiF14Data.b_isRPGSlow;
 }
 
 //is the new-old delta between 11 and 24?
 inline BOOL esos_uiF14_isRpgTurningMedium(void) {
+  /*
   uint16_t vel = ABS(_st_esos_uiF14Data.i16_RPGVelocity);
 	return esos_uiF14_getRPGMediumThreshold() <= vel && vel < esos_uiF14_getRPGFastThreshold();
+  */
+  return return _st_esos_uiF14Data.b_isRPGMedium;
 }
 
 //is the new-old delta above 25?
 inline BOOL esos_uiF14_isRpgTurningFast(void) {
-  return esos_uiF14_getRPGFastThreshold() < ABS(_st_esos_uiF14Data.u16_RPGVelocity);
+  //return esos_uiF14_getRPGFastThreshold() < ABS(_st_esos_uiF14Data.u16_RPGVelocity);
+  return _st_esos_uiF14Data.b_isRPGFast;
 }
 
 //determines if the encoder turning clockwise

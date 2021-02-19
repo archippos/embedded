@@ -5,8 +5,11 @@
  *    requires the EMBEDDED SYSTEMS target rev. F14
  *
  * ****************************************************************/
-#include "revF14.h"
-#include "esos_f14ui.h"
+ #include "esos.h"
+ #include "esos_pic24.h"
+
+ #include "revF14.h"
+ #include "esos_f14ui.h"
 //#define ABS(x) (x < 0 ? -x : x);
 
 // PRIVATE FUNCTIONS

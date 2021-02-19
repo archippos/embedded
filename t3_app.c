@@ -7,8 +7,11 @@ PREPARED FOR: KEITH POWELL
 
 */
 
-#include "esos_f14ui.h"
-#include    "esos_pic24.h"
+#include  "esos.h"
+#include  "esos_pic24.h"
+//#include  "esos_pic24_rs232.h"
+
+# include "esos_f14ui.c"
 # include "revF14.h"
 
 uint16_t _DOUBLE_DELAY = 500;
@@ -110,6 +113,29 @@ ESOS_USER_TASK( LED1_task ) {
 		ESOS_TASK_WAIT_TICKS(10);
 	}
 	ESOS_TASK_END();
+}
+
+//task to have led2 flash as rpg turns
+ESOS_USER_TASK (LED2_RPG_TASK) {
+  ESOS_TASK_BEGIN();
+
+  while(TRUE) {
+    if (esos_uiF14_isRPGTurningSlow()) {
+      //slow
+      esos_uiF14_turnLED2On();     //slow = solid light
+    } else if (esos_uiF14_isRPGTurningMedium()) {
+      //medium
+      esos_uiF14_flashLED2(500);  //medium = 500ms flash
+    } else if (esos_uiF14_isRPGTurningFast()) {
+      //fast
+      esos_uiF14_flashLED2(100);  //fast = 100ms flash
+    } else if (!esos_uiF14_isRPGTurning()){
+      //no movement
+      esos_uiF14_turnLED2Off();   //no rotation, turn off the LED
+    }
+    ESOS_TASK_YIELD();
+  }
+  ESOS_TASK_END();
 }
 
 // task for the serial port menu

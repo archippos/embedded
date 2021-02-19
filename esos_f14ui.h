@@ -7,11 +7,20 @@
  * ****************************************************************/
 
 // necessary includes for ESOS functions and types to work
+#ifndef ESOS_UIF14_H
+#define ESOS_UIF14_H
+#include "esos.h"
+#include "esos_pic24.h"
+
+#include "revF14.h"
+/*
 #include "revF14.h"
 #include "all_generic.h"
 #include "esos.h"
 #include "esos_pic24.h"
 #include "esos_task.h"
+//#include "esos_f14ui.c"
+*/
 
 #ifndef   ESOS_UIF14_H
 #define   ESOS_UIF14_H

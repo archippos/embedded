@@ -304,7 +304,7 @@ inline void esos_uiF14_setRPGTurningFast( uint16_t vel) {
 
 // UIF14 INITIALIZATION FUNCTION
 
-void config_esos_uiF14() {
+void config_esos_uiF14(void) {
   // setup your UI implementation
   //CONFIG_LED1();
   //CONFIG_LED2();
@@ -316,7 +316,7 @@ void config_esos_uiF14() {
 
   //CONFIG_RPG();
 
-  esos_RegisterTask( __esos_uiF14_task );
+  esos_RegisterTask(__esos_uiF14_task);
   //set up the led flash periods
   _st_esos_uiF14Data.u16_LED1FlashPeriod = 0;
   _st_esos_uiF14Data.u16_LED2FlashPeriod = 0;
@@ -345,7 +345,7 @@ void config_esos_uiF14() {
 }
 
 // UIF14 task to manage user-interface
-ESOS_USER_TASK( __esos_uiF14_task ){
+ESOS_USER_TASK(__esos_uiF14_task) {
 
   ESOS_TASK_BEGIN();
   while(TRUE) {

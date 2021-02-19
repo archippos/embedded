@@ -332,12 +332,48 @@ ESOS_USER_TASK( __esos_uiF14_task ){
       }
       else if (esos_uiF14_isSW1Pressed() && SW1_changed \
                       && _st_esos_uiF14Data.u16_timeBetweenSW1Presses <= _st_esos_uiF14Data.u16_doublePressPeriodSW1 \
-                      && _st_esos_uiF14Data.u16_timeBetweenSW1Presses >= 20)
+                      && _st_esos_uiF14Data.u16_timeBetweenSW1Presses >= 250) //verify this is how it works
       {
-          //called if the button has been double pressed
+          //button was double pressed
           _st_esos_uiF14Data.u16_timeBetweenSW1Presses = 0;
           _st_esos_uiF14Data.b_SW1DoublePressed = 1;
       }
+
+  //double press stuff for s2
+  if (esos_uiF14_isSW2Released() && SW2_changed \
+                    && _st_esos_uiF14Data.u16_timeBetweenSW2Presses \
+                    >= _st_esos_uiF14Data.u16_doublePressPeriodSW2)
+    {
+        //reset timer if button not pressed in time
+        _st_esos_uiF14Data.u16_timeBetweenSW2Presses = 0;
+        _st_esos_uiF14Data.b_SW2DoublePressed = 0;
+    }
+    else if (esos_uiF14_isSW2Pressed() && SW2_changed \
+                    && _st_esos_uiF14Data.u16_timeBetweenSW2Presses <= _st_esos_uiF14Data.u16_doublePressPeriodSW2 \
+                    && _st_esos_uiF14Data.u16_timeBetweenSW2Presses >= 250) //verify this is how it works
+    {
+        //button was double pressed
+        _st_esos_uiF14Data.u16_timeBetweenSW2Presses = 0;
+        _st_esos_uiF14Data.b_SW2DoublePressed = 1;
+    }
+
+    //now double press stuff for SW3
+    if (esos_uiF14_isSW3Released() && SW3_changed \
+                   && _st_esos_uiF14Data.u16_timeBetweenSW3Presses \
+                   >= _st_esos_uiF14Data.u16_doublePressPeriodSW3)
+    {
+        //reset timer if button not pressed in time
+        _st_esos_uiF14Data.u16_timeBetweenSW3Presses = 0;
+        _st_esos_uiF14Data.b_SW3DoublePressed = 0;
+    }
+else if (esos_uiF14_isSW3Pressed() && SW3_changed \
+                && _st_esos_uiF14Data.u16_timeBetweenSW3Presses <= _st_esos_uiF14Data.u16_doublePressPeriodSW3 \
+                && _st_esos_uiF14Data.u16_timeBetweenSW3Presses >= 250)  //verify this is how it works
+    {
+        //button was double pressed
+        _st_esos_uiF14Data.u16_timeBetweenSW3Presses = 0;
+        _st_esos_uiF14Data.b_SW3DoublePressed = 1;
+    }
 
     ESOS_TASK_WAIT_TICKS( __ESOS_UIF14_UI_PERIOD_MS );
   }

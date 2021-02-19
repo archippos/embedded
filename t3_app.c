@@ -8,7 +8,11 @@ PREPARED FOR: KEITH POWELL
 */
 
 #include "esos_f14ui.c"
-#include "esos_f14ui.h"
+uint16_t _DOUBLE_DELAY = 500;
+uint16_t _SLOW_SPEED = 10;
+uint16_t _MED_SPEED = 15;
+uint16_t _FAST_SPEED = 20;
+
 
 // heartbeat with period of 500 ms on led 3
 ESOS_USER_TASK( heartbeat_led ) {
@@ -30,7 +34,63 @@ ESOS_USER_TASK( SW1_state ) {
 		ESOS_TASK_WAIT_ON_SEND_STRING("SW1 is pressed\n");
 		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 		ESOS_TASK_WAIT_UNTIL_UIF14_SW1_RELEASED();
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("SW1 is released\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 	}
+	ESOS_TASK_END();
+
+}
+
+ESOS_USER_TASK( SW2_state ) {
+
+	ESOS_TASK_BEGIN();
+	while(TRUE) {
+		ESOS_TASK_WAIT_UNTIL_UIF14_SW2_PRESSED();
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("SW2 is pressed\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_UNTIL_UIF14_SW2_RELEASED();
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("SW2 is released\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+	}
+	ESOS_TASK_END();
+
+}
+
+ESOS_USER_TASK( SW3_state ) {
+
+	ESOS_TASK_BEGIN();
+	while(TRUE) {
+		ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED();
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("SW3 is pressed\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_UNTIL_UIF14_SW3_RELEASED();
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("SW3 is released\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+	}
+	ESOS_TASK_END();
+
+}
+
+ESOS_USER_TASK( SW1_double_state ) {
+
+
+	ESOS_TASK_BEGIN();
+
+		ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED();
+		ESOS_TASK_WAIT_UNTIL_UIF14_SW1_RELEASED();
+		ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED();
+		ESOS_TASK_WAIT_UNTIL_UIF14_SW1_RELEASED();
+
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("SW1 is double pressed\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+
 	ESOS_TASK_END();
 
 }
@@ -52,6 +112,9 @@ ESOS_USER_TASK( LED1_task ) {
 // task for the serial port menu
 ESOS_USER_TASK( menu_task ) {
 	static uint8_t u8_char;
+	static uint8_t u8_updown = 'z';
+	static uint8_t u8_hold;
+	static uint16_t u16_num;
 	static uint8_t state = 0;
 
 	ESOS_TASK_BEGIN();
@@ -60,45 +123,341 @@ ESOS_USER_TASK( menu_task ) {
 		if (state == 0) {  // initial print out of the menu
 
 		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_SEND_STRING("What would you like to change?\n");
-		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_SEND_STRING("1: Switch 1 double press period\n");
-		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_SEND_STRING("2: Switch 2 double press period\n");
-		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_SEND_STRING("3: Switch 3 double press period\n");
-		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_SEND_STRING("4: RPG slow notification threshold\n");
-		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_SEND_STRING("5: RPG medium notification threshold\n");
-		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_SEND_STRING("6: RPG fast notification threshold\n" );
-		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-		ESOS_TASK_WAIT_ON_SEND_STRING("7: Close menu\n");
+		ESOS_TASK_WAIT_ON_SEND_STRING("\nWhat would you like to change?\n");
 		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
-		// ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
-		// ESOS_TASK_WAIT_ON_GET_UINT8(u8_char);
-		// ESOS_TASK_SIGNAL_AVAILABLE_IN_COMM();
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("a: Switch double press period\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
-		// ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-		// ESOS_TASK_WAIT_ON_SEND_UINT8(u8_char);
-		// ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("b: RPG slow notification threshold\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("c: RPG medium notification threshold\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("d: RPG fast notification threshold\n\n" );
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+
+
 		state = 1;
 
 		} else {  // other options
 
 
+		ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
+		ESOS_TASK_WAIT_ON_GET_UINT8(u8_char);
+		ESOS_TASK_SIGNAL_AVAILABLE_IN_COMM();
 
+		if(u8_char == 'm' || u8_char == 'M'){
+			u8_hold = 'w';
+			state = 0;
 		}
-		ESOS_TASK_WAIT_TICKS(500);
+
+		if(u8_char == 'a'){
+				u16_num = _DOUBLE_DELAY;
+
+				while(u8_hold != 's'){
+					if(u8_updown == 'z'){
+						ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+						ESOS_TASK_WAIT_ON_SEND_STRING("Use plus or minus keys to change.\n");
+						ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+						ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+						ESOS_TASK_WAIT_ON_SEND_STRING("Press s to leave this function.\n");
+						ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+					}
+
+					ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+					ESOS_TASK_WAIT_ON_SEND_STRING("\nCurrent Value is: ");
+					ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+					ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+					ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)u16_num);
+					ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+					ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
+					ESOS_TASK_WAIT_ON_GET_UINT8(u8_updown);
+					ESOS_TASK_SIGNAL_AVAILABLE_IN_COMM();
+
+					if(u8_updown == '-'){
+						u16_num = u16_num - 10;
+						_DOUBLE_DELAY = u16_num;
+					}
+
+					else if(u8_updown == '='){
+						u16_num = u16_num + 10;
+						_DOUBLE_DELAY = u16_num;
+					}
+					else{
+						if(u8_updown == 's'){
+							u8_hold = 's';
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+							u8_updown = 'z';
+						}
+						else{
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\nNot a valid entry.\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("Use plus or minus keys to change.\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("Press s to leave this function.\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+						}
+					}
+				}
+
+				u8_hold = 'w';
+				state = 0;
+		}
+
+		if(u8_char == 'b'){
+			u16_num = _SLOW_SPEED;
+			while(u8_hold != 's'){
+					if(u8_updown == 'z'){
+						ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+						ESOS_TASK_WAIT_ON_SEND_STRING("Use plus or minus keys to change.\n");
+						ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+						ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+						ESOS_TASK_WAIT_ON_SEND_STRING("Press s to leave this function.\n");
+						ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+					}
+
+					ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+					ESOS_TASK_WAIT_ON_SEND_STRING("\nCurrent Slow Value is: ");
+					ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+					ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+					ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)u16_num);
+					ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+					ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
+					ESOS_TASK_WAIT_ON_GET_UINT8(u8_updown);
+					ESOS_TASK_SIGNAL_AVAILABLE_IN_COMM();
+
+					if(u8_updown == '-'){
+						u16_num--;
+						if( 0 < u16_num){
+							_SLOW_SPEED = u16_num;
+						}
+						else{
+							u16_num++;
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\nSlow Threshold can't be lower than 0.\n ");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+						}
+					}
+
+					else if(u8_updown == '='){
+						u16_num++;
+						if( u16_num < _MED_SPEED){
+							_SLOW_SPEED = u16_num;
+						}
+						else{
+							u16_num--;
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\nSlow Speed can't be greater than Med Speed.\n ");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+						}
+					}
+					else{
+						if(u8_updown == 's'){
+							u8_hold = 's';
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+							u8_updown = 'z';
+						}
+						else{
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\nNot a valid entry.\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("Use plus or minus keys to change.\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("Press s to leave this function.\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+						}
+					}
+				}
+
+				u8_hold = 'w';
+				state = 0;
+		}
+
+		if(u8_char == 'c'){
+			u16_num = _MED_SPEED;
+			while(u8_hold != 's'){
+					if(u8_updown == 'z'){
+						ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+						ESOS_TASK_WAIT_ON_SEND_STRING("Use plus or minus keys to change.\n");
+						ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+						ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+						ESOS_TASK_WAIT_ON_SEND_STRING("Press s to leave this function.\n");
+						ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+					}
+
+					ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+					ESOS_TASK_WAIT_ON_SEND_STRING("\nCurrent Medium Value is: ");
+					ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+					ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+					ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)u16_num);
+					ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+					ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
+					ESOS_TASK_WAIT_ON_GET_UINT8(u8_updown);
+					ESOS_TASK_SIGNAL_AVAILABLE_IN_COMM();
+
+					if(u8_updown == '-'){
+						u16_num--;
+						if( _SLOW_SPEED < u16_num){
+							_MED_SPEED = u16_num;
+						}
+						else{
+							u16_num++;
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\nMed Speed can't be lower than Slow Speed.\n ");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+						}
+					}
+
+					else if(u8_updown == '='){
+						u16_num++;
+						if( u16_num < _FAST_SPEED){
+							_MED_SPEED = u16_num;
+						}
+						else{
+							u16_num--;
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\nMed Speed can't be greater than Fast Speed.\n ");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+						}
+					}
+					else{
+						if(u8_updown == 's'){
+							u8_hold = 's';
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+							u8_updown = 'z';
+						}
+						else{
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\nNot a valid entry.\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("Use plus or minus keys to change.\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("Press s to leave this function.\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+						}
+					}
+				}
+
+				u8_hold = 'w';
+				state = 0;
+		}
+
+		if(u8_char == 'd'){
+			u16_num = _FAST_SPEED;
+			while(u8_hold != 's'){
+					if(u8_updown == 'z'){
+						ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+						ESOS_TASK_WAIT_ON_SEND_STRING("Use plus or minus keys to change.\n");
+						ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+						ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+						ESOS_TASK_WAIT_ON_SEND_STRING("Press s to leave this function.\n");
+						ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+					}
+
+					ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+					ESOS_TASK_WAIT_ON_SEND_STRING("\nCurrent Fast Value is: ");
+					ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+					ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+					ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)u16_num);
+					ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+					ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
+					ESOS_TASK_WAIT_ON_GET_UINT8(u8_updown);
+					ESOS_TASK_SIGNAL_AVAILABLE_IN_COMM();
+
+					if(u8_updown == '-'){
+						u16_num--;
+						if( _MED_SPEED < u16_num){
+							_FAST_SPEED = u16_num;
+						}
+						else{
+							u16_num++;
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\nFast Speed can't be lower than Med Speed.\n ");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+						}
+					}
+
+					else if(u8_updown == '='){
+						u16_num++;
+						if( u16_num < 100){
+							_FAST_SPEED = u16_num;
+						}
+						else{
+							u16_num--;
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\nMFast Speed can't be greater than 100.\n ");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+						}
+					}
+					else{
+						if(u8_updown == 's'){
+							u8_hold = 's';
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+							u8_updown = 'z';
+						}
+						else{
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("\nNot a valid entry.\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("Use plus or minus keys to change.\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+							ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+							ESOS_TASK_WAIT_ON_SEND_STRING("Press s to leave this function.\n");
+							ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+						}
+					}
+				}
+
+				u8_hold = 'w';
+				state = 0;
+		}
+		u8_hold = 'w';
+		state = 0;
+		}
+		ESOS_TASK_WAIT_TICKS(1);
 	}
 	ESOS_TASK_END();
 }
@@ -113,5 +472,8 @@ void user_init(void) {
 	esos_RegisterTask( heartbeat_led );
 	esos_RegisterTask( LED1_task );
 	esos_RegisterTask( SW1_state );
+	esos_RegisterTask( SW2_state );
+	esos_RegisterTask( SW3_state );
+	esos_RegisterTask( SW1_double_state );
 	esos_RegisterTask( menu_task );
 }

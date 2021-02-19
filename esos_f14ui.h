@@ -34,7 +34,7 @@
 
 // STRUCTURES
 
-typedef struct {
+typedef struct _st_esos_uiF14Data {
     BOOL b_SW1Pressed;
     BOOL b_SW1DoublePressed;
     uint16_t u16_timeBetweenSW1Presses;
@@ -62,7 +62,7 @@ typedef struct {
     uint16_t u16_lastRPGCounter;
     //the following were originally int16_t
     //we'll see how they behave and if we need to change them back
-    uint16_t i16_RPGCounter;
+    //uint16_t i16_RPGCounter;
     uint16_t i16_RPGVelocity;
     uint16_t u16_RPGSlowestSpeed;  //uint
     uint16_t u16_RPGSlowThreshold;
@@ -133,18 +133,21 @@ inline void esos_uiF14_setSW2DoublePressPeriod (uint16_t);
 inline void esos_uiF14_setSW3DoublePressPeriod (uint16_t);
 
 inline uint16_t esos_uiF14_getRPGValue_u16(void);
-inline BOOL esos_uiF14_isRPGTurning (void);
-inline BOOL esos_uiF14_isRPGTurningSlow (void);
-inline BOOL esos_uiF14_isRPGTurningMedium (void);
-inline BOOL esos_uiF14_isRPGTurningFast (void);
+//inline int16_t esos_uiF14_getRPGValue_i16(void);
+//inline int16_t esos_uiF14_getRPGVelocity_i16(void);
+inline BOOL esos_uiF14_isRPGTurning(void);
+inline BOOL esos_uiF14_isRPGTurningSlow(void);
+inline BOOL esos_uiF14_isRPGTurningMedium(void);
+inline BOOL esos_uiF14_isRPGTurningFast(void);
 inline void esos_uiF14_setRPGTurningSlow(uint16_t);
 inline void esos_uiF14_setRPGTurningMedium(uint16_t);
 inline void esos_uiF14_setRPGTurningFast(uint16_t);
-inline BOOL esos_uiF14_isRPGTurningCW (void);
-inline BOOL esos_uiF14_isRPGTurningCCW (void);
+inline BOOL esos_uiF14_isRPGTurningCW(void);
+inline BOOL esos_uiF14_isRPGTurningCCW(void);
+inline void esos_uiF14_resetRPG(void);
 
 inline void config_esos_uiF14();
-int16_t esos_uiF14_getRPGVelocity_i16 (void);
+inline int16_t esos_uiF14_getRPGVelocity_i16(void);
 
 // PUBLIC API ESOS TASK MACROS
 

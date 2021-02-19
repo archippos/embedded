@@ -59,6 +59,10 @@ inline BOOL esos_uiF14_isSW1DoublePressed (void) {
     return (_st_esos_uiF14Data.b_SW1DoublePressed==TRUE);
 }
 
+inline void esos_uiF14_setSW1DoublePressPeriod(uint16_t value) {
+    _st_esos_uiF14Data.u16_doublePressPeriodSW1 = value;
+}
+
 // Switch 2
 inline BOOL esos_uiF14_isSW2Pressed (void) {
     return (_st_esos_uiF14Data.b_SW2Pressed==TRUE);
@@ -70,6 +74,10 @@ inline BOOL esos_uiF14_isSW2Released (void) {
 
 inline BOOL esos_uiF14_isSW2DoublePressed (void) {
     return (_st_esos_uiF14Data.b_SW2DoublePressed==TRUE);
+}
+
+inline void esos_uiF14_setSW2DoublePressPeriod(uint16_t value) {
+    _st_esos_uiF14Data.u16_doublePressPeriodSW2 = value;
 }
 
 // Switch 3
@@ -85,6 +93,9 @@ inline BOOL esos_uiF14_isSW3DoublePressed (void) {
     return (_st_esos_uiF14Data.b_SW3DoublePressed==TRUE);
 }
 
+inline void esos_uiF14_setSW3DoublePressPeriod(uint16_t value) {
+    _st_esos_uiF14Data.u16_doublePressPeriodSW3 = value;
+}
 
 // --------------------
 // PUBLIC LED FUNCTIONS

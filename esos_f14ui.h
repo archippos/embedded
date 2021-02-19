@@ -55,6 +55,10 @@ typedef struct {
     int16_t u16_RPGSlowThreshold;
     int16_t u16_RPGMediumThreshold;
     int16_t u16_RPGFastThreshold;
+
+    BOOL b_isRPGSlow;
+    BOOL b_isRPGMedium;
+    BOOL b_isRPGFast;
 } _st_esos_uiF14Data_t;
 
 // PRIVATE DATA
@@ -108,14 +112,17 @@ inline void esos_uiF14_turnYellowLEDOn(void);
 inline void esos_uiF14_turnYellowLEDOff(void);
 
 inline uint16_t esos_uiF14_getRPGValue_u16(void);
-inline BOOL esos_uiF14_isRPGTurning(void);
-inline BOOL esos_uiF14_isRPGTurningSlow(void);
-inline BOOL esos_uiF14_isRPGTurningMedium(void);
-inline BOOL esos_uiF14_isRPGTurningFast(void);
-inline BOOL esos_uiF14_isRPGTurningCW(void);
-inline BOOL esos_uiF14_isRPGTurningCCW(void);
+inline BOOL esos_uiF14_isRPGTurning (void);
+inline BOOL esos_uiF14_isRPGTurningSlow (void);
+inline BOOL esos_uiF14_isRPGTurningMedium (void);
+inline BOOL esos_uiF14_isRPGTurningFast (void);
+inline void esos_uiF14_setRPGTurningSlow(uint16_t);
+inline void esos_uiF14_setRPGTurningMedium(uint16_t);
+inline void esos_uiF14_setRPGTurningFast(uint16_t);
+inline BOOL esos_uiF14_isRPGTurningCW (void);
+inline BOOL esos_uiF14_isRPGTurningCCW (void);
 
-void config_esos_uiF14();
+inline void config_esos_uiF14();
 int16_t esos_uiF14_getRPGVelocity_i16 (void);
 
 // PUBLIC API ESOS TASK MACROS

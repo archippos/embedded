@@ -228,7 +228,7 @@ inline BOOL esos_uiF14_isRpgTurning ( void ) {
 inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
   // static char sz_reportSlow[64];
   // sz_reportSlow = "Turning slow";
-  // // this is the code for console output --carol
+  // this is the code for console output --carol
   // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
   // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportSlow);
   // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();

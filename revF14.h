@@ -58,3 +58,9 @@
                           ENABLE_RB9_PULLUP(); \
                           DELAY_US(1); \
                       }
+//high/low for A
+#define RPGA_LOW (_RB8 == 0)
+#define RPGA_HIGH (_RB8 == 1)
+//high/low for B
+#define RPGB_LOW (_RB9 == 0)
+#define RPGB_HIGH (_RB9 == 1)

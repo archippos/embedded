@@ -111,6 +111,10 @@ inline void esos_uiF14_turnGreenLEDOff(void);
 inline void esos_uiF14_turnYellowLEDOn(void);
 inline void esos_uiF14_turnYellowLEDOff(void);
 
+inline void esos_uiF14_setSW1DoublePressPeriod (uint16_t);
+inline void esos_uiF14_setSW2DoublePressPeriod (uint16_t);
+inline void esos_uiF14_setSW3DoublePressPeriod (uint16_t);
+
 inline uint16_t esos_uiF14_getRPGValue_u16(void);
 inline BOOL esos_uiF14_isRPGTurning (void);
 inline BOOL esos_uiF14_isRPGTurningSlow (void);

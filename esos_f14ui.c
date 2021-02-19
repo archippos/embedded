@@ -268,6 +268,23 @@ int16_t esos_uiF14_getRpgVelocity_i16( void ) {
 	return (esos_uiF14_getRpgValue_u16 - esos_uiF14_getLastRpgValue_u16);
 }
 
+//these are for testing:
+//test slow period (manual set)
+inline void esos_uiF14_setRPGTurningSlow( uint16_t vel) {
+  if (vel <= _st_esos_uiF14Data.u16_RPGMediumSpeed) return;
+  _st_esos_uiF14Data.u16_RPGSlowSpeed = vel;
+}
+//test medium speed (manual set)
+inline void esos_uiF14_setRPGTurningMedium( uint16_t vel) {
+  if (vel >= _st_esos_uiF14Data.u16_RPGSlowSpeed) return;
+  if (vel <= _st_esos_uiF14Data.u16_RPGFastSpeed) return;
+  _st_esos_uiF14Data.u16_RPGMediumSpeed = vel;
+}
+//test fast speed (manual set)
+inline void esos_uiF14_setRPGTurningFast( uint16_t vel) {
+  if (vel >= _st_esos_uiF14Data.u16_RPGMediumSpeed) return;
+  _st_esos_uiF14Data.u16_RPGFastSpeed = vel;
+}
 
 
 // UIF14 INITIALIZATION FUNCTION

@@ -58,10 +58,13 @@ typedef struct {
     //we'll see how they behave and if we need to change them back
     uint16_t i16_RPGCounter;
     uint16_t i16_RPGVelocity;
-
+    uint16_t u16_RPGSlowestSpeed;  //uint
     uint16_t u16_RPGSlowThreshold;
     uint16_t u16_RPGMediumThreshold;
     uint16_t u16_RPGFastThreshold;
+    uint16_t u16_RPGSlowSpeed;   //here on uint
+    uint16_t u16_RPGMediumSpeed;
+    uint16_t u16_RPGFastSpeed;
 
     BOOL b_isRPGSlow;
     BOOL b_isRPGMedium;

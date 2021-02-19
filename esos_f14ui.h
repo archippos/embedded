@@ -31,10 +31,16 @@
 typedef struct {
     BOOL b_SW1Pressed;
     BOOL b_SW1DoublePressed;
+    uint16_t u16_timeBetweenSW1Presses;
+    uint16_t u16_doublePressPeriodSW1;
     BOOL b_SW2Pressed;
     BOOL b_SW2DoublePressed;
+    uint16_t u16_timeBetweenSW2Presses;
+    uint16_t u16_doublePressPeriodSW2;
     BOOL b_SW3Pressed;
     BOOL b_SW3DoublePressed;
+    uint16_t u16_timeBetweenSW3Presses;
+    uint16_t u16_doublePressPeriodSW3;
 
     BOOL b_RPGAHigh;
     BOOL b_RPGBHigh;
@@ -48,13 +54,14 @@ typedef struct {
 
     uint16_t u16_RPGCounter;
     uint16_t u16_lastRPGCounter;
+    //the following were originally int16_t
+    //we'll see how they behave and if we need to change them back
+    uint16_t i16_RPGCounter;
+    uint16_t i16_RPGVelocity;
 
-    int16_t i16_RPGCounter;
-    int16_t i16_RPGVelocity;
-
-    int16_t u16_RPGSlowThreshold;
-    int16_t u16_RPGMediumThreshold;
-    int16_t u16_RPGFastThreshold;
+    uint16_t u16_RPGSlowThreshold;
+    uint16_t u16_RPGMediumThreshold;
+    uint16_t u16_RPGFastThreshold;
 
     BOOL b_isRPGSlow;
     BOOL b_isRPGMedium;

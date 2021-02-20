@@ -4,3 +4,11 @@
 //              displays potentiometer value in 16b hex when SW1_PRESSED
 //              SW2_PRESSED samples potentiometer voltage every 1s until
 //                          SW2 or SW1 pressed
+
+//includes
+#include "revF14.h"
+#include "esos.h"
+#include "esos_pic24.h"
+#include "esos_f14ui.h"
+#include "esos_sensor.h"
+#include "esos_pic24_sensor.h"

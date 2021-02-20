@@ -31,7 +31,7 @@
  * \addtogroup ESOS_Task_Sensor_Service
  * @{
  */
- 
+
 /*** I N C L U D E S *************************************************/
 #include "esos_hwxxx_sensor.h"
 
@@ -69,7 +69,7 @@ BOOL esos_sensor_is_converting_hw (void)
 Initiate a conversion for a configured sensor
 \hideinitializer
  */
-void esos_sensor_initiate_conversion_hw (void)
+void esos_sensor_initiate_hw (void)
 {
 
 }

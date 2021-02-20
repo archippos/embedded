@@ -34,7 +34,7 @@
  * \addtogroup ESOS_Task_Sensor_Service
  * @{
  */
- 
+
  /** \file
  *  \brief This file contains routines which configure and
  *  use sensors on the Microchip PIC24 MCUs.
@@ -46,7 +46,7 @@
 
 /* P U B L I C  P R O T O T Y P E S *****************************************/
 void esos_sensor_config_hw (esos_sensor_ch_t, esos_sensor_vref_t);
-void esos_sensor_initiate_conversion_hw (void);
+void esos_sensor_initiate_hw (void); //fixed this function name to match esos_sensor.c functions
 uint16_t esos_sensor_getvalue_u16_hw (void);
 void esos_sensor_release_hw (void);
 BOOL esos_sensor_is_converting_hw (void);

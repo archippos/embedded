@@ -95,5 +95,5 @@
         AD1CON3bits.SAMC = 0b11111;                                      \
         /*      AD1CON4          */                                      \
         AD1CON4bits.ADDMAEN = 0;                                         \
-        AD1CON1bits.ADON = 1;                                            \
+        AD1CON1bits.ADON = 1;   /*turn it back on*/                      \
     }

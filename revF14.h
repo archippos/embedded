@@ -71,7 +71,7 @@
 #define POT1 (RB2_AN) //RB2 as analog
 #define TEMP1 (RB3_AN) //RB3 as analog
 
-//https://www.mouser.com/datasheet/2/268/21897a-70809.pdf   pic 24 interface code for dac//
+//https://ww1.microchip.com/downloads/en/DeviceDoc/39739b.pdf   pic 24 interface code for dac//
 #define CONFIG_DAC()                                                     \
     {                                                                    \
         /*      AD1CON1          */                                      \

@@ -28,7 +28,7 @@
  */
 
 #include "esos_sensor.h"
-//#include "esos_pic24_sensor.h"  //look into this
+#include "esos_pic24_sensor.h"  //look into this
 #include <esos.h>
 #include <stdlib.h>
 

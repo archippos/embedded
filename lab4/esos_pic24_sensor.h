@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef ESOS_hwxxx_SENSOR_H
-#define ESOS_hwxxx_SENSOR_H
+#ifndef ESOS_PIC24_SENSOR_H
+#define ESOS_PIC24_SENSOR_H
 
 /**
  * \addtogroup ESOS_Task_Sensor_Service
@@ -41,8 +41,16 @@
  */
 
 /* I N C L U D E S **********************************************************/
-#include <esos_hwxxx.h>
+#include <esos_pic24_sensor.h>
 #include <esos_sensor.h>
+#include "revF14.h"
+
+//flags
+#define ESOS_SENSOR_IS_CONVERTING_FLAG ESOS_USER_FLAG_0
+
+//defines
+#define POT_CHANNEL (ESOS_SENSOR_CH02)
+#define TEMP_CHANNEL (ESOS_SENSOR_CH03)
 
 /* P U B L I C  P R O T O T Y P E S *****************************************/
 void esos_sensor_config_hw (esos_sensor_ch_t, esos_sensor_vref_t);
@@ -50,5 +58,6 @@ void esos_sensor_initiate_hw (void); //fixed this function name to match esos_se
 uint16_t esos_sensor_getvalue_u16_hw (void);
 void esos_sensor_release_hw (void);
 BOOL esos_sensor_is_converting_hw (void);
+int convert_uint32_t_to_str(uint32_t u32_val, char *str, uint32_t len, int base);
 
 #endif

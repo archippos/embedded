@@ -60,3 +60,43 @@
 //high/low for B
 #define RPGB_LOW (_RB9 == 0)
 #define RPGB_HIGH (_RB9 == 1)
+
+
+#define POT1 (RB2_AN)
+#define TEMP1 (RB3_AN)
+
+// configure Analog Peripherals
+#define ANALOG_CONFIG()                                                                                                \
+    {                                                                                                                  \
+        CONFIG_RB2_AS_ANALOG();                                                                                        \
+        CONFIG_RB3_AS_ANALOG();                                                                                        \
+    }
+
+
+#define CONFIG_DAC()                                                     \
+    {                                                                    \
+                                                                         \
+        AD1CON1bits.ADON = 0;     /*turn the thing off    */             \
+        AD1CON1bits.ADSIDL = 0;  /* Idle mode     */                     \
+        AD1CON1bits.ADDMABM = 1;                                         \
+        AD1CON1bits.AD12B = 1;                                           \
+        AD1CON1bits.FORM = 0;                                            \
+        AD1CON1bits.SSRC = 0b111;                                        \
+        AD1CON1bits.SSRCG = 0;                                           \
+        AD1CON1bits.ASAM = 0;                                            \
+        AD1CON1bits.SAMP = 0;                                            \
+        AD1CON1bits.DONE = 0;                                            \
+                                                                         \
+        AD1CON2bits.VCFG = 0b001;                                        \
+        AD1CON2bits.CSCNA = 0;                                           \
+        AD1CON2bits.CHPS = 0b00;                                         \
+        AD1CON2bits.SMPI = 0b00000;                                      \
+        AD1CON2bits.BUFM = 0;                                            \
+        AD1CON2bits.ALTS = 0;                                            \
+                                                                         \
+        AD1CON3bits.ADRC = 1;                                            \
+        AD1CON3bits.SAMC = 0b11111;                                      \
+                                                                         \
+        AD1CON4bits.ADDMAEN = 0;                                         \
+        AD1CON1bits.ADON = 1;                                            \                                                      
+    }

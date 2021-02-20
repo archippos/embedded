@@ -12,3 +12,11 @@
 #include "esos_f14ui.h"
 #include "esos_sensor.h"
 #include "esos_pic24_sensor.h"
+
+//TODO: DISPLAY OUTPUT (REGISTER TASK)
+
+//TODO: POTENTIOMETER INTERFACE (REGISTER TASK)
+
+//TODO: heartbeat (REGISTER TIMER)
+
+//TODO: VOID USER_INIT

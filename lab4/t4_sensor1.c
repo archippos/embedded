@@ -19,4 +19,4 @@
 
 //TODO: heartbeat (REGISTER TIMER)
 
-//TODO: VOID USER_INIT
+//TODO: VOID USER_INIT (call the tasks/timer)

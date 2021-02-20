@@ -73,7 +73,7 @@
 #define CONFIG_DAC()                                                     \
     {                                                                    \
         /*      AD1CON1          */                                      \
-        AD1CON1bits.ADON = 0;    /*turn the thing off    */             \
+        AD1CON1bits.ADON = 0;    /*turn the thing off    */              \
         AD1CON1bits.ADSIDL = 0;  /* Idle mode      */                    \
         AD1CON1bits.ADDMABM = 1; /* dma buffers    */                    \
         AD1CON1bits.AD12B = 1;   /* 12b mode       */                    \

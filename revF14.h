@@ -61,11 +61,7 @@
 #define RPGB_LOW (_RB9 == 0)
 #define RPGB_HIGH (_RB9 == 1)
 
-
-#define POT1 (RB2_AN) //RB2 as analog
-#define TEMP1 (RB3_AN) //RB3 as analog
-
-// configure Analog Peripherals
+//configure for analog periphs
 #define ANALOG_CONFIG()                                                                                                \
     {                                                                                                                  \
         CONFIG_RB2_AS_ANALOG();                                                                                        \

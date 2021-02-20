@@ -62,8 +62,8 @@
 #define RPGB_HIGH (_RB9 == 1)
 
 
-#define POT1 (RB2_AN)
-#define TEMP1 (RB3_AN)
+#define POT1 (RB2_AN) //RB2 as analog
+#define TEMP1 (RB3_AN) //RB3 as analog
 
 // configure Analog Peripherals
 #define ANALOG_CONFIG()                                                                                                \
@@ -98,5 +98,5 @@
         AD1CON3bits.SAMC = 0b11111;                                      \
                                                                          \
         AD1CON4bits.ADDMAEN = 0;                                         \
-        AD1CON1bits.ADON = 1;                                            \                                                      
+        AD1CON1bits.ADON = 1;                                            \
     }

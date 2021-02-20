@@ -62,8 +62,7 @@
 #define RPGB_HIGH (_RB9 == 1)
 
 //configure for analog periphs
-#define ANALOG_CONFIG()                                                                                                \
-    {                                                                                                                  \
+#define CONFIG_ANALOG()  {                                                                                             \                       \
         CONFIG_RB2_AS_ANALOG();                                                                                        \
         CONFIG_RB3_AS_ANALOG();                                                                                        \
     }
@@ -72,8 +71,7 @@
 #define TEMP1 (RB3_AN) //RB3 as analog
 
 //https://ww1.microchip.com/downloads/en/DeviceDoc/39739b.pdf   pic 24 interface code for dac//
-#define CONFIG_DAC()                                                     \
-    {                                                                    \
+#define CONFIG_DAC()  {                                                  \
         /*      AD1CON1          */                                      \
         AD1CON1bits.ADON = 0;    /*turn the thing off    */              \
         AD1CON1bits.ADSIDL = 0;  /* Idle mode      */                    \

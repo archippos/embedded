@@ -41,7 +41,6 @@
  */
 
 /* I N C L U D E S **********************************************************/
-#include <esos_pic24_sensor.h>
 #include <esos_sensor.h>
 #include "revF14.h"
 

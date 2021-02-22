@@ -71,32 +71,32 @@
 #define TEMP1 (RB3_AN) //RB3 as analog
 
 //https://ww1.microchip.com/downloads/en/DeviceDoc/39739b.pdf   pic 24 interface code for dac//
-#define CONFIG_DAC()  {                                                  \
-        /*      AD1CON1          */                                      \
-        AD1CON1bits.ADON = 0;    /*turn the thing off    */              \
-        AD1CON1bits.ADSIDL = 0;  /* Idle mode      */                    \
-        AD1CON1bits.DMABM = 1; /* dma buffers    */                    \
-        /*AD1CON1bits.AD12B = 1;    12b mode               */            \
-        AD1CON1bits.FORM = 0;    /* integer output mode */               \
-        AD1CON1bits.SSRC = 0b0111;/*auto convert enable */                \
-        /*AD1CON1bits.SSRCG = 0;    sample source clock group      */    \
-        AD1CON1bits.ASAM = 0;    /* auto sample toggle - 0=no */         \
-        AD1CON1bits.SAMP = 0;    /* disable sample */                    \
+#define CONFIG_DAC()  {
+        /*      AD1CON1          */
+        AD1CON1bits.ADON = 0;    /*turn the thing off    */
+        AD1CON1bits.ADSIDL = 0;  /* Idle mode      */
+        AD1CON1bits.DMABM = 1;   /* dma buffers    */
+        AD1CON1bits.AD12B = 1;   /* 12b mode             */
+        AD1CON1bits.FORM = 0;    /* integer output mode */
+        AD1CON1bits.SSRC = 0b0111;/*auto convert enable */
+        AD1CON1bits.SSRCG = 0;    /*sample source clock group      */
+        AD1CON1bits.ASAM = 0;    /* auto sample toggle - 0=no */
+        AD1CON1bits.SAMP = 0;    /* disable sample */
         AD1CON1bits.DONE = 0;    /* clear done flag */
-                       \
-        /*      AD1CON2          */                                      \
-        AD1CON2bits.VCFG = 0b01; /*use extern vref+ & internal vref-*/  \ //This might not be right
-        AD1CON2bits.CSCNA = 0;    /* disable input scan */               \
-        /*AD1CON2bits.CHPS = 0b00;   channel select bits */              \
-        AD1CON2bits.SMPI = 0b00000; /*create input each conversion*/     \
+        AD1CON1bits.ADDMABM = 1; /*DMA buffers are written as they're converted*/
+        /*      AD1CON2          */
+        AD1CON2bits.VCFG = 0b01; /*use extern vref+ & internal vref-*/   //This might not be right
+        AD1CON2bits.CSCNA = 0;    /* disable input scan */
+        AD1CON2bits.CHPS = 0b00;  /* channel select bits */
+        AD1CON2bits.SMPI = 0b00000; /*create input each conversion*/
         AD1CON2bits.BUFM = 0;   /*Starts filling buffer at address, ADCBUF0, and each sequential address on successive interrupts*/                                         \
         AD1CON2bits.ALTS = 0;    /*Always uses channel input selects for Sample A*/
-                                             \
-        /*      AD1CON3          */                                      \
-        AD1CON3bits.ADRC = 1;     /*RC clock*/                                       \
-        AD1CON3bits.SAMC = 0b11111;      /*31 TAD*/                                \
 
-        /*      AD1CON4          */                                      \
-        AD1CON4bits.ADDMAEN = 0;                                         \
-        AD1CON1bits.ADON = 1;   /*turn it back on*/                      \
+        /*      AD1CON3          */
+        AD1CON3bits.ADRC = 1;     /*RC clock*/
+        AD1CON3bits.SAMC = 0b11111;      /*31 TAD*/
+
+        /*      AD1CON4          */
+        AD1CON4bits.ADDMAEN = 0;
+        AD1CON1bits.ADON = 1;   /*turn it back on*/
     }

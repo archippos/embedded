@@ -15,6 +15,17 @@
 
 //TODO: INTERFACE WITH ADC (TIMER)
 
-//TODO: heartbeat (TIMER)
+ESOS_USER_TIMER(heartbeat)
+{
+    esos_uiF14_toggleLED3();
+}
 
-//TODO: VOID USER_INIT (call the tasks/timer)
+//TODO: VOID USER_INIT (call the tasks)
+void user_init()
+{
+    config_esos_uiF14();
+
+    esos_RegisterTimer(heartbeat, 250);
+    //TODO: esos_RegisterTask(adcInterface);
+    //TODO: esos_RegisterTask(menuHandling);
+}

@@ -53,7 +53,17 @@ Configure and enable the sensor module for hwxxx hardware.
  */
 void esos_sensor_config_hw (esos_sensor_ch_t e_senCh, esos_sensor_vref_t e_senVRef)
 {
+  ANALOG_CONFIG();
+  ADC_CONFIG();
 
+  AD1CON1bits.ADON = 0;
+  AD1CHS0bits.CH0SA = e_senCh; //AN for ch0
+  AD1CHS0bits.CH0NA = 0;       //vref for ch0
+
+  AD1CHS123 = 0;              //disable channels 1, 2, 3
+  AD1CSSH = 0;                //input scan select high
+  AD1CSSL = 0;                //input scan select low
+  AD1CON1bits.ADON = 1;
 }
 
 /**
@@ -62,7 +72,13 @@ Determine truth of: the sensor is currently converting
  */
 BOOL esos_sensor_is_converting_hw (void)
 {
-
+  if (AD1CON1bits.DONE == 1) {
+    //if done, we clear the flag and return false
+          esos_ClearUserFlag(ESOS_SENSOR_IS_CONVERTING_FLAG);
+          return FALSE;
+      }
+      //otherwise, we're convering; return true
+      return esos_IsUserFlagSet(ESOS_SENSOR_IS_CONVERTING_FLAG);
 }
 
 /**
@@ -71,7 +87,9 @@ Initiate a conversion for a configured sensor
  */
 void esos_sensor_initiate_hw (void)
 {
-
+  //set the conversion flag and sample bits
+  esos_SetUserFlag(ESOS_SENSOR_IS_CONVERTING_FLAG);
+  AD1CON1bits.SAMP = 1;
 }
 
 /**
@@ -80,7 +98,13 @@ Receive the value from a conversion that has already been initiated
  */
 uint16_t esos_sensor_getvalue_u16_hw (void)
 {
-
+  //check if the user flag is clear or not
+  if (!esos_IsUserFlagClear(ESOS_SENSOR_IS_CONVERTING_FLAG)) {
+      return 0;   //if not, exit
+  }
+  //otherwise, we want that sweet data. gimme gimme gimme gimme
+  uint16_t u16_adcVal = (ADC1BUF0);
+  return u16_adcVal;
 }
 
 /**
@@ -89,5 +113,7 @@ Release any pending conversions for the sensor
  */
 void esos_sensor_release_hw (void)
 {
-
+  //clear the flag and turn off the adc
+  esos_ClearUserFlag(ESOS_SENSOR_IS_CONVERTING_FLAG);
+  AD1CON1bits.ADON = 0;
 }

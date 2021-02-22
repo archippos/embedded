@@ -14,6 +14,17 @@
 //static declares used in functions
 static uint8_t u8_state;
 
+// heartbeat on LED 3
+ESOS_USER_TASK(heartbeat)
+{
+	ESOS_TASK_BEGIN();
+	while(TRUE){
+		esos_uiF14_toggleLED3();
+		ESOS_WAIT_TICKS( 250 );
+	}
+	ESOS_TASK_END();
+}
+
 //TODO: DISPLAY OUTPUT (TASK)
 ESOS_USER_TASK(info)
 {
@@ -34,17 +45,12 @@ ESOS_USER_TASK(info)
 
 //TODO: INTERFACE WITH ADC (TIMER)
 
-ESOS_USER_TIMER(heartbeat)
-{
-    esos_uiF14_toggleLED3();
-}
-
 //TODO: VOID USER_INIT (call the tasks)
 void user_init()
 {
     config_esos_uiF14();
 
-    esos_RegisterTimer(heartbeat, 250);
+    esos_RegisterTask(heartbeat);
     //TODO: esos_RegisterTask(adcInterface);
     //TODO: esos_RegisterTask(info);
 }

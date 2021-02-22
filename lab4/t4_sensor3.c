@@ -13,9 +13,14 @@
 //static declares used in functions
 static uint8_t u8_state;
 
-ESOS_USER_TIMER(heartbeat)
+ESOS_USER_TASK(heartbeat)
 {
-    esos_uiF14_toggleLED3();
+	ESOS_TASK_BEGIN();
+	while(TRUE){
+		esos_uiF14_toggleLED3();
+		ESOS_WAIT_TICKS( 250 );
+	}
+	ESOS_TASK_END();
 }
 
 //TODO: DISPLAY OUTPUT (TASK) <- output temperatures somewhere in here
@@ -43,7 +48,7 @@ void user_init()
 {
     config_esos_uiF14();
 
-    esos_RegisterTimer(heartbeat, 250);
+    esos_RegisterTask(heartbeat);
     //TODO: esos_RegisterTask(adcInterface);
     //TODO: esos_RegisterTask(info);
 }

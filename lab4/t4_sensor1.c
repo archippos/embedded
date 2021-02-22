@@ -6,16 +6,9 @@
 //                          SW2 or SW1 pressed
 
 //includes
-#include "revF14.h"
-#include "esos.h"
-#include "esos_pic24.h"
-#include "esos_f14ui.h"
+#include "esos_f14ui.c"
 #include "esos_sensor.h"
 #include "esos_pic24_sensor.h"
-
-//static declares used in functions
-static uint8_t u8_state;   //we can use this in the menu interface?
-static uint16_t pu16_out
 
 // heartbeat on LED 3
 ESOS_USER_TASK(heartbeat)
@@ -23,7 +16,7 @@ ESOS_USER_TASK(heartbeat)
 	ESOS_TASK_BEGIN();
 	while(TRUE){
 		esos_uiF14_toggleLED3();
-		ESOS_WAIT_TICKS( 250 );
+		ESOS_TASK_WAIT_TICKS( 250 );
 	}
 	ESOS_TASK_END();
 }
@@ -31,12 +24,13 @@ ESOS_USER_TASK(heartbeat)
 //TODO: DISPLAY OUTPUT (REGISTER TASK)
 ESOS_USER_TASK(info)
 {
-  static ESOS_TASK_HANDLE getADC; //we need something to feed us adc stuff
+  static uint8_t u8_state;
+  //static ESOS_TASK_HANDLE getADC; //we need something to feed us adc stuff
   ESOS_TASK_BEGIN();
   while(TRUE)
   {
     if(u8_state == 0) {
-      //do fuck all. no output. no nothin. just relax pardner
+     
     }
     //if u8_state case 1: output once before goto state=0
     //if u8_state case 2: output every 1s until "state" flag unset

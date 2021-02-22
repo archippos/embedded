@@ -4,10 +4,7 @@
 //               SW3 press prompts for processing modes and sample rate
 
 //includes
-#include "revF14.h"
-#include "esos.h"
-#include "esos_pic24.h"
-#include "esos_f14ui.h"
+#include "esos_f14ui.c"
 #include "esos_sensor.h"
 #include "esos_pic24_sensor.h"
 
@@ -20,7 +17,7 @@ ESOS_USER_TASK(heartbeat)
 	ESOS_TASK_BEGIN();
 	while(TRUE){
 		esos_uiF14_toggleLED3();
-		ESOS_WAIT_TICKS( 250 );
+		ESOS_TASK_WAIT_TICKS( 250 );
 	}
 	ESOS_TASK_END();
 }

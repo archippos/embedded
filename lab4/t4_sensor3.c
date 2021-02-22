@@ -3,10 +3,7 @@
 //t4_sensor3.c - ditto sensor2 but display temperature
 
 //includes
-#include "revF14.h"
-#include "esos.h"
-#include "esos_pic24.h"
-#include "esos_f14ui.h"
+#include "esos_f14ui.c"
 #include "esos_sensor.h"
 #include "esos_pic24_sensor.h"
 
@@ -18,7 +15,7 @@ ESOS_USER_TASK(heartbeat)
 	ESOS_TASK_BEGIN();
 	while(TRUE){
 		esos_uiF14_toggleLED3();
-		ESOS_WAIT_TICKS( 250 );
+		ESOS_TAKS_WAIT_TICKS( 250 );
 	}
 	ESOS_TASK_END();
 }

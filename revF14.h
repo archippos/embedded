@@ -106,7 +106,7 @@
         AD1CON3bits.ADRC = 1;     /*RC clock*/
         AD1CON3bits.SAMC = 0b11111;      /*31 TAD*/
 
-        /*      AD1CON4          */
+        /*      AD1CON4      : ADC Control Register 4 page 16-12    */
         AD1CON4bits.ADDMAEN = 0;
         AD1CON1bits.ADON = 1;   /*turn it back on*/
     }

@@ -57,11 +57,11 @@ void esos_sensor_config_hw (esos_sensor_ch_t e_senCh, esos_sensor_vref_t e_senVR
   CONFIG_DAC();
 
   AD1CON1bits.ADON = 0;  //turn the thing off
-  AD1CHS0bits.CH0SA = e_senCh; //AN for ch0
+  AD1CHS0bits.CH0SA = e_senCh; //AN for ch0 has to be 000000 to 111111
   AD1CHS0bits.CH0NA = 0;       //vref for ch0 is 0
   //shouldn't need Sample B bit
 
-  AD1CHS123 = 0x0000;              //don't need these channels
+  AD1CHS123 = 0x0000;              //this is an alternate input method we don't need
   AD1CSSH = 0x0000;                //input scan select high
   AD1CSSL = 0x0000;                //input scan select low
   AD1CON1bits.ADON = 1; //turn the thing back on
@@ -90,7 +90,7 @@ void esos_sensor_initiate_hw (void)
 {
   //set the conversion flag and sample bits
   esos_SetUserFlag(ESOS_SENSOR_IS_CONVERTING_FLAG);
-  AD1CON1bits.SAMP = 1;
+  AD1CON1bits.SAMP = 1; //start sampling
 }
 
 /**
@@ -104,8 +104,8 @@ uint16_t esos_sensor_getvalue_u16_hw (void)
       return 0;   //if not, exit
   }
   //otherwise, we want that sweet data. gimme gimme gimme gimme
-  uint16_t u16_adcVal = (ADC1BUF0);
-  return u16_adcVal;
+  uint16_t u16_sensor_value = (ADC1BUF0);
+  return u16_sensor_value; //return the value of the sensor
 }
 
 /**
@@ -116,5 +116,5 @@ void esos_sensor_release_hw (void)
 {
   //clear the flag and turn off the adc
   esos_ClearUserFlag(ESOS_SENSOR_IS_CONVERTING_FLAG);
-  AD1CON1bits.ADON = 0;
+  AD1CON1bits.ADON = 0; //turn the thing off
 }

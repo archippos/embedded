@@ -11,7 +11,7 @@
 #include "esos_pic24_sensor.h"
 
 static uint8_t u8_state;
-static uint16_t pu16_hexOut
+static uint16_t pu16_hexOut;
 
 // heartbeat on LED 3
 ESOS_USER_TASK(heartbeat)

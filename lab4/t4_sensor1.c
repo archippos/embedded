@@ -6,7 +6,10 @@
 //                          SW2 or SW1 pressed
 
 //includes
-#include "esos_f14ui.c"
+#include "revF14.h"
+#include "esos.h"
+#include "esos_pic24.h"
+#include "esos_f14ui.h"
 #include "esos_sensor.h"
 #include "esos_pic24_sensor.h"
 

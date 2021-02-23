@@ -30,7 +30,7 @@ ESOS_USER_TASK(info)
   while(TRUE)
   {
     if(u8_state == 0) {
-     
+
     }
     //if u8_state case 1: output once before goto state=0
     //if u8_state case 2: output every 1s until "state" flag unset
@@ -41,6 +41,32 @@ ESOS_USER_TASK(info)
 }
 
 //TODO: POTENTIOMETER INTERFACE (REGISTER TASK)
+ESOS_USER_TASK(potenInterface)
+{
+  static BOOL b_switch1, b_switch2;
+  ESOS_TASK_BEGIN();
+  while(TRUE)
+  {
+    if(b_switch1 != esos_uiF14_isSW1Pressed()) {
+      b_switch1 = esos_uiF14_isSW1Pressed();
+      if(b_switch1) {
+        //if we're in state 2, goto yield. else, output once, then yield
+        if(u8_state == 2) u8_state = 0;
+        else u8_state = 1;
+      }
+    }
+    if(b_switch2 != esos_uiF14_isSW2Pressed()) {
+      b_switch2 = esos_uiF14_isSW2Pressed();
+      if(b_switch2) {
+        //if we're in state 2, goto yield. else, start continuous output
+        if(u8_state == 2) u8_state = 0;
+        else u8_state = 2;
+      }
+    }
+    ESOS_TASK_YIELD();
+  }
+  ESOS_TASK_END();
+}
 
 //TODO: VOID USER_INIT (call the tasks)
 void user_init()
@@ -48,6 +74,6 @@ void user_init()
     config_esos_uiF14();
 
     esos_RegisterTask(heartbeat);
-    //TODO: esos_RegisterTask(potenInterface);
-    esos_RegisterTask(info);
+    esos_RegisterTask(potenInterface);
+    //esos_RegisterTask(info);  //not yet done :(
 }

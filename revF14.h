@@ -72,18 +72,23 @@
 
 //http://ww1.microchip.com/downloads/en/devicedoc/70621c.pdf   pic 33 interface code for dac//
 #define CONFIG_DAC()  {
-        /*      AD1CON1          */
+        /*      AD1CON1  : ADC Control Register 1 page 16       */
         AD1CON1bits.ADON = 0;    /*turn the thing off    */
         AD1CON1bits.ADSIDL = 0;  /* Idle mode      */
+        AD1CON1bits.ADDMABM = 1; /*DMA buffers are written as they're converted*/
         AD1CON1bits.DMABM = 1;   /* dma buffers    */
-        AD1CON1bits.AD12B = 1;   /* 12b mode             */
-        AD1CON1bits.FORM = 0;    /* integer output mode */
-        AD1CON1bits.SSRC = 0b0111;/*auto convert enable */
-        AD1CON1bits.SSRCG = 0;    /*sample source clock group      */
+        AD1CON1bits.AD12B = 1;   /* 12b mode, 1 channel             */
+        AD1CON1bits.FORM = 0b00;    /* integer output mode */
+
+        /*I do not think these lines affect anything on our specifc DAC, not in datasheet
+        can add back later if something isn't working
+        AD1CON1bits.SSRC = 0b0111;  auto convert enable
+        AD1CON1bits.SSRCG = 0;    sample source clock group
+        */
+
         AD1CON1bits.ASAM = 0;    /* auto sample toggle - 0=no */
         AD1CON1bits.SAMP = 0;    /* disable sample */
         AD1CON1bits.DONE = 0;    /* clear done flag */
-        AD1CON1bits.ADDMABM = 1; /*DMA buffers are written as they're converted*/
         /*      AD1CON2          */
         AD1CON2bits.VCFG = 0b01; /*use extern vref+ & internal vref-*/   //This might not be right
         AD1CON2bits.CSCNA = 0;    /* disable input scan */

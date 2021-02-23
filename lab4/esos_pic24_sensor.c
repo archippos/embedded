@@ -53,17 +53,18 @@ Configure and enable the sensor module for hwxxx hardware.
  */
 void esos_sensor_config_hw (esos_sensor_ch_t e_senCh, esos_sensor_vref_t e_senVRef)
 {
-  ANALOG_CONFIG();
-  ADC_CONFIG();
+  CONFIG_ANALOG();
+  CONFIG_DAC();
 
-  AD1CON1bits.ADON = 0;
+  AD1CON1bits.ADON = 0;  //turn the thing off
   AD1CHS0bits.CH0SA = e_senCh; //AN for ch0
-  AD1CHS0bits.CH0NA = 0;       //vref for ch0
+  AD1CHS0bits.CH0NA = 0;       //vref for ch0 is 0
+  //shouldn't need Sample B bit
 
-  AD1CHS123 = 0;              //disable channels 1, 2, 3
-  AD1CSSH = 0;                //input scan select high
-  AD1CSSL = 0;                //input scan select low
-  AD1CON1bits.ADON = 1;
+  AD1CHS123 = 0x0000;              //don't need these channels
+  AD1CSSH = 0x0000;                //input scan select high
+  AD1CSSL = 0x0000;                //input scan select low
+  AD1CON1bits.ADON = 1; //turn the thing back on
 }
 
 /**

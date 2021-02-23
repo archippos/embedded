@@ -1,5 +1,5 @@
-//#ifndef REVF14_H
-//#define REVF14_H
+#ifndef REVF14_H
+#define REVF14_H
 
 #include "pic24_all.h"
 
@@ -110,3 +110,4 @@
         AD1CON4bits.ADDMAEN = 0;
         AD1CON1bits.ADON = 1;   /*turn it back on*/
     }
+#endif

@@ -24,17 +24,29 @@ ESOS_USER_TASK(heartbeat)
 //TODO: DISPLAY OUTPUT (REGISTER TASK)
 ESOS_USER_TASK(info)
 {
-  static uint8_t u8_state;
-  //static ESOS_TASK_HANDLE getADC; //we need something to feed us adc stuff
+  static uint8_t u8_state;        //check if this is ok to have in this func or if it goes outside
+  static ESOS_TASK_HANDLE getADC; //this is the handle for the child we're gonna birth
   ESOS_TASK_BEGIN();
   while(TRUE)
   {
     if(u8_state == 0) {
-
-    }
-    //if u8_state case 1: output once before goto state=0
+        //nothing needs to go here. we yield.
+    } else if(u8_state == 1) {
+      //if u8_state case 1: output once before goto state=0
+      ESOS_ALLOCATE_CHILD_TASK(getADC);
+      //TODO: is VREF_3V0 ok? should it be 3V3? or lower? will need to check datasheets
+      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V0);
+      ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
+      ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();   //now we wait to send our data
+      //[logic to send out output as a hex string goes here]
+      ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();   //all done!
+      u8_state = 0;                            //goto state 0 to yield
+    } else if(u8_state == 2) {
     //if u8_state case 2: output every 1s until "state" flag unset
+    ESOS_ALLOCATE_CHILD_TASK(getADC);
+    ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V0);
         //use a do-while(state==2)???
+    }
     ESOS_TASK_YIELD();
   }
   ESOS_TASK_END();

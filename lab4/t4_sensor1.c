@@ -10,6 +10,8 @@
 #include "esos_sensor.h"
 #include "esos_pic24_sensor.h"
 
+static uint8_t u8_state;
+
 // heartbeat on LED 3
 ESOS_USER_TASK(heartbeat)
 {
@@ -24,7 +26,7 @@ ESOS_USER_TASK(heartbeat)
 //TODO: DISPLAY OUTPUT (REGISTER TASK)
 ESOS_USER_TASK(info)
 {
-  static uint8_t u8_state;        //check if this is ok to have in this func or if it goes outside
+  //static uint8_t u8_state;        //this has to go outside if more than one task will use it
   static ESOS_TASK_HANDLE getADC; //this is the handle for the child we're gonna birth
   ESOS_TASK_BEGIN();
   while(TRUE)
@@ -39,6 +41,7 @@ ESOS_USER_TASK(info)
       ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
       ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();   //now we wait to send our data
       //[logic to send out output as a hex string goes here]
+			//This logic was used in lab 3
       ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();   //all done!
       u8_state = 0;                            //goto state 0 to yield
     } else if(u8_state == 2) {

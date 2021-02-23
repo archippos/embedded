@@ -94,12 +94,12 @@ ESOS_USER_TASK(potenInterface)
   ESOS_TASK_END();
 }
 
-//TODO: VOID USER_INIT (call the tasks)
+
 void user_init()
 {
     config_esos_uiF14();
 
     esos_RegisterTask(heartbeat);
     esos_RegisterTask(potenInterface);
-    //esos_RegisterTask(info);  //not yet done :(
+    esos_RegisterTask(info);
 }

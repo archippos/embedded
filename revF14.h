@@ -70,7 +70,7 @@
 #define POT1 (RB2_AN) //RB2 as analog
 #define TEMP1 (RB3_AN) //RB3 as analog
 
-//http://ww1.microchip.com/downloads/en/devicedoc/70621c.pdf   pic 33 interface code for dac//
+/*  http://ww1.microchip.com/downloads/en/devicedoc/70621c.pdf   pic 33 interface code for dac */
 #define CONFIG_DAC()  {
         /*      AD1CON1  : ADC Control Register 1 page 16-(7,8)       */
         AD1CON1bits.ADON = 0;    /*turn the thing off    */

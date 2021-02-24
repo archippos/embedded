@@ -34,8 +34,8 @@
 
 /*** I N C L U D E S *************************************************/
 #include "esos_pic24_sensor.h"
-#include "esos_sensor.h"
-//#include "pic24_adc"
+//#include "esos_sensor.h"
+//#include "pic24_adc.h"
 
 /*** T H E   C O D E *************************************************/
 

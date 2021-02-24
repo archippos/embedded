@@ -5,9 +5,15 @@
  *    requires the EMBEDDED SYSTEMS target rev. F14
  *
  * ****************************************************************/
-#include "esos_f14ui.h"
+ #include "esos.h"
+ #include "esos_pic24.h"
+
+ #include "revF14.h"
+ #include "esos_f14ui.h"
 
 // PRIVATE FUNCTIONS
+volatile _st_esos_uiF14Data_t _st_esos_uiF14Data;
+
 inline void _esos_uiF14_setRPGCounter (uint16_t newValue) {
     _st_esos_uiF14Data.u16_RPGCounter = newValue;
     return;
@@ -21,7 +27,7 @@ inline void _esos_uiF14_setLastRPGCounter (uint16_t newValue) {
 inline void _esos_uiF14_setSW1Pressed (void) {
 	if (!SW1) {
 		_st_esos_uiF14Data.b_SW1Pressed = TRUE;
-		
+
 	} else {
 		_st_esos_uiF14Data.b_SW1Pressed = FALSE;
 	}
@@ -207,7 +213,7 @@ inline BOOL esos_uiF14_isRpgTurning ( void ) {
   //if it's turning, velocity is not 0
   if (esos_uiF14_getRpgVelocity_i16() != 0) {
 		return TRUE;
-	} else {return FALSE;} 
+	} else {return FALSE;}
 }
 
 //is the new-old delta between 1 and 10?
@@ -275,31 +281,31 @@ int16_t esos_uiF14_getRpgVelocity_i16( void ) {
 ESOS_USER_TASK( SW1_double_press ) {
 	static uint16_t sw1_dp_tmr;
 	static BOOL sw1_dp_hasReleased;
-	
+
 	ESOS_TASK_BEGIN();
 	while(TRUE) {
 		if( esos_uiF14_isSW1Pressed() ) { // identify if sw1 has been pressed
 			_esos_uiF14_clearSW1DoublePressed();
 			sw1_dp_tmr = 0;               // start timer for double press
 			sw1_dp_hasReleased = FALSE;
-			
+
 			while( sw1_dp_tmr < 500  ) {    // loop while timer not expired
 				if ( esos_uiF14_isSW1Pressed() && sw1_dp_hasReleased ) {
 					_esos_uiF14_setSW1DoublePressed();
 					break;
 				} else if ( esos_uiF14_isSW1Released() && !sw1_dp_hasReleased) {
 					sw1_dp_hasReleased = TRUE;
-				} 
-				
+				}
+
 				sw1_dp_tmr += 1;
 				ESOS_TASK_WAIT_TICKS( 1 );
 			}
-			
+
 		}
 		ESOS_TASK_WAIT_TICKS(__ESOS_UIF14_UI_PERIOD_MS);
 	}
 	ESOS_TASK_END();
-	
+
 }
 
 
@@ -316,7 +322,7 @@ void config_esos_uiF14() {
   CONFIG_SW3();
 
   CONFIG_RPG();
-  
+
   esos_RegisterTask( SW1_double_press );
   esos_RegisterTask( __esos_uiF14_task );
 }
@@ -324,30 +330,30 @@ void config_esos_uiF14() {
 // UIF14 task to manage user-interface
 ESOS_USER_TASK( __esos_uiF14_task ){
 
-	
+
   ESOS_TASK_BEGIN();
   while(TRUE) {
     // do your UI stuff here
-	
+
 	// check for switch presses
 	_esos_uiF14_setSW1Pressed();
 	_esos_uiF14_setSW2Pressed();
-	_esos_uiF14_setSW3Pressed();	
-	
+	_esos_uiF14_setSW3Pressed();
+
 	// check if LED1 on
 	if ( esos_uiF14_isLED1On() ) {
 		LED1 = 1;
 	} else {
 		LED1 = 0;
 	}
-	
+
 	// check if LED2 on
 	if ( esos_uiF14_isLED2On() ) {
 		LED2 = 1;
 	} else {
 		LED2 = 0;
 	}
-	
+
 	// check if LED3 on
 	if ( esos_uiF14_isLED3On() ) {
 		LED3 = 1;
@@ -355,7 +361,7 @@ ESOS_USER_TASK( __esos_uiF14_task ){
 		LED3 = 0;
 	}
 
-	
+
     ESOS_TASK_WAIT_TICKS( __ESOS_UIF14_UI_PERIOD_MS );
   }
   ESOS_TASK_END();

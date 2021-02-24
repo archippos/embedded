@@ -79,7 +79,7 @@ typedef struct _st_esos_uiF14Data {
 
 // PRIVATE DATA
 
-_st_esos_uiF14Data_t _st_esos_uiF14Data;
+extern volatile _st_esos_uiF14Data_t _st_esos_uiF14Data;
 
 // PRIVATE FUNCTION PROTOTYPES
 

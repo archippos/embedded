@@ -102,7 +102,7 @@ ESOS_USER_TASK(info)
       //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
 	  ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
       ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
-	  
+
       ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();   //now we wait to send our data
       //[logic to send out output as a hex string goes here] //This logic was used in lab 3
 	  ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(pu16_hexOut);
@@ -124,7 +124,7 @@ ESOS_USER_TASK(info)
       } while (u8_state == 2);
       ESOS_SENSOR_CLOSE();
     } else if(u8_state == 3) {  // prompt the user for processing mode operation
-	
+
 		// menu for processing modes
 		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 		ESOS_TASK_WAIT_ON_SEND_STRING("\n1. one-shot\n");
@@ -144,7 +144,7 @@ ESOS_USER_TASK(info)
 		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 		ESOS_TASK_WAIT_ON_SEND_STRING("Choose a processing mode: ");
 		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		
+
 		ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
 		ESOS_TASK_WAIT_ON_GET_UINT8(u8_pmode);
 		ESOS_TASK_SIGNAL_AVAILABLE_IN_COMM();
@@ -152,7 +152,7 @@ ESOS_USER_TASK(info)
 		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 		ESOS_TASK_WAIT_ON_SEND_UINT8(u8_pmode);
 		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		
+
 		// menu for number of samples
 		if (u8_pmode != 1) {
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
@@ -176,7 +176,7 @@ ESOS_USER_TASK(info)
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_SEND_STRING("How many samples: ");
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-			
+
 			ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
 			ESOS_TASK_WAIT_ON_GET_UINT8(u8_samples_input);
 			ESOS_TASK_SIGNAL_AVAILABLE_IN_COMM();
@@ -184,7 +184,7 @@ ESOS_USER_TASK(info)
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_SEND_UINT8(u8_samples_input);
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-			
+
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_SEND_STRING("\n");
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
@@ -230,7 +230,7 @@ ESOS_USER_TASK(potenInterface)
 			if(u8_state == 2) u8_state = 0;
 			else u8_state = 3;
 		}
-		
+
 	}
     ESOS_TASK_YIELD();
   }

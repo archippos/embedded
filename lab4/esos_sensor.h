@@ -127,12 +127,16 @@ typedef enum {
 } esos_sensor_format_t;
 
 /* C H I L D   T A S K S ****************************************************/
-
+/*
 ESOS_CHILD_TASK(_WAIT_ON_AVAILABLE_SENSOR, esos_sensor_ch_t e_senCh, esos_sensor_vref_t e_senVRef);
 ESOS_CHILD_TASK(_WAIT_SENSOR_QUICK_READ, uint16_t *pu16_data);
 ESOS_CHILD_TASK(_WAIT_SENSOR_READ, uint16_t *pu16_data, uint8_t e_senProcess, esos_sensor_format_t e_senFMT);
 BOOL ESOS_SENSOR_CLOSE(void);
-
+*/
+ESOS_CHILD_TASK(_WAIT_ON_AVAILABLE_SENSOR, esos_sensor_ch_t, esos_sensor_vref_t);
+ESOS_CHILD_TASK(_WAIT_SENSOR_QUICK_READ, uint16_t *u16_data);
+ESOS_CHILD_TASK(_WAIT_SENSOR_READ, uint16_t *u16_data, uint8_t, esos_sensor_format_t);
+BOOL ESOS_SENSOR_CLOSE(void);
 /* D E F I N E S ************************************************************/
 
 #define SIGNAL_ADC_BUSY           esos_SetSystemFlag(__ESOS_SYS_ADC_IS_BUSY)

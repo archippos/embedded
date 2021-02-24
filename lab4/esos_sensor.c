@@ -40,6 +40,8 @@
 *
 * \hideinitializer
 */
+#define MAX16BIT 0xFFFF
+
 ESOS_CHILD_TASK(_WAIT_ON_AVAILABLE_SENSOR, esos_sensor_ch_t e_senCh, esos_sensor_vref_t e_senVRef)
 {
 	ESOS_TASK_BEGIN();

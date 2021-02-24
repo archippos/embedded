@@ -43,6 +43,7 @@ for sourceFile in Glob('chap14/*.c', True, True, True):
         'lib/src/pic24_util.c',
         'lib/src/pic24_serial.c',
         'lib/src/pic24_uart.c',
+        'lib/src/pic24_adc.c',
         'esos/src/esos.c',
         'esos/src/esos_comm.c',
         'esos/src/esos_cb.c',

@@ -79,7 +79,7 @@
         /* no effect from this because ADDMAEN in CON4 is set to 0 */       \
         /* AD1CON1bits.ADDMABM = 1; DMA buffers are written as they're converted*/ \
                                                                             \
-        AD1CON1bits.DMABM = 1;   /* dma buffers    */                       \
+        AD1CON1bits.ADDMABM = 1;   /* dma buffers    */                       \
         AD1CON1bits.AD12B = 1;   /* 12b mode, 1 channel             */      \
         AD1CON1bits.FORM = 0b00;    /* integer output mode */               \
                                                                             \

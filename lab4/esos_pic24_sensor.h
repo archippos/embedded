@@ -44,6 +44,7 @@
 #include <esos_pic24_sensor.h>
 #include <esos_sensor.h>
 #include "revF14.h"
+#include "pic24_adc.h"
 
 //flags
 #define ESOS_SENSOR_IS_CONVERTING_FLAG ESOS_USER_FLAG_0

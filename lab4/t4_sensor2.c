@@ -12,27 +12,64 @@
 #include "esos_pic24_sensor.h"
 
 static uint8_t u8_state;
-static uint8_t u8_pmode;
-static uint8_t u8_samples_input;
-static uint8_t u8_samples;
+static uint8_t u8_pmode = 1;
+static uint8_t u8_samples_input = 0;
+static uint8_t u8_proccessConst = ESOS_SENSOR_ONE_SHOT;
 static uint16_t pu16_hexOut;
 
-uint8_t sample_conversion (uint8_t u8_samples_input) {
-	if (u8_samples_input == 0 ) {
-		u8_samples = 1;
-	} else if (u8_samples_input == 1 ) {
-		u8_samples = 2;
-	} else if (u8_samples_input == 2 ) {
-		u8_samples = 4;
-	} else if (u8_samples_input == 3 ) {
-		u8_samples = 8;
-	} else if (u8_samples_input == 4 ) {
-		u8_samples = 16;
-	} else if (u8_samples_input == 5 ) {
-		u8_samples = 32;
-	} else if (u8_samples_input == 6 ) {
-		u8_samples = 64;
-	}
+// determine processing constant
+void sample_conversion (uint8_t u8_pmode, uint8_t u8_samples_input) {
+	if (u8_pmode == 1 && u8_samples_input == 0) {
+		u8_proccessConst = ESOS_SENSOR_ONE_SHOT;
+	} else if (u8_pmode == 2 && u8_samples_input == 1 ) {
+		u8_proccessConst = ESOS_SENSOR_AVG2;
+	} else if (u8_pmode == 2 && u8_samples_input == 2 ) {
+		u8_proccessConst = ESOS_SENSOR_AVG4;
+	} else if (u8_pmode == 2 && u8_samples_input == 3 ) {
+		u8_proccessConst = ESOS_SENSOR_AVG8;
+	} else if (u8_pmode == 2 && u8_samples_input == 4 ) {
+		u8_proccessConst = ESOS_SENSOR_AVG16;
+	} else if (u8_pmode == 2 && u8_samples_input == 5 ) {
+		u8_proccessConst = ESOS_SENSOR_AVG32;
+	} else if (u8_pmode == 2 && u8_samples_input == 6 ) {
+		u8_proccessConst = ESOS_SENSOR_AVG64;
+	} else if (u8_pmode == 3 && u8_samples_input == 1 ) {
+		u8_proccessConst = ESOS_SENSOR_MIN2;
+	} else if (u8_pmode == 3 && u8_samples_input == 2 ) {
+		u8_proccessConst = ESOS_SENSOR_MIN4;
+	} else if (u8_pmode == 3 && u8_samples_input == 3 ) {
+		u8_proccessConst = ESOS_SENSOR_MIN8;
+	} else if (u8_pmode == 3 && u8_samples_input == 4 ) {
+		u8_proccessConst = ESOS_SENSOR_MIN16;
+	} else if (u8_pmode == 3 && u8_samples_input == 5 ) {
+		u8_proccessConst = ESOS_SENSOR_MIN32;
+	} else if (u8_pmode == 3 && u8_samples_input == 6 ) {
+		u8_proccessConst = ESOS_SENSOR_MIN64;
+	} else if (u8_pmode == 4 && u8_samples_input == 1 ) {
+		u8_proccessConst = ESOS_SENSOR_MAX2;
+	} else if (u8_pmode == 4 && u8_samples_input == 2 ) {
+		u8_proccessConst = ESOS_SENSOR_MAX4;
+	} else if (u8_pmode == 4 && u8_samples_input == 3 ) {
+		u8_proccessConst = ESOS_SENSOR_MAX8;
+	} else if (u8_pmode == 4 && u8_samples_input == 4 ) {
+		u8_proccessConst = ESOS_SENSOR_MAX16;
+	} else if (u8_pmode == 4 && u8_samples_input == 5 ) {
+		u8_proccessConst = ESOS_SENSOR_MAX32;
+	} else if (u8_pmode == 4 && u8_samples_input == 6 ) {
+		u8_proccessConst = ESOS_SENSOR_MAX64;
+	} else if (u8_pmode == 5 && u8_samples_input == 1 ) {
+		u8_proccessConst = ESOS_SENSOR_MEDIAN2;
+	} else if (u8_pmode == 5 && u8_samples_input == 2 ) {
+		u8_proccessConst = ESOS_SENSOR_MEDIAN4;
+	} else if (u8_pmode == 5 && u8_samples_input == 3 ) {
+		u8_proccessConst = ESOS_SENSOR_MEDIAN8;
+	} else if (u8_pmode == 5 && u8_samples_input == 4 ) {
+		u8_proccessConst = ESOS_SENSOR_MEDIAN16;
+	} else if (u8_pmode == 5 && u8_samples_input == 5 ) {
+		u8_proccessConst = ESOS_SENSOR_MEDIAN32;
+	} else if (u8_pmode == 5 && u8_samples_input == 6 ) {
+		u8_proccessConst = ESOS_SENSOR_MEDIAN64;
+	} 
 }
 
 // heartbeat on LED 3
@@ -61,7 +98,9 @@ ESOS_USER_TASK(info)
       ESOS_ALLOCATE_CHILD_TASK(getADC);
       //TODO: is VREF_3V0 ok? should it be 3V3? or lower? will need to check datasheets
       ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V0);
-      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
+	  
+      //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
+	  ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
       ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
 	  
       ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();   //now we wait to send our data
@@ -75,7 +114,8 @@ ESOS_USER_TASK(info)
       ESOS_ALLOCATE_CHILD_TASK(getADC);
       ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V0);
       do {    //use a do-while(state==2)???
-        ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
+        //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
+		ESOS_TASK_WAIT_SENSOR_READ(pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
         ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
         ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(pu16_hexOut);
         ESOS_TASK_WAIT_ON_SEND_UINT8('\n');     //newline :)
@@ -131,7 +171,7 @@ ESOS_USER_TASK(info)
 			ESOS_TASK_WAIT_ON_SEND_STRING("5. thirty-two\n");
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-			ESOS_TASK_WAIT_ON_SEND_STRING("5. sixty-four\n");
+			ESOS_TASK_WAIT_ON_SEND_STRING("6. sixty-four\n");
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_SEND_STRING("How many samples: ");
@@ -148,10 +188,11 @@ ESOS_USER_TASK(info)
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_SEND_STRING("\n");
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+			
 		} else {
 			u8_samples_input = 0;   // 1 sample taken if one-shot
 		}
-		
+		sample_conversion(u8_pmode, u8_samples_input);  // determine the processing constant
 		u8_state = 0;
 	}
     ESOS_TASK_YIELD();
@@ -186,7 +227,8 @@ ESOS_USER_TASK(potenInterface)
 		b_switch3 = esos_uiF14_isSW3Pressed();
 		if(b_switch3) {
 			//enter state 3
-			u8_state = 3;
+			if(u8_state == 2) u8_state = 0;
+			else u8_state = 3;
 		}
 		
 	}

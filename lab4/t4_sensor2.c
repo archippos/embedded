@@ -61,9 +61,10 @@ ESOS_USER_TASK(info)
       ESOS_ALLOCATE_CHILD_TASK(getADC);
       //TODO: is VREF_3V0 ok? should it be 3V3? or lower? will need to check datasheets
       ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V0);
+      //try changing to wait_sensor_read
       ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
       ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
-	  
+
       ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();   //now we wait to send our data
       //[logic to send out output as a hex string goes here] //This logic was used in lab 3
 	  ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(pu16_hexOut);
@@ -84,7 +85,7 @@ ESOS_USER_TASK(info)
       } while (u8_state == 2);
       ESOS_SENSOR_CLOSE();
     } else if(u8_state == 3) {  // prompt the user for processing mode operation
-	
+
 		// menu for processing modes
 		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 		ESOS_TASK_WAIT_ON_SEND_STRING("\n1. one-shot\n");
@@ -104,7 +105,7 @@ ESOS_USER_TASK(info)
 		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 		ESOS_TASK_WAIT_ON_SEND_STRING("Choose a processing mode: ");
 		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		
+
 		ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
 		ESOS_TASK_WAIT_ON_GET_UINT8(u8_pmode);
 		ESOS_TASK_SIGNAL_AVAILABLE_IN_COMM();
@@ -112,7 +113,7 @@ ESOS_USER_TASK(info)
 		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 		ESOS_TASK_WAIT_ON_SEND_UINT8(u8_pmode);
 		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		
+
 		// menu for number of samples
 		if (u8_pmode != 1) {
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
@@ -136,7 +137,7 @@ ESOS_USER_TASK(info)
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_SEND_STRING("How many samples: ");
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-			
+
 			ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
 			ESOS_TASK_WAIT_ON_GET_UINT8(u8_samples_input);
 			ESOS_TASK_SIGNAL_AVAILABLE_IN_COMM();
@@ -144,14 +145,14 @@ ESOS_USER_TASK(info)
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_SEND_UINT8(u8_samples_input);
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-			
+
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_SEND_STRING("\n");
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 		} else {
 			u8_samples_input = 0;   // 1 sample taken if one-shot
 		}
-		
+
 		u8_state = 0;
 	}
     ESOS_TASK_YIELD();
@@ -188,7 +189,7 @@ ESOS_USER_TASK(potenInterface)
 			//enter state 3
 			u8_state = 3;
 		}
-		
+
 	}
     ESOS_TASK_YIELD();
   }

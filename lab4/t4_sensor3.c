@@ -3,7 +3,7 @@
 //t4_sensor3.c - ditto sensor2 but display temperature
 
 //includes
-#include "esos_f14ui.c"
+#include "esos_f14ui.h"
 #include "esos_sensor.h"
 #include "esos_pic24_sensor.h"
 

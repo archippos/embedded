@@ -56,7 +56,7 @@ Configure and enable the sensor module for hwxxx hardware.
 void esos_sensor_config_hw (esos_sensor_ch_t e_senCh, esos_sensor_vref_t e_senVRef)
 {
   CONFIG_ANALOG();
-  CONFIG_DAC();
+  CONFIG_DAC();   //technically it's an ADC but...i don't care enough
 
   AD1CON1bits.ADON = 0;  //turn the thing off
   AD1CHS0bits.CH0SA = e_senCh; //AN for ch0 has to be 000000 to 111111

@@ -40,6 +40,7 @@
 
 #ifndef ESOS_SENSOR_H
 #define ESOS_SENSOR_H
+#define MAX16BIT 0xFFFF
 
 /* I N C L U D E S **********************************************************/
 #include <esos.h>

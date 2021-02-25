@@ -120,3 +120,40 @@ void esos_sensor_release_hw (void)
   esos_ClearUserFlag(ESOS_SENSOR_IS_CONVERTING_FLAG);
   AD1CON1bits.ADON = 0; //turn the thing off
 }
+
+//thank you landon casey for this suggestion for formatting outputs
+int convert_uint32_t_to_str(uint32_t u32_val, char *str, uint32_t len, int base)
+{
+    uint32_t i = 0;
+    uint32_t digit;
+
+    if (len == 0)
+        return -1;
+    for (; i < 10; i++)
+        str[i] = 0;
+    i = 0;
+    do {
+        digit = u32_val % base;
+        if (digit < 0xA)
+            str[i++] = '0' + digit;
+        else
+            str[i++] = 'A' + digit - 0xA;
+
+        u32_val /= base;
+    } while (u32_val && (i < (len - 1)));
+
+    if (i == (len - 1) && u32_val)
+        return -1;
+
+    str[i] = '\0';
+
+    // strrev:
+    char *p = str;
+    char *q = p;
+    while (q && *q)
+        ++q;
+    for (--q; p < q; ++p, --q)
+        *p = *p ^ *q, *q = *p ^ *q, *p = *p ^ *q;
+
+    return 0;
+}

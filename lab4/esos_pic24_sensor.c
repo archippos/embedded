@@ -53,6 +53,7 @@ Configure and enable the sensor module for hwxxx hardware.
 \param e_senVRef specifies sensor voltage reference
 \hideinitializer
  */
+
 void esos_sensor_config_hw (esos_sensor_ch_t e_senCh, esos_sensor_vref_t e_senVRef)
 {
   CONFIG_ANALOG();
@@ -66,6 +67,7 @@ void esos_sensor_config_hw (esos_sensor_ch_t e_senCh, esos_sensor_vref_t e_senVR
   AD1CHS123 = 0x0000;              //this is an alternate input method we don't need
   AD1CSSH = 0x0000;                //input scan select high
   AD1CSSL = 0x0000;                //input scan select low
+  AD1CHS0 = ADC_CH0_NEG_SAMPLEA_VREFN | e_senCh;
   AD1CON1bits.ADON = 1; //turn the thing back on
 }
 

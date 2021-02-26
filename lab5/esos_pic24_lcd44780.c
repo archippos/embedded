@@ -34,7 +34,7 @@
 
 /*** I N C L U D E S *************************************************/
 #include "revF14.h"
-#include "esos_pic24_lcd.h"
+#include "esos_pic24_lcd44780.h"
 
 /*** T H E   C O D E *************************************************/
 void __esos_lcd44780_pic24_config ( void )

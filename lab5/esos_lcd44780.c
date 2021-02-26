@@ -216,6 +216,8 @@ void esos_lcd44780_setCursor( uint8_t u8_row, uint8_t u8_column )
 {
     // Move cursor to (u8_row,u8_column) without changing memory buffer or the display
 	// TODO:  Write hardware-independent code here
+  esos_lcd44780_vars.u8_cursorRow = u8_row;
+  esos_lcd44780_vars.u8_cursorCol = u8_column;
 }
 
 void esos_lcd44780_writeChar( uint8_t u8_row, uint8_t u8_column, uint8_t u8_data )

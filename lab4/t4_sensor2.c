@@ -153,6 +153,11 @@ ESOS_USER_TASK(info)
 		ESOS_TASK_WAIT_ON_SEND_UINT8(u8_pmode);
 		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
+		
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
 		// menu for number of samples
 		if (u8_pmode != '1') {
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
@@ -193,6 +198,10 @@ ESOS_USER_TASK(info)
 			u8_samples_input = '0';   // 1 sample taken if one-shot
 		}
 		sample_conversion(u8_pmode, u8_samples_input);  // determine the processing constant
+
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("Thank You.\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 		u8_state = 0;
 	}
     ESOS_TASK_YIELD();

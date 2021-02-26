@@ -43,14 +43,15 @@ for sourceFile in Glob('chap14/*.c', True, True, True):
         'lib/src/pic24_util.c',
         'lib/src/pic24_serial.c',
         'lib/src/pic24_uart.c',
-        'lib/src/pic24_adc.c',
         'esos/src/esos.c',
         'esos/src/esos_comm.c',
         'esos/src/esos_cb.c',
-        'esos/src/esos_f14ui.c',    #user added
+        'esos/src/esos_f14ui.c',            #user added - lab 3
         'esos/src/esos_mail.c',
-        'esos/src/esos_sensor.c',    #user added
-        'esos/src/esos_pic24_sensor.c',    #user added
+        'esos/src/esos_sensor.c',           #user added - lab 4
+        'esos/src/esos_lcd44780.c',         #user added - lab 5
+        'esos/src/esos_pic24_sensor.c',     #user added - lab 4
+        'esos/src/esos_pic24_lcd44780.c',   #user added - lab 5
         'esos/src/pic24/esos_pic24_i2c.c',
         'esos/src/pic24/esos_pic24_irq.c',
         'esos/src/pic24/esos_pic24_rs232.c',

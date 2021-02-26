@@ -12,6 +12,8 @@
 #include "esos_f14ui.h"
 #include "esos_sensor.h"
 #include "esos_pic24_sensor.h"
+#include "esos_lcd44780_sensor.h"
+#include "esos_pic24_lcd44780.h"
 
 static uint8_t u8_state;
 static uint8_t u8_pmode = '1';

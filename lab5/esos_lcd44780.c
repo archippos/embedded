@@ -231,18 +231,24 @@ uint8_t esos_lcd44780_getChar( uint8_t u8_row, uint8_t u8_column )
 	return esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column];
 }
 
+//Kaneboi
 void esos_lcd44780_writeBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_data, uint8_t u8_bufflen )
 {
     // Write u8_bufflen characters from pu8_data to (u8_row,u8_column)
 	// TODO:  Write hardware-independent code here
+  for(i = 0; i < u8_bufflen; i++) {
+    esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column] = *pu8_data;
+    esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row][u8_column] = TRUE;
+  }
 }
+
 //Kaneboi
 void esos_lcd44780_getBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_data, uint8_t u8_bufflen )
 {
     // Return pu8_data with u8_bufflen characters currently displayed beginning at (u8_row,u8_column)
 	// TODO:  Write hardware-independent code here
 }
-//Kaneboi
+
 void esos_lcd44780_writeString( uint8_t u8_row, uint8_t u8_column, char *psz_data )
 {
     // Write zero-terminated string psz_data to location starting at (u8_row,u8_column)

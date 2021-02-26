@@ -265,12 +265,14 @@ void esos_lcd44780_setCursorBlink( BOOL u8_state )
 {
     // Set cursor blink state to u8_state
 	// TODO:  Write hardware-independent code here
+	esos_lcd44780_vars.b_cursorBlink = u8_state;
 }
 
 BOOL esos_lcd44780_getCursorBlink( void )
 {
     // Return cursor blink state
 	// TODO:  Write hardware-independent code here
+	return esos_lcd44780_vars.b_cursorBlink;
 }
 
 void esos_lcd44780_setDisplayVisible( BOOL u8_state )

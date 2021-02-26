@@ -5,7 +5,6 @@
 //              SW2_PRESSED samples potentiometer voltage every 1s until SW2 or SW1 pressed
 //              LCD screen displays a graphical representation of the potentio and temp value
 
-
 //includes
 #include "revF14.h"
 #include "esos.h"
@@ -89,10 +88,9 @@ ESOS_USER_TASK(heartbeat)
 	ESOS_TASK_END();
 }
 
-//TODO: DISPLAY OUTPUT (REGISTER TASK)
+//TODO: LCD FUNCTIONALITY
 ESOS_USER_TASK(info)
 {
-  //static uint8_t u8_state;        //this has to go outside if more than one task will use it
   static ESOS_TASK_HANDLE getADC; //this is the handle for the child we're gonna birth
   ESOS_TASK_BEGIN();
   while(TRUE)
@@ -101,41 +99,31 @@ ESOS_USER_TASK(info)
         //nothing needs to go here. we yield.
     } else if(u8_state == 1) {
 
-
       //Potintiometer stuff
       //if u8_state case 1: output once before goto state=0
       ESOS_ALLOCATE_CHILD_TASK(getADC);
-      //TODO: is VREF_3V0 ok? should it be 3V3? or lower? will need to check datasheets
       ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V3);
-
       //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
       ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
       ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
 
       ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();   //now we wait to send our data
-      //[logic to send out output as a hex string goes here] //This logic was used in lab 3
       ESOS_TASK_WAIT_ON_SEND_STRING("\nPotentiometer: ");
       ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(pu16_hexOut);
       ESOS_TASK_WAIT_ON_SEND_UINT8('\n');      //slap in a newline to made it purty
       ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();   //all done!
 
-
       //Temp stuff
       //if u8_state case 1: output once before goto state=0
       ESOS_ALLOCATE_CHILD_TASK(getADC);
-      //TODO: is VREF_3V0 ok? should it be 3V3? or lower? will need to check datasheets
-      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, TEMP_CHANNEL, ESOS_SENSOR_VREF_3V0);
-
+      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, TEMP_CHANNEL, ESOS_SENSOR_VREF_3V3);
       //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
       ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
       ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
 
-
       convert_temp_to_str(pu16_hexOut, tempStrUpper, tempStrLower);
 
-
       ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();   //now we wait to send our data
-      //[logic to send out output as a hex string goes here] //This logic was used in lab 3
       ESOS_TASK_WAIT_ON_SEND_STRING("Temp is ");
       ESOS_TASK_WAIT_ON_SEND_STRING(tempStrUpper);
       ESOS_TASK_WAIT_ON_SEND_STRING(".");
@@ -146,14 +134,12 @@ ESOS_USER_TASK(info)
       ESOS_TASK_WAIT_ON_SEND_UINT8('\n');      //slap in a newline to made it purty
       ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();   //all done!
 
-
-
       u8_state = 0;                            //goto state 0 to yield
     } else if(u8_state == 2) {
       //if u8_state case 2: output every 1s until "state" flag unset
       ESOS_ALLOCATE_CHILD_TASK(getADC);
 
-      do {    //use a do-while(state==2)???
+      do {
 	//Pot Stuff
         ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V3);
         //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
@@ -167,19 +153,15 @@ ESOS_USER_TASK(info)
 
         //if u8_state case 1: output once before goto state=0
         ESOS_ALLOCATE_CHILD_TASK(getADC);
-        //TODO: is VREF_3V0 ok? should it be 3V3? or lower? will need to check datasheets
-        ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, TEMP_CHANNEL, ESOS_SENSOR_VREF_3V0);
+        ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, TEMP_CHANNEL, ESOS_SENSOR_VREF_3V3);
 
         //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
         ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
         ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
 
-
         convert_temp_to_str(pu16_hexOut, tempStrUpper, tempStrLower);
 
-
         ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();   //now we wait to send our data
-        //[logic to send out output as a hex string goes here] //This logic was used in lab 3
         ESOS_TASK_WAIT_ON_SEND_STRING("Temp is ");
         ESOS_TASK_WAIT_ON_SEND_STRING(tempStrUpper);
         ESOS_TASK_WAIT_ON_SEND_STRING(".");
@@ -190,14 +172,10 @@ ESOS_USER_TASK(info)
         ESOS_TASK_WAIT_ON_SEND_UINT8('\n');      //slap in a newline to made it purty
         ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();   //all done!
 
-
-
-
         ESOS_TASK_WAIT_TICKS(1000);             //1000ms = 1s
       } while (u8_state == 2);
      // ESOS_SENSOR_CLOSE();
     } else if(u8_state == 3) {  // prompt the user for processing mode operation
-
 		// menu for processing modes
 		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 		ESOS_TASK_WAIT_ON_SEND_STRING("\n1. one-shot\n");
@@ -225,7 +203,6 @@ ESOS_USER_TASK(info)
 		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 		ESOS_TASK_WAIT_ON_SEND_UINT8(u8_pmode);
 		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-
 
 		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 		ESOS_TASK_WAIT_ON_SEND_STRING("\n");
@@ -282,7 +259,6 @@ ESOS_USER_TASK(info)
   ESOS_TASK_END();
 }
 
-//TODO: POTENTIOMETER INTERFACE (REGISTER TASK)
 ESOS_USER_TASK(potenInterface)
 {
   static BOOL b_switch1, b_switch2, b_switch3;
@@ -319,7 +295,6 @@ ESOS_USER_TASK(potenInterface)
   ESOS_TASK_END();
 }
 
-//TODO: VOID USER_INIT (call the tasks)
 void user_init()
 {
     config_esos_uiF14();

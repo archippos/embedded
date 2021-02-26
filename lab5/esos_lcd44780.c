@@ -31,7 +31,7 @@
  * \addtogroup ESOS_Task_LCD_Service
  * @{
  */
- 
+
 #include "esos_lcd44780.h"
 #include "esos_pic24_lcd44780.h"
 #include <esos.h>
@@ -182,7 +182,7 @@ void esos_lcd44780_init( void )
 	__esos_lcd44780_hw_configDataPinsAsOutput();
 	__ESOS_LCD44780_HW_SET_RW_WRITE();
 	__ESOS_LCD44780_HW_SET_RS_REGISTERS();
-	
+
 	// give HW specific code a chance to do anything else to init/config
 	__esos_lcd44780_hw_config();
 
@@ -203,15 +203,15 @@ void esos_lcd44780_clearScreen( void )
 	}
 
 	esos_lcd44780_setCursor(0,0);
-	esos_lcd44780_vars.b_cursorPositionNeedsUpdate = TRUE; 
+	esos_lcd44780_vars.b_cursorPositionNeedsUpdate = TRUE;
 }
 
 void esos_lcd44780_setCursorHome( void )
 {
 	esos_lcd44780_setCursor(0,0);
-	esos_lcd44780_vars.b_cursorPositionNeedsUpdate = TRUE; 
+	esos_lcd44780_vars.b_cursorPositionNeedsUpdate = TRUE;
 }
-
+//Kaneboi
 void esos_lcd44780_setCursor( uint8_t u8_row, uint8_t u8_column )
 {
     // Move cursor to (u8_row,u8_column) without changing memory buffer or the display
@@ -234,13 +234,13 @@ void esos_lcd44780_writeBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_
     // Write u8_bufflen characters from pu8_data to (u8_row,u8_column)
 	// TODO:  Write hardware-independent code here
 }
-
+//Kaneboi
 void esos_lcd44780_getBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_data, uint8_t u8_bufflen )
 {
     // Return pu8_data with u8_bufflen characters currently displayed beginning at (u8_row,u8_column)
 	// TODO:  Write hardware-independent code here
 }
-
+//Kaneboi
 void esos_lcd44780_writeString( uint8_t u8_row, uint8_t u8_column, char *psz_data )
 {
     // Write zero-terminated string psz_data to location starting at (u8_row,u8_column)
@@ -338,7 +338,7 @@ ESOS_CHILD_TASK(__esos_lcd44780_read_u8, uint8_t *pu8_data, BOOL b_isData, BOOL 
     } else {
         __ESOS_LCD44780_HW_SET_RS_REGISTERS();
     }
-    
+
     __ESOS_LCD44780_HW_SET_RW_READ();
 	__esos_lcd44780_hw_configDataPinsAsInput();
 
@@ -367,10 +367,10 @@ ESOS_CHILD_TASK(__esos_lcd44780_write_u8, uint8_t u8_data, BOOL b_isData, BOOL b
     } else {
         __ESOS_LCD44780_HW_SET_RS_REGISTERS();
     }
-	
+
     __ESOS_LCD44780_HW_SET_RW_WRITE();
 	__esos_lcd44780_hw_configDataPinsAsOutput();
-    
+
     __esos_lcd44780_hw_setDataPins( u8_data );
 
 	__ESOS_LCD44780_HW_SET_E_HIGH();
@@ -384,9 +384,9 @@ ESOS_CHILD_TASK(__esos_lcd44780_write_u8, uint8_t u8_data, BOOL b_isData, BOOL b
 ESOS_CHILD_TASK( __esos_task_wait_lcd44780_while_busy  )
 {
     static BOOL b_hw_lcd_isBusy = FALSE;
-    
+
     ESOS_TASK_BEGIN();
-    
+
 	while ( TRUE ) {
 		__esos_lcd44780_hw_configDataPinsAsInput();
 		__ESOS_LCD44780_HW_SET_RS_REGISTERS();
@@ -400,6 +400,6 @@ ESOS_CHILD_TASK( __esos_task_wait_lcd44780_while_busy  )
             ESOS_TASK_EXIT();
         }
 	};
-    
+
     ESOS_TASK_END();
 }

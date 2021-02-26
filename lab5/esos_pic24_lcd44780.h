@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef ESOS_pic24_LCD_H
-#define ESOS_pic24_LCD_H
+#ifndef ESOS_PIC24_LCD_H
+#define ESOS_PIC24_LCD_H
 
 /**
  * \addtogroup ESOS_Task_LCD_Service

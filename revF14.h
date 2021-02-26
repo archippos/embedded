@@ -92,7 +92,7 @@
         AD1CON1bits.DONE = 0;    /* clear done flag */                      \
                                                                             \
         /*      AD1CON2     : ADC Control Register 2 page 16-(9,10)     */  \
-        AD1CON2bits.VCFG = 0b01; /*use extern vref+ & internal vref-*/      \
+        AD1CON2bits.VCFG = 0b000; /*use extern vref+ & internal vref-*/      \
         AD1CON2bits.CSCNA = 0;    /* disable input scan */                  \
         AD1CON2bits.CHPS = 0b00;  /* channel select bits, this is 0 for the 12 bit one channel */ \
         AD1CON2bits.SMPI = 0b00000; /*create interrupt each conversion*/    \

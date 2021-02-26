@@ -12,64 +12,64 @@
 #include "esos_pic24_sensor.h"
 
 static uint8_t u8_state;
-static uint8_t u8_pmode = 1;
-static uint8_t u8_samples_input = 0;
+static uint8_t u8_pmode = '1';
+static uint8_t u8_samples_input = '0';
 static uint8_t u8_proccessConst = ESOS_SENSOR_ONE_SHOT;
 static uint16_t pu16_hexOut;
 
 // determine processing constant
 void sample_conversion (uint8_t u8_pmode, uint8_t u8_samples_input) {
-	if (u8_pmode == 1 && u8_samples_input == 0) {
+	if ((u8_pmode == '1') && (u8_samples_input == '0')) {
 		u8_proccessConst = ESOS_SENSOR_ONE_SHOT;
-	} else if (u8_pmode == 2 && u8_samples_input == 1 ) {
+	} else if ((u8_pmode == '2') && (u8_samples_input == '1') ) {
 		u8_proccessConst = ESOS_SENSOR_AVG2;
-	} else if (u8_pmode == 2 && u8_samples_input == 2 ) {
+	} else if ((u8_pmode == '2') && (u8_samples_input == '2') ) {
 		u8_proccessConst = ESOS_SENSOR_AVG4;
-	} else if (u8_pmode == 2 && u8_samples_input == 3 ) {
+	} else if ((u8_pmode == '2') && (u8_samples_input == '3') ) {
 		u8_proccessConst = ESOS_SENSOR_AVG8;
-	} else if (u8_pmode == 2 && u8_samples_input == 4 ) {
+	} else if ((u8_pmode == '2') && (u8_samples_input == '4') ) {
 		u8_proccessConst = ESOS_SENSOR_AVG16;
-	} else if (u8_pmode == 2 && u8_samples_input == 5 ) {
+	} else if ((u8_pmode == '2') && (u8_samples_input == '5') ) {
 		u8_proccessConst = ESOS_SENSOR_AVG32;
-	} else if (u8_pmode == 2 && u8_samples_input == 6 ) {
+	} else if ((u8_pmode == '2') && (u8_samples_input == '6') ) {
 		u8_proccessConst = ESOS_SENSOR_AVG64;
-	} else if (u8_pmode == 3 && u8_samples_input == 1 ) {
+	} else if ((u8_pmode == '3') && (u8_samples_input == '1') ) {
 		u8_proccessConst = ESOS_SENSOR_MIN2;
-	} else if (u8_pmode == 3 && u8_samples_input == 2 ) {
+	} else if ((u8_pmode == '3') && (u8_samples_input == '2') ) {
 		u8_proccessConst = ESOS_SENSOR_MIN4;
-	} else if (u8_pmode == 3 && u8_samples_input == 3 ) {
+	} else if ((u8_pmode == '3') && (u8_samples_input == '3') ) {
 		u8_proccessConst = ESOS_SENSOR_MIN8;
-	} else if (u8_pmode == 3 && u8_samples_input == 4 ) {
+	} else if ((u8_pmode == '3') && (u8_samples_input == '4') ) {
 		u8_proccessConst = ESOS_SENSOR_MIN16;
-	} else if (u8_pmode == 3 && u8_samples_input == 5 ) {
+	} else if ((u8_pmode == '3') && (u8_samples_input == '5') ) {
 		u8_proccessConst = ESOS_SENSOR_MIN32;
-	} else if (u8_pmode == 3 && u8_samples_input == 6 ) {
+	} else if ((u8_pmode == '3') && (u8_samples_input == '6') ) {
 		u8_proccessConst = ESOS_SENSOR_MIN64;
-	} else if (u8_pmode == 4 && u8_samples_input == 1 ) {
+	} else if ((u8_pmode == '4') && (u8_samples_input == '1') ) {
 		u8_proccessConst = ESOS_SENSOR_MAX2;
-	} else if (u8_pmode == 4 && u8_samples_input == 2 ) {
+	} else if ((u8_pmode == '4') && (u8_samples_input == '2') ) {
 		u8_proccessConst = ESOS_SENSOR_MAX4;
-	} else if (u8_pmode == 4 && u8_samples_input == 3 ) {
+	} else if ((u8_pmode == '4') && (u8_samples_input == '3') ) {
 		u8_proccessConst = ESOS_SENSOR_MAX8;
-	} else if (u8_pmode == 4 && u8_samples_input == 4 ) {
+	} else if ((u8_pmode == '4') && (u8_samples_input == '4') ) {
 		u8_proccessConst = ESOS_SENSOR_MAX16;
-	} else if (u8_pmode == 4 && u8_samples_input == 5 ) {
+	} else if ((u8_pmode == '4') && (u8_samples_input == '5') ) {
 		u8_proccessConst = ESOS_SENSOR_MAX32;
-	} else if (u8_pmode == 4 && u8_samples_input == 6 ) {
+	} else if ((u8_pmode == '4') && (u8_samples_input == '6') ) {
 		u8_proccessConst = ESOS_SENSOR_MAX64;
-	} else if (u8_pmode == 5 && u8_samples_input == 1 ) {
+	} else if ((u8_pmode == '5') && (u8_samples_input == '1') ) {
 		u8_proccessConst = ESOS_SENSOR_MEDIAN2;
-	} else if (u8_pmode == 5 && u8_samples_input == 2 ) {
+	} else if ((u8_pmode == '5') && (u8_samples_input == '2') ) {
 		u8_proccessConst = ESOS_SENSOR_MEDIAN4;
-	} else if (u8_pmode == 5 && u8_samples_input == 3 ) {
+	} else if ((u8_pmode == '5') && (u8_samples_input == '3') ) {
 		u8_proccessConst = ESOS_SENSOR_MEDIAN8;
-	} else if (u8_pmode == 5 && u8_samples_input == 4 ) {
+	} else if ((u8_pmode == '5') && (u8_samples_input == '4') ) {
 		u8_proccessConst = ESOS_SENSOR_MEDIAN16;
-	} else if (u8_pmode == 5 && u8_samples_input == 5 ) {
+	} else if ((u8_pmode == '5') && (u8_samples_input == '5') ) {
 		u8_proccessConst = ESOS_SENSOR_MEDIAN32;
-	} else if (u8_pmode == 5 && u8_samples_input == 6 ) {
+	} else if ((u8_pmode == '5') && (u8_samples_input == '6') ) {
 		u8_proccessConst = ESOS_SENSOR_MEDIAN64;
-	} 
+	}
 }
 
 // heartbeat on LED 3
@@ -97,8 +97,8 @@ ESOS_USER_TASK(info)
       //if u8_state case 1: output once before goto state=0
       ESOS_ALLOCATE_CHILD_TASK(getADC);
       //TODO: is VREF_3V0 ok? should it be 3V3? or lower? will need to check datasheets
-      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V0);
-	  
+      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V3);
+
       //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
 	  ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
       ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
@@ -112,7 +112,7 @@ ESOS_USER_TASK(info)
     } else if(u8_state == 2) {
       //if u8_state case 2: output every 1s until "state" flag unset
       ESOS_ALLOCATE_CHILD_TASK(getADC);
-      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V0);
+      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V3);
       do {    //use a do-while(state==2)???
         //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
 		ESOS_TASK_WAIT_SENSOR_READ(pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
@@ -153,8 +153,13 @@ ESOS_USER_TASK(info)
 		ESOS_TASK_WAIT_ON_SEND_UINT8(u8_pmode);
 		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
+		
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
 		// menu for number of samples
-		if (u8_pmode != 1) {
+		if (u8_pmode != '1') {
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_SEND_STRING("\n\n1. two\n");
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
@@ -188,11 +193,15 @@ ESOS_USER_TASK(info)
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_SEND_STRING("\n");
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-			
+
 		} else {
-			u8_samples_input = 0;   // 1 sample taken if one-shot
+			u8_samples_input = '0';   // 1 sample taken if one-shot
 		}
 		sample_conversion(u8_pmode, u8_samples_input);  // determine the processing constant
+
+		ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+		ESOS_TASK_WAIT_ON_SEND_STRING("Thank You.\n");
+		ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 		u8_state = 0;
 	}
     ESOS_TASK_YIELD();

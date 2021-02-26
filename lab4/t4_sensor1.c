@@ -41,7 +41,7 @@ ESOS_USER_TASK(info)
       //if u8_state case 1: output once before goto state=0
       ESOS_ALLOCATE_CHILD_TASK(getADC);
       //TODO: is VREF_3V0 ok? should it be 3V3? or lower? will need to check datasheets
-      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V0);
+      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V3);
       ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
       ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
       ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();   //now we wait to send our data
@@ -53,7 +53,7 @@ ESOS_USER_TASK(info)
     } else if(u8_state == 2) {
       //if u8_state case 2: output every 1s until "state" flag unset
       ESOS_ALLOCATE_CHILD_TASK(getADC);
-      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V0);
+      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V3);
       do {    //use a do-while(state==2)???
         ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
         ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();

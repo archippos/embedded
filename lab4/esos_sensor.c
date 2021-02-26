@@ -40,7 +40,6 @@
 *
 * \hideinitializer
 */
-#define MAX16BIT 0xFFFF
 
 ESOS_CHILD_TASK(_WAIT_ON_AVAILABLE_SENSOR, esos_sensor_ch_t e_senCh, esos_sensor_vref_t e_senVRef)
 {
@@ -262,8 +261,8 @@ ESOS_CHILD_TASK(_WAIT_SENSOR_READ, uint16_t* pu16_data, uint8_t e_senProcess, es
 	}
 	//Minimum
 	else if(e_senProcess == ESOS_SENSOR_MIN2){
-		//*pu16_data = MAX16BIT; // default to maximum 16 bit value.
-		*pu16_data = UINT16_MAX; // default to maximum 16 bit value.
+		*pu16_data = MAX16BIT; // default to maximum 16 bit value.
+		//*pu16_data = UINT16_MAX; // default to maximum 16 bit value.
 		while(arrayCount < 2){
 			if (au16_dataArr[arrayCount] < *pu16_data){
 				*pu16_data = au16_dataArr[arrayCount];
@@ -272,8 +271,8 @@ ESOS_CHILD_TASK(_WAIT_SENSOR_READ, uint16_t* pu16_data, uint8_t e_senProcess, es
 		}
 	}
 	else if(e_senProcess == ESOS_SENSOR_MIN4){
-		//*pu16_data = MAX16BIT; // default to maximum 16 bit value.
-		*pu16_data = UINT16_MAX; // default to maximum 16 bit value.
+		*pu16_data = MAX16BIT; // default to maximum 16 bit value.
+		//*pu16_data = UINT16_MAX; // default to maximum 16 bit value.
 		while(arrayCount < 4){
 			if (au16_dataArr[arrayCount] < *pu16_data){
 				*pu16_data = au16_dataArr[arrayCount];
@@ -282,8 +281,8 @@ ESOS_CHILD_TASK(_WAIT_SENSOR_READ, uint16_t* pu16_data, uint8_t e_senProcess, es
 		}
 	}
 	else if(e_senProcess == ESOS_SENSOR_MIN8){
-		//*pu16_data = MAX16BIT; // default to maximum 16 bit value.
-		*pu16_data = UINT16_MAX; // default to maximum 16 bit value.
+		*pu16_data = MAX16BIT; // default to maximum 16 bit value.
+		//*pu16_data = UINT16_MAX; // default to maximum 16 bit value.
 		while(arrayCount < 8){
 			if (au16_dataArr[arrayCount] < *pu16_data){
 				*pu16_data = au16_dataArr[arrayCount];
@@ -292,8 +291,8 @@ ESOS_CHILD_TASK(_WAIT_SENSOR_READ, uint16_t* pu16_data, uint8_t e_senProcess, es
 		}
 	}
 	else if(e_senProcess == ESOS_SENSOR_MIN16){
-		//*pu16_data = MAX16BIT; // default to maximum 16 bit value.
-		*pu16_data = UINT16_MAX; // default to maximum 16 bit value.
+		*pu16_data = MAX16BIT; // default to maximum 16 bit value.
+		//*pu16_data = UINT16_MAX; // default to maximum 16 bit value.
 		while(arrayCount < 16){
 			if (au16_dataArr[arrayCount] < *pu16_data){
 				*pu16_data = au16_dataArr[arrayCount];
@@ -302,8 +301,8 @@ ESOS_CHILD_TASK(_WAIT_SENSOR_READ, uint16_t* pu16_data, uint8_t e_senProcess, es
 		}
 	}
 	else if(e_senProcess == ESOS_SENSOR_MIN32){
-		//*pu16_data = MAX16BIT; // default to maximum 16 bit value.
-		*pu16_data = UINT16_MAX; // default to maximum 16 bit value.
+		*pu16_data = MAX16BIT; // default to maximum 16 bit value.
+		//*pu16_data = UINT16_MAX; // default to maximum 16 bit value.
 		while(arrayCount < 32){
 			if (au16_dataArr[arrayCount] < *pu16_data){
 				*pu16_data = au16_dataArr[arrayCount];
@@ -312,8 +311,8 @@ ESOS_CHILD_TASK(_WAIT_SENSOR_READ, uint16_t* pu16_data, uint8_t e_senProcess, es
 		}
 	}
 	else if(e_senProcess == ESOS_SENSOR_MIN64){
-		//*pu16_data = MAX16BIT; // default to maximum 16 bit value.
-		*pu16_data = UINT16_MAX; // default to maximum 16 bit value.
+		*pu16_data = MAX16BIT; // default to maximum 16 bit value.
+		//*pu16_data = UINT16_MAX; // default to maximum 16 bit value.
 		while(arrayCount < 64){
 			if (au16_dataArr[arrayCount] < *pu16_data){
 				*pu16_data = au16_dataArr[arrayCount];

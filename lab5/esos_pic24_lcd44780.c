@@ -36,6 +36,7 @@
 #include "esos_pic24_lcd.h"
 
 /*** T H E   C O D E *************************************************/
+//kaneboi
 void __esos_lcd44780_pic24_config ( void )
 {
     // Set up the hardware aspects of the interface of the LCD module service
@@ -43,35 +44,35 @@ void __esos_lcd44780_pic24_config ( void )
 
 
 }
-
+//kaneboi
 void __esos_lcd44780_pic24_setDataPins( uint8_t u8_data) {
 	// write the hardware-specific code to take the u8_data passed in
 	// and place it on the appropriate data pins
 
 }
-
+//kaneboi
 uint8_t __esos_lcd44780_pic24_getDataPins( void ) {
 	// write the hardware-specific code to read the appropriate data pins
 	// and create the uint8 data to return to the caller
 
 }
-
+//kaneboi
 void __esos_lcd44780_pic24_configDataPinsAsInput( void ) {
 	// write the hardware-specific code to set the LCD character module
 	// data pins to be "inputs" to prepare for a read of the LCD module
 
 }
-
+//kaneboi
 void __esos_lcd44780_pic24_configDataPinsAsOutput( void ) {
 	// write the hardware-specific code to set the LCD character module
 	// data pins to be "outputs" to prepare for a write to the LCD module
 
 }
-
+//kaneboi
 void __esos_lcd44780_configDisplay() {
   // initialize the LCD memory buffers
 }
-
+//kaneboi
 void __esos_lcd44780_init() {
   // execute LCD initialization (refer to datasheet to begin power-up / refreshing screen)
 }
@@ -92,7 +93,7 @@ void esos_lcd44780_clearScreen( void )
 	esos_lcd44780_setCursor(0,0);
 	esos_lcd44780_vars.b_cursorPositionNeedsUpdate = TRUE;
 }
-
+//kaneboi
 void esos_lcd44780_setCursor( uint8_t u8_row, uint8_t u8_column )
 {
     // Move cursor to (u8_row,u8_column) without changing memory buffer or the display
@@ -109,13 +110,13 @@ uint8_t esos_lcd44780_getChar( uint8_t u8_row, uint8_t u8_column )
 {
 	return esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column];
 }
-
+//kaneboi
 void esos_lcd44780_writeBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_data, uint8_t u8_bufflen )
 {
     // Write u8_bufflen characters from pu8_data to (u8_row,u8_column)
 	// TODO:  Write hardware-independent code here
 }
-
+//kaneboi
 void esos_lcd44780_getBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_data, uint8_t u8_bufflen )
 {
     // Return pu8_data with u8_bufflen characters currently displayed beginning at (u8_row,u8_column)

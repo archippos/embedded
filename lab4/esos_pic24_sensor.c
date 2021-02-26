@@ -68,6 +68,7 @@ void esos_sensor_config_hw (esos_sensor_ch_t e_senCh, esos_sensor_vref_t e_senVR
   AD1CSSH = 0x0000;                //input scan select high
   AD1CSSL = 0x0000;                //input scan select low
   AD1CHS0 = ADC_CH0_NEG_SAMPLEA_VREFN | e_senCh;
+  AD1CON3 = ADC_CONV_CLK_INTERNAL_RC | ADC_SAMPLE_TIME_31;
   AD1CON1bits.ADON = 1; //turn the thing back on
 }
 

@@ -218,6 +218,7 @@ void esos_lcd44780_setCursor( uint8_t u8_row, uint8_t u8_column )
 	// TODO:  Write hardware-independent code here
   esos_lcd44780_vars.u8_cursorRow = u8_row;
   esos_lcd44780_vars.u8_cursorCol = u8_column;
+	esos_lcd44780_vars.b_cursorPositionNeedsUpdate = TRUE;	//verify
 }
 
 void esos_lcd44780_writeChar( uint8_t u8_row, uint8_t u8_column, uint8_t u8_data )
@@ -234,11 +235,13 @@ uint8_t esos_lcd44780_getChar( uint8_t u8_row, uint8_t u8_column )
 //Kaneboi
 void esos_lcd44780_writeBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_data, uint8_t u8_bufflen )
 {
+	int i;
     // Write u8_bufflen characters from pu8_data to (u8_row,u8_column)
 	// TODO:  Write hardware-independent code here
   for(i = 0; i < u8_bufflen; i++) {
-    esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column] = *pu8_data;
-    esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row][u8_column] = TRUE;
+    //esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column] = *pu8_data;
+    //esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row][u8_column] = TRUE;
+		esos_lcd44780_writeChar(u8_row, u8_column + n, pu8_data[n]);	//writeChar can handle this neatly maybe
   }
 }
 
@@ -247,31 +250,48 @@ void esos_lcd44780_getBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_da
 {
     // Return pu8_data with u8_bufflen characters currently displayed beginning at (u8_row,u8_column)
 	// TODO:  Write hardware-independent code here
+	int i;
+	for (i = 0; i < u8_bufflen; i++) {
+		pu8_data[i] = esos_lcd44780_getChar(u8_row, u8_column + i);
+}
 }
 
 void esos_lcd44780_writeString( uint8_t u8_row, uint8_t u8_column, char *psz_data )
 {
     // Write zero-terminated string psz_data to location starting at (u8_row,u8_column)
 	// TODO:  Write hardware-independent code here
+	int i = 0;
+	while (psz_data[i] != '\0') {
+		esos_lcd44780_writeChar(u8_row, u8_column+n, psz_data[n]);
+		i++;
+	}
 }
 
 void esos_lcd44780_setCursorDisplay( BOOL u8_state )
 {
     // Set cursor display state to u8_state
 	// TODO:  Write hardware-independent code here
+	if (u8_state != esos_lcd44780_getCursorDisplay()) {
+		esos_lcd44780_vars.b_cursorShown = u8_state;
+		esos_lcd44780_vars.b_cursorShownNeedsUpdate = TRUE;
+	}
 }
 
 BOOL esos_lcd44780_getCursorDisplay( void )
 {
     // Return cursor display state
 	// TODO:  Write hardware-independent code here
+	return esos_lcd44780_vars.b_cursorShown;	//show cursor
 }
 
 void esos_lcd44780_setCursorBlink( BOOL u8_state )
 {
     // Set cursor blink state to u8_state
 	// TODO:  Write hardware-independent code here
-	esos_lcd44780_vars.b_cursorBlink = u8_state;
+	if (u8_state != esos_lcd44780_getCursorBlink()) {
+		esos_lcd44780_vars.b_cursorBlink = u8_state;
+		esos_lcd44780_vars.b_cursorBlinkNeedsUpdate = TRUE;
+	}
 }
 
 BOOL esos_lcd44780_getCursorBlink( void )

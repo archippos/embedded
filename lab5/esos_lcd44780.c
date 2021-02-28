@@ -305,24 +305,40 @@ void esos_lcd44780_setDisplayVisible( BOOL u8_state )
 {
     // Set display visible state to u8_state
 	// TODO:  Write hardware-independent code here
+	if (u8_state != esos_lcd44780_getDisplayVisible()) {
+		esos_lcd44780_vars.b_displayVisible = u8_state;
+		esos_lcd44780_vars.b_displayVisibleNeedsUpdate = TRUE;
+	}
 }
 
 BOOL esos_lcd44780_getDisplayVisible( void )
 {
     // Return display visible state
 	// TODO:  Write hardware-independent code here
+	return esos_lcd44780_vars.b_displayVisible;
 }
 
 void esos_lcd44780_setCustomChar( uint8_t u8_charSlot, uint8_t *pu8_charData )
 {
     // Set custom character memory for u8_charSlot to data in pu8_charData
 	// TODO:  Write hardware-independent code here
+	int i;
+	for (i = 0; i < 8; i++) {
+		//use customChar memory here. for custom chars. yknow
+		esos_lcd44780_vars.ast_customChar[u8_charSlot].au8_data[i] = pu8_charData[i];
+	}
+	esos_lcd44780_vars.ab_customCharNeedsUpdate[u8_charSlot] = TRUE;
 }
 
 void esos_lcd44780_getCustomChar( uint8_t u8_charSlot, uint8_t *pu8_charData )
 {
     // Return pu8_charData with custom character memory for u8_charSlot
 	// TODO:  Write hardware-independent code here
+	int i;
+	//return the custom char data
+	for (i = 0; i < 8; i++) {
+		pu8_charData[i] = esos_lcd44780_vars.ast_customChar[u8_charSlot].au8_data[i];
+	}
 }
 
 BOOL esos_lcd44780_isCurrent( void )

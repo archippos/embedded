@@ -107,4 +107,90 @@
         AD1CON4bits.ADDMAEN = 0;                                              \
         AD1CON1bits.ADON = 1;   /*turn it back on*/                           \
     }
+
+
+
+
+
+#define LCD44780_RS      (_LATC12)
+#define LCD44780_R/W     (_LATD11)
+#define LCD44780_E       (_LATD10)
+#define LCD44780_DB0     (_LATE0)
+#define LCD44780_DB1     (_LATE1)
+#define LCD44780_DB2     (_LATE2)
+#define LCD44780_DB3     (_LATE3)
+#define LCD44780_DB4     (_LATE4)
+#define LCD44780_DB5     (_LATE5)
+#define LCD44780_DB6     (_LATE6)
+#define LCD44780_DB7     (_LATE7)
+
+#define CONFIG_LCD0_AS_INPUT() {	\
+        CONFIG_RE0_AS_DIG_INPUT();	\
+	ENABLE_RE0_PULLUP();		\
+}
+#define CONFIG_LCD1_AS_INPUT(){	\
+        CONFIG_RE1_AS_DIG_INPUT();	\
+	ENABLE_RE1_PULLUP();		\
+}
+#define CONFIG_LCD2_AS_INPUT() {	\
+        CONFIG_RE2_AS_DIG_INPUT();	\
+	ENABLE_RE2_PULLUP();		\
+}
+#define CONFIG_LCD3_AS_INPUT() {	\
+        CONFIG_RE3_AS_DIG_INPUT();	\
+	ENABLE_RE3_PULLUP();		\
+}
+#define CONFIG_LCD4_AS_INPUT(){	\
+        CONFIG_RE4_AS_DIG_INPUT();	\
+	ENABLE_RE4_PULLUP();		\
+}
+#define CONFIG_LCD5_AS_INPUT() {	\
+        CONFIG_RE5_AS_DIG_INPUT();	\
+	ENABLE_RE5_PULLUP();		\
+}
+#define CONFIG_LCD6_AS_INPUT() {	\
+        CONFIG_RE6_AS_DIG_INPUT();	\
+	ENABLE_RE6_PULLUP();		\
+}
+#define CONFIG_LCD7_AS_INPUT() {	\
+        CONFIG_RE7_AS_DIG_INPUT();	\
+	ENABLE_RE7_PULLUP();		\
+}
+
+#define CONFIG_LCD0_AS_OUTPUT() {	\
+        CONFIG_RE0_AS_DIG_OUTPUT();	\
+	DISABLE_RE0_PULLUP();		\
+}
+#define CONFIG_LCD1_AS_OUTPUT() {	\
+        CONFIG_RE1_AS_DIG_OUTPUT();	\
+	DISABLE_RE1_PULLUP();		\
+}
+#define CONFIG_LCD2_AS_OUTPUT() {	\
+        CONFIG_RE2_AS_DIG_OUTPUT();	\
+	DISABLE_RE2_PULLUP();		\
+}
+#define CONFIG_LCD3_AS_OUTPUT() {	\
+        CONFIG_RE3_AS_DIG_OUTPUT();	\
+	DISABLE_RE3_PULLUP();		\
+}
+#define CONFIG_LCD4_AS_OUTPUT() {	\
+        CONFIG_RE4_AS_DIG_OUTPUT();	\
+	DISABLE_RE4_PULLUP();		\
+}
+#define CONFIG_LCD5_AS_OUTPUT() {	\
+        CONFIG_RE5_AS_DIG_OUTPUT();	\
+	DISABLE_RE5_PULLUP();		\
+}
+#define CONFIG_LCD6_AS_OUTPUT() {	\
+        CONFIG_RE6_AS_DIG_OUTPUT();	\
+	DISABLE_RE6_PULLUP();		\
+}
+#define CONFIG_LCD7_AS_OUTPUT() {	\
+        CONFIG_RE7_AS_DIG_OUTPUT();	\
+	DISABLE_RE7_PULLUP();		\
+}
+
+//maybe add a genreal configure for all inputs and outputs
+
+
 #endif

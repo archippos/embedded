@@ -250,7 +250,7 @@ void esos_lcd44780_getBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_da
 	// TODO:  Write hardware-independent code here
 	for(i = 0; i < u8_bufflen; i++) {
 		*pu8_data = esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column];
-		u8_row++;
+		u8_column++;
 	}
 }
 

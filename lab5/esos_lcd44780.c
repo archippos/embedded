@@ -32,6 +32,7 @@
  * @{
  */
 
+#include "revF14.h"
 #include "esos_lcd44780.h"
 #include "esos_pic24_lcd44780.h"
 #include <esos.h>

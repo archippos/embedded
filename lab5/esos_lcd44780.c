@@ -238,15 +238,9 @@ void esos_lcd44780_writeBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_
 	int i;
     // Write u8_bufflen characters from pu8_data to (u8_row,u8_column)
   for(i = 0; i < u8_bufflen; i++) {
-<<<<<<< HEAD
-    esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column] = *pu8_data;
-    esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row][u8_column] = TRUE;
-		u8_column++;
-=======
     //esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column] = *pu8_data;
     //esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row][u8_column] = TRUE;
 		esos_lcd44780_writeChar(u8_row, u8_column + n, pu8_data[n]);	//writeChar can handle this neatly maybe
->>>>>>> 8c3a4986c64c35ad28ed1bf50e28fdcca5c52dd9
   }
 }
 
@@ -254,18 +248,10 @@ void esos_lcd44780_writeBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_
 void esos_lcd44780_getBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_data, uint8_t u8_bufflen )
 {
     // Return pu8_data with u8_bufflen characters currently displayed beginning at (u8_row,u8_column)
-<<<<<<< HEAD
-	// TODO:  Write hardware-independent code here
-	for(i = 0; i < u8_bufflen; i++) {
-		*pu8_data = esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column];
-		u8_column++;
-	}
-=======
 	int i;
 	for (i = 0; i < u8_bufflen; i++) {
 		pu8_data[i] = esos_lcd44780_getChar(u8_row, u8_column + i);
 }
->>>>>>> 8c3a4986c64c35ad28ed1bf50e28fdcca5c52dd9
 }
 
 void esos_lcd44780_writeString( uint8_t u8_row, uint8_t u8_column, char *psz_data )

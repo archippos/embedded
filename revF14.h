@@ -124,6 +124,19 @@
 #define LCD44780_DB6     (_LATE6)
 #define LCD44780_DB7     (_LATE7)
 
+#define CONFIG_RS() {  			\
+	CONFIG_RC12_AS_DIG_OUTPUT();	\
+}
+
+#define CONFIG_RW() {  			\
+	CONFIG_RC11_AS_DIG_OUTPUT();	\
+}
+
+
+#define CONFIG_E() {  			\
+	CONFIG_RC10_AS_DIG_OUTPUT();	\
+}
+
 #define CONFIG_LCD0_AS_INPUT() {	\
         CONFIG_RE0_AS_DIG_INPUT();	\
 	ENABLE_RE0_PULLUP();		\

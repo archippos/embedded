@@ -56,37 +56,37 @@
 #define  __esos_lcd44780_hw_configDataPinsAsOutput \
     __esos_lcd44780_pic24_configDataPinsAsOutput
 
-#define  __ESOS_LCD44780_HW_SET_E_HIGH()          (LCD44780_E = 1)       // E=1
-#define  __ESOS_LCD44780_HW_SET_E_LOW           __ESOS_LCD44780_PIC24_SET_E_LOW()        // E=0
-#define  __ESOS_LCD44780_HW_SET_RW_READ         __ESOS_LCD44780_PIC24_SET_RW_READ()      // RW=1
-#define  __ESOS_LCD44780_HW_SET_RW_WRITE        __ESOS_LCD44780_PIC24_SET_RW_WRITE()     // RW=0
-#define  __ESOS_LCD44780_HW_SET_RS_REGISTERS    __ESOS_LCD44780_PIC24_SET_RS_REGISTERS() // RS=0
-#define  __ESOS_LCD44780_HW_SET_RS_DATA         __ESOS_LCD44780_PIC24_SET_RS_DATA()      // RS=1
+#define  __ESOS_LCD44780_HW_SET_E_HIGH()          (LCD44780_E = 1)    // E=1
+#define  __ESOS_LCD44780_HW_SET_E_LOW()           (LCD44780_E = 0)    // E=0
+#define  __ESOS_LCD44780_HW_SET_RW_READ()         (LCD44780_RW = 1)   // RW=1
+#define  __ESOS_LCD44780_HW_SET_RW_WRITE()        (LCD44780_RW = 0)   // RW=0
+#define  __ESOS_LCD44780_HW_SET_RS_REGISTERS()    (LCD44780_RS = 0)   // RS=0
+#define  __ESOS_LCD44780_HW_SET_RS_DATA()         (LCD44780_RS = 1)   // RS=1
 
-#define  __ESOS_LCD44780_HW_SET_D0              __ESOS_LCD44780_PIC24_SET_D0(BOOL state)
-#define  __ESOS_LCD44780_HW_CLEAR_D0            __ESOS_LCD44780_PIC24_CLEAR_D0()
-#define  __ESOS_LCD44780_HW_GET_D0              __ESOS_LCD44780_PIC24_GET_D0()
-#define  __ESOS_LCD44780_HW_SET_D1              __ESOS_LCD44780_PIC24_SET_D1(BOOL state)
-#define  __ESOS_LCD44780_HW_CLEAR_D1            __ESOS_LCD44780_PIC24_CLEAR_D1()
-#define  __ESOS_LCD44780_HW_GET_D1              __ESOS_LCD44780_PIC24_GET_D1()
-#define  __ESOS_LCD44780_HW_SET_D2              __ESOS_LCD44780_PIC24_SET_D2(BOOL state)
-#define  __ESOS_LCD44780_HW_CLEAR_D2            __ESOS_LCD44780_PIC24_CLEAR_D2()
-#define  __ESOS_LCD44780_HW_GET_D2              __ESOS_LCD44780_PIC24_GET_D2()
-#define  __ESOS_LCD44780_HW_SET_D3              __ESOS_LCD44780_PIC24_SET_D3(BOOL state)
-#define  __ESOS_LCD44780_HW_CLEAR_D3            __ESOS_LCD44780_PIC24_CLEAR_D3()
-#define  __ESOS_LCD44780_HW_GET_D3              __ESOS_LCD44780_PIC24_GET_D3()
-#define  __ESOS_LCD44780_HW_SET_D4              __ESOS_LCD44780_PIC24_SET_D4(BOOL state)
-#define  __ESOS_LCD44780_HW_CLEAR_D4            __ESOS_LCD44780_PIC24_CLEAR_D4()
-#define  __ESOS_LCD44780_HW_GET_D4              __ESOS_LCD44780_PIC24_GET_D4()
-#define  __ESOS_LCD44780_HW_SET_D5              __ESOS_LCD44780_PIC24_SET_D5(BOOL state)
-#define  __ESOS_LCD44780_HW_CLEAR_D5            __ESOS_LCD44780_PIC24_CLEAR_D5()
-#define  __ESOS_LCD44780_HW_GET_D5              __ESOS_LCD44780_PIC24_GET_D5()
-#define  __ESOS_LCD44780_HW_SET_D6              __ESOS_LCD44780_PIC24_SET_D6(BOOL state)
-#define  __ESOS_LCD44780_HW_CLEAR_D6            __ESOS_LCD44780_PIC24_CLEAR_D6()
-#define  __ESOS_LCD44780_HW_GET_D6              __ESOS_LCD44780_PIC24_GET_D6()
-#define  __ESOS_LCD44780_HW_SET_D7              __ESOS_LCD44780_PIC24_SET_D7(BOOL state)
-#define  __ESOS_LCD44780_HW_CLEAR_D7            __ESOS_LCD44780_PIC24_CLEAR_D7()
-#define  __ESOS_LCD44780_HW_GET_D7              __ESOS_LCD44780_PIC24_GET_D7()
+#define  __ESOS_LCD44780_HW_SET_D0()              (LCD44780_DB0 = 1)
+#define  __ESOS_LCD44780_HW_CLEAR_D0()            (LCD44780_DB0 = 0)
+#define  __ESOS_LCD44780_HW_GET_D0()              (LCD44780_DB0)
+#define  __ESOS_LCD44780_HW_SET_D1()              (LCD44780_DB1 = 1)
+#define  __ESOS_LCD44780_HW_CLEAR_D1()            (LCD44780_DB1 = 0)
+#define  __ESOS_LCD44780_HW_GET_D1()              (LCD44780_DB1)
+#define  __ESOS_LCD44780_HW_SET_D2()              (LCD44780_DB2 = 1)
+#define  __ESOS_LCD44780_HW_CLEAR_D2()            (LCD44780_DB2 = 0)
+#define  __ESOS_LCD44780_HW_GET_D2()              (LCD44780_DB2)
+#define  __ESOS_LCD44780_HW_SET_D3()              (LCD44780_DB3 = 1)
+#define  __ESOS_LCD44780_HW_CLEAR_D3()            (LCD44780_DB3 = 0)
+#define  __ESOS_LCD44780_HW_GET_D3()              (LCD44780_DB3)
+#define  __ESOS_LCD44780_HW_SET_D4()              (LCD44780_DB4 = 1)
+#define  __ESOS_LCD44780_HW_CLEAR_D4()            (LCD44780_DB4 = 0)
+#define  __ESOS_LCD44780_HW_GET_D4()              (LCD44780_DB4)
+#define  __ESOS_LCD44780_HW_SET_D5()              (LCD44780_DB5 = 1)
+#define  __ESOS_LCD44780_HW_CLEAR_D5()            (LCD44780_DB5 = 0)
+#define  __ESOS_LCD44780_HW_GET_D5()              (LCD44780_DB5)
+#define  __ESOS_LCD44780_HW_SET_D6()              (LCD44780_DB6 = 1)
+#define  __ESOS_LCD44780_HW_CLEAR_D6()            (LCD44780_DB6 = 0)
+#define  __ESOS_LCD44780_HW_GET_D6()              (LCD44780_DB6)
+#define  __ESOS_LCD44780_HW_SET_D7()              (LCD44780_DB7 = 1)
+#define  __ESOS_LCD44780_HW_CLEAR_D7()            (LCD44780_DB7 = 0)
+#define  __ESOS_LCD44780_HW_GET_D7()              (LCD44780_DB7)
 
 /* P R I V A T E   P R O T O T Y P E S *****************************************/
 void __esos_lcd44780_pic24_config ( void );

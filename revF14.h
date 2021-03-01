@@ -113,8 +113,8 @@
 
 
 #define LCD44780_RS      (_LATC12)
-#define LCD44780_RW     (_LATD11)
-#define LCD44780_E       (_LATD10)
+#define LCD44780_RW     (_LATC11)
+#define LCD44780_E       (_LATC10)
 #define LCD44780_DB0     (_LATE0)
 #define LCD44780_DB1     (_LATE1)
 #define LCD44780_DB2     (_LATE2)

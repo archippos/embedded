@@ -113,8 +113,8 @@
 
 
 #define LCD44780_RS      (_LATC12)
-#define LCD44780_RW     (_LATC11)
-#define LCD44780_E       (_LATC10)
+#define LCD44780_RW     (_LATD11)
+#define LCD44780_E       (_LATD10)
 #define LCD44780_DB0     (_LATE0)
 #define LCD44780_DB1     (_LATE1)
 #define LCD44780_DB2     (_LATE2)
@@ -129,11 +129,11 @@
 }
 
 #define CONFIG_RW() {  			\
-	CONFIG_RC11_AS_DIG_OUTPUT();	\
+	CONFIG_RD11_AS_DIG_OUTPUT();	\
 }
 
 #define CONFIG_E() {  			\
-	CONFIG_RC10_AS_DIG_OUTPUT();	\
+	CONFIG_RD10_AS_DIG_OUTPUT();	\
 }
 
 #define CONFIG_LCD0_AS_INPUT() {	\

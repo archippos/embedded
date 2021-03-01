@@ -56,7 +56,7 @@
 #define  __esos_lcd44780_hw_configDataPinsAsOutput \
     __esos_lcd44780_pic24_configDataPinsAsOutput
 
-#define  __ESOS_LCD44780_HW_SET_E_HIGH          __ESOS_LCD44780_PIC24_SET_E_HIGH()       // E=1
+#define  __ESOS_LCD44780_HW_SET_E_HIGH          (LCD44780_E = 1)       // E=1
 #define  __ESOS_LCD44780_HW_SET_E_LOW           __ESOS_LCD44780_PIC24_SET_E_LOW()        // E=0
 #define  __ESOS_LCD44780_HW_SET_RW_READ         __ESOS_LCD44780_PIC24_SET_RW_READ()      // RW=1
 #define  __ESOS_LCD44780_HW_SET_RW_WRITE        __ESOS_LCD44780_PIC24_SET_RW_WRITE()     // RW=0

@@ -124,6 +124,19 @@
 #define LCD44780_DB6     (_LATE6)
 #define LCD44780_DB7     (_LATE7)
 
+#define CONFIG_RS() {  			\
+	CONFIG_RC12_AS_DIG_OUTPUT();	\
+}
+
+#define CONFIG_RW() {  			\
+	CONFIG_RC11_AS_DIG_OUTPUT();	\
+}
+
+
+#define CONFIG_E() {  			\
+	CONFIG_RC10_AS_DIG_OUTPUT();	\
+}
+
 #define CONFIG_LCD0_AS_INPUT() {	\
         CONFIG_RE0_AS_DIG_INPUT();	\
 	ENABLE_RE0_PULLUP();		\
@@ -191,6 +204,26 @@
 }
 
 //maybe add a genreal configure for all inputs and outputs
+#define CONFIG_OUTPUT(){		\
+	CONFIG_LCD7_AS_OUTPUT();	\
+	CONFIG_LCD6_AS_OUTPUT();	\
+	CONFIG_LCD5_AS_OUTPUT();	\
+	CONFIG_LCD4_AS_OUTPUT();	\
+	CONFIG_LCD3_AS_OUTPUT();	\
+	CONFIG_LCD2_AS_OUTPUT();	\
+	CONFIG_LCD1_AS_OUTPUT();	\
+	CONFIG_LCD0_AS_OUTPUT();	\
+}
 
+#define CONFIG_INPUT() {		\
+	CONFIG_LCD7_AS_INPUT();		\
+	CONFIG_LCD6_AS_INPUT();		\
+	CONFIG_LCD5_AS_INPUT();		\
+	CONFIG_LCD4_AS_INPUT();		\
+	CONFIG_LCD3_AS_INPUT();		\
+	CONFIG_LCD2_AS_INPUT();		\
+	CONFIG_LCD1_AS_INPUT();		\
+	CONFIG_LCD0_AS_INPUT();		\
+}
 
 #endif

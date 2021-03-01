@@ -51,23 +51,23 @@ void __esos_lcd44780_pic24_setDataPins( uint8_t u8_data) {
     //CONFIG_OUTPUT();
 	// and place it on the appropriate data pins
   //one-hot encoding:
-    LCD44780_D0 = (u8_data & 0b00000001);
-    LCD44780_D1 = (u8_data & 0b00000010) >> 1;
-    LCD44780_D2 = (u8_data & 0b00000100) >> 2;
-    LCD44780_D3 = (u8_data & 0b00001000) >> 3;
-    LCD44780_D4 = (u8_data & 0b00010000) >> 4;
-    LCD44780_D5 = (u8_data & 0b00100000) >> 5;
-    LCD44780_D6 = (u8_data & 0b01000000) >> 6;
-    LCD44780_D7 = (u8_data & 0b10000000) >> 7;
+    LCD44780_DB0 = (u8_data & 0b00000001);
+    LCD44780_DB1 = (u8_data & 0b00000010) >> 1;
+    LCD44780_DB2 = (u8_data & 0b00000100) >> 2;
+    LCD44780_DB3 = (u8_data & 0b00001000) >> 3;
+    LCD44780_DB4 = (u8_data & 0b00010000) >> 4;
+    LCD44780_DB5 = (u8_data & 0b00100000) >> 5;
+    LCD44780_DB6 = (u8_data & 0b01000000) >> 6;
+    LCD44780_DB7 = (u8_data & 0b10000000) >> 7;
 }
 
 uint8_t __esos_lcd44780_pic24_getDataPins( void ) {
 	// write the hardware-specific code to read the appropriate data pins
 	//CONFIG_INPUT();
 	// and create the uint8 data to return to the caller
-    return (LCD44780_D7 << 7) | (LCD44780_D6 << 6) | (LCD44780_D5 << 5) |
-           (LCD44780_D4 << 4) | (LCD44780_D3 << 3) | (LCD44780_D2 << 2) |
-           (LCD44780_D1 << 1) | (LCD44780_D0);    //whos telling the truth,,,,
+    return (LCD44780_DB7 << 7) | (LCD44780_DB6 << 6) | (LCD44780_DB5 << 5) |
+           (LCD44780_DB4 << 4) | (LCD44780_DB3 << 3) | (LCD44780_DB2 << 2) |
+           (LCD44780_DB1 << 1) | (LCD44780_DB0);    //whos telling the truth,,,,
 }
 
 void __esos_lcd44780_pic24_configDataPinsAsInput( void ) {

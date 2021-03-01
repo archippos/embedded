@@ -41,9 +41,9 @@ void __esos_lcd44780_pic24_config ( void )
 {
     // Set up the hardware aspects of the interface of the LCD module service
     //    direction, thresholds, etc beyond what is already done in esos_lcd44780_config()
-    LCD44780_E_CONFIG();
-    LCD44780_RW_CONFIG();
-    LCD44780_RS_CONFIG();
+    CONFIG_RS()
+    CONFIG_RW()
+    CONFIG_E()
 }
 
 void __esos_lcd44780_pic24_setDataPins( uint8_t u8_data) {

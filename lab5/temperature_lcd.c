@@ -12,7 +12,7 @@
 #include "esos_f14ui.h"
 #include "esos_sensor.h"
 #include "esos_pic24_sensor.h"
-#include "esos_lcd44780_sensor.h"
+#include "esos_lcd44780.h"
 #include "esos_pic24_lcd44780.h"
 #include "esos_lcd44780_customChars.h"
 

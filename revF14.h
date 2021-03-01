@@ -128,12 +128,10 @@
 	CONFIG_RC12_AS_DIG_OUTPUT();	\
 }
 
-#define LCD44780_RW (_LATD11)
 #define CONFIG_RW() {  			\
 	CONFIG_RC11_AS_DIG_OUTPUT();	\
 }
 
-#define LCD44780_E (_LATD10)
 #define CONFIG_E() {  			\
 	CONFIG_RC10_AS_DIG_OUTPUT();	\
 }

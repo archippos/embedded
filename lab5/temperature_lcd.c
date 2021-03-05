@@ -66,20 +66,12 @@ ESOS_USER_TASK(info)
   {
 		if (u16_timeout == REFRESH_RATE) {
 			u16_timeout = 0;
-	    if (u8_state) {
+	    if (u8_state==0) {		//if 0, we do potentiometer stuff
 				//custom chars Stuff
 				esos_lcd44780_init_custom_chars_bar();
 				//do the adc
 	      ESOS_ALLOCATE_CHILD_TASK(getADC);
 	      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V3);
-	      //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
-	      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
-	      ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
-
-	      //Temp stuff
-	      //if u8_state case 1: output once before goto state=0
-	      ESOS_ALLOCATE_CHILD_TASK(getADC);
-	      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, TEMP_CHANNEL, ESOS_SENSOR_VREF_3V3);
 	      //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
 	      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
 	      ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
@@ -98,22 +90,11 @@ ESOS_USER_TASK(info)
 	      ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();   //all done!
 
 	      u8_state = 0;                            //goto state 0 to yield
-	    } else if(u8_state == 2) {
+	    } else {		//else, temperature
 	      //if u8_state case 2: output every 1s until "state" flag unset
 	      ESOS_ALLOCATE_CHILD_TASK(getADC);
 
 	      do {
-		//Pot Stuff
-	        ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V3);
-	        //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
-		ESOS_TASK_WAIT_SENSOR_READ(pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
-	        ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-	        ESOS_TASK_WAIT_ON_SEND_STRING("\nPotentiometer: ");
-	        ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(pu16_hexOut);
-	        ESOS_TASK_WAIT_ON_SEND_UINT8('\n');     //newline :)
-	        ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		ESOS_SENSOR_CLOSE();
-
 	        //if u8_state case 1: output once before goto state=0
 	        ESOS_ALLOCATE_CHILD_TASK(getADC);
 	        ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, TEMP_CHANNEL, ESOS_SENSOR_VREF_3V3);
@@ -136,7 +117,7 @@ ESOS_USER_TASK(info)
 	        ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();   //all done!
 
 	        ESOS_TASK_WAIT_TICKS(1000);             //1000ms = 1s
-	      } while (u8_state == 2);
+	      } while (u8_state == 2);		//dont think we need this
 	     // ESOS_SENSOR_CLOSE();
 
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();

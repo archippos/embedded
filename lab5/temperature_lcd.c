@@ -16,6 +16,8 @@
 #include "esos_pic24_lcd44780.h"
 #include "esos_lcd44780_customChars.h"
 
+#define REFRESH_RATE 200
+
 static uint8_t u8_state;
 static uint8_t u8_pmode = '1';
 static uint8_t u8_samples_input = '0';
@@ -23,8 +25,25 @@ static uint8_t u8_proccessConst = ESOS_SENSOR_ONE_SHOT;
 static uint16_t pu16_hexOut;
 static char tempStrUpper[16];
 static char tempStrLower[16];
+static bool b_dispState;
+static uint16_t u16_timeout;
 
 //TODO: USER TASK SET DISPLAY STATE (LCD)
+ESOS_USER_TASK(setDispState)
+{
+	ESOS_TASK_BEGIN();
+	b_dispState = 0;
+	while (TRUE) {
+		ESOS_TASK_WAIT_UNTIL_UF14_SW3_PRESSED();
+		b_dispState = !b_dispState;
+		esos_lcd44780_clearScreen();
+		u16_timeout = REFRESH_RATE;
+		ESOS_TASK_WAIT_UNTIL_UIF14_SW3_RELEASED();
+
+		ESOS_TASK_YIELD();
+		}
+	ESOS_TASK_END();
+}
 
 // heartbeat on LED 3
 //TODO: verify this meets the requirements of lab 5

@@ -196,6 +196,7 @@ void user_init()
     config_esos_uiF14();
 
     esos_RegisterTask(heartbeat);
+    esos_RegisterTask(setDispState);
     esos_RegisterTask(potenInterface);
     esos_RegisterTask(info);
 }

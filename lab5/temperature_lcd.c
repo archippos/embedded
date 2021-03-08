@@ -27,6 +27,8 @@ static char tempStrUpper[16];
 static char tempStrLower[16];
 static bool b_dispState;
 static uint16_t u16_timeout;
+static char potStr[3];
+static uint8_t au8_slider[8];
 
 //TODO: USER TASK SET DISPLAY STATE (LCD)
 ESOS_USER_TASK(setDispState)
@@ -61,6 +63,7 @@ ESOS_USER_TASK(heartbeat)
 ESOS_USER_TASK(info)
 {
   static ESOS_TASK_HANDLE getADC; //this is the handle for the child we're gonna birth
+	static int i;
   ESOS_TASK_BEGIN();
   while(TRUE)
   {
@@ -76,20 +79,23 @@ ESOS_USER_TASK(info)
 	      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
 	      ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
 
-	      convert_temp_to_str(pu16_hexOut, tempStrUpper, tempStrLower);
+				ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+				ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(pu16_hexOut);	//send out pot output to console
+				ESOS_TASK_WAIT_ON_SEND_UINT8('\n');											//make purty
+				ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();									//doneso
 
-	      ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();   //now we wait to send our data
-	      ESOS_TASK_WAIT_ON_SEND_STRING("Temp is ");
-	      ESOS_TASK_WAIT_ON_SEND_STRING(tempStrUpper);
-	      ESOS_TASK_WAIT_ON_SEND_STRING(".");
-	      ESOS_TASK_WAIT_ON_SEND_STRING(tempStrLower);
-	      ESOS_TASK_WAIT_ON_SEND_STRING(" degrees Celsius\n");
-	      //ESOS_TASK_WAIT_ON_SEND_STRING("\nTemp: ");
-	     // ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(pu16_hexOut);
-	      ESOS_TASK_WAIT_ON_SEND_UINT8('\n');      //slap in a newline to made it purty
-	      ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();   //all done!
+				esos_lcd44780_writeString(0, 0, "pot 0x");				//write to our lcd
 
-	      u8_state = 0;                            //goto state 0 to yield
+				for (i=0; i<0; i++) {
+					au8_slider[i] = SLIDER_LINE;		//create our slidey boi
+				}
+
+				i = pu16_hexOut >> 9;			//need to determine which cell gets our indicator
+				au8_slider[i] = ((pu16_hexOut & 0x1FF) / 0x067) + 1		//scale fifths
+				convert_uint32_t_to_str(pu16_hexOut >> 4, potStr, 3, 16);
+				esos_lcd44780_writeString(0, 6, potStr);
+				esos_lcd44780_writeBuffer(1, 0, au8_slider, 8);
+
 	    } else {		//else, temperature
 	      //if u8_state case 2: output every 1s until "state" flag unset
 	      ESOS_ALLOCATE_CHILD_TASK(getADC);

@@ -71,7 +71,7 @@ ESOS_USER_TASK(info)
 			u16_timeout = 0;
 	    if (u8_state==0) {		//if 0, we do potentiometer stuff
 				//custom chars Stuff
-				esos_lcd44780_init_custom_chars_bar();
+				esos_lcd44780_init_custom_chars_slider();
 				//do the adc
 	      ESOS_ALLOCATE_CHILD_TASK(getADC);
 	      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V3);

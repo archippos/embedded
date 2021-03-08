@@ -69,7 +69,7 @@ ESOS_USER_TASK(info)
   {
 		if (u16_timeout == REFRESH_RATE) {
 			u16_timeout = 0;
-	    if (u8_state==0) {		//if 0, we do potentiometer stuff
+	    if (u8_state) {		//if yes, we do potentiometer stuff
 				//custom chars Stuff
 				esos_lcd44780_init_custom_chars_slider();
 				//do the adc
@@ -130,46 +130,14 @@ ESOS_USER_TASK(info)
 			ESOS_TASK_WAIT_ON_SEND_STRING("Thank You.\n");
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 			u8_state = 0;
-	}
-    ESOS_TASK_YIELD();
-  }
-  ESOS_TASK_END();
-}
-}
-
-ESOS_USER_TASK(potenInterface)
-{
-  static BOOL b_switch1, b_switch2, b_switch3;
-  ESOS_TASK_BEGIN();
-  while(TRUE)
-  {
-    if(b_switch1 != esos_uiF14_isSW1Pressed()) {
-      b_switch1 = esos_uiF14_isSW1Pressed();
-      if(b_switch1) {
-        //if we're in state 2, goto yield. else, output once, then yield
-        if(u8_state == 2) u8_state = 0;
-        else u8_state = 1;
-      }
-    }
-    else if(b_switch2 != esos_uiF14_isSW2Pressed()) {
-      b_switch2 = esos_uiF14_isSW2Pressed();
-      if(b_switch2) {
-        //if we're in state 2, goto yield. else, start continuous output
-        if(u8_state == 2) u8_state = 0;
-        else u8_state = 2;
-      }
-    }
-	else if(b_switch3 != esos_uiF14_isSW3Pressed()) {
-		b_switch3 = esos_uiF14_isSW3Pressed();
-		if(b_switch3) {
-			//enter state 3
-			if(u8_state == 2) u8_state = 0;
-			else u8_state = 3;
 		}
-
-	}
+		} else {
+			u16_timeout += 10;
+			ESOS_TASK_WAIT_TICKS(10);
+			continue;
+		}
     ESOS_TASK_YIELD();
-  }
+  	}
   ESOS_TASK_END();
 }
 

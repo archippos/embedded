@@ -19,8 +19,6 @@
 #define REFRESH_RATE 200
 
 static uint8_t u8_state;
-static uint8_t u8_pmode = '1';
-static uint8_t u8_samples_input = '0';
 static uint8_t u8_proccessConst = ESOS_SENSOR_ONE_SHOT;
 static uint16_t pu16_hexOut;
 static char tempStrUpper[16];
@@ -30,7 +28,7 @@ static uint16_t u16_timeout;
 static char potStr[3];
 static uint8_t au8_slider[8];
 
-//TODO: USER TASK SET DISPLAY STATE (LCD)
+//USER TASK SET DISPLAY STATE (LCD)
 ESOS_USER_TASK(setDispState)
 {
 	ESOS_TASK_BEGIN();
@@ -48,7 +46,6 @@ ESOS_USER_TASK(setDispState)
 }
 
 // heartbeat on LED 3
-//TODO: verify this meets the requirements of lab 5
 ESOS_USER_TASK(heartbeat)
 {
 	ESOS_TASK_BEGIN();
@@ -59,7 +56,7 @@ ESOS_USER_TASK(heartbeat)
 	ESOS_TASK_END();
 }
 
-//TODO: LCD FUNCTIONALITY
+//LCD FUNCTIONALITY
 ESOS_USER_TASK(info)
 {
   static ESOS_TASK_HANDLE getADC; //this is the handle for the child we're gonna birth

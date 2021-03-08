@@ -54,7 +54,7 @@ ESOS_USER_TASK(heartbeat)
 	ESOS_TASK_BEGIN();
 	while(TRUE){
 		esos_uiF14_toggleLED3();
-		ESOS_TASK_WAIT_TICKS( 250 );
+		ESOS_TASK_WAIT_TICKS( 500 );
 	}
 	ESOS_TASK_END();
 }
@@ -144,9 +144,10 @@ ESOS_USER_TASK(info)
 void user_init()
 {
     config_esos_uiF14();
+		esos_lcd44780_init();
+		esos_lcd44780_configDisplay();
 
     esos_RegisterTask(heartbeat);
     esos_RegisterTask(setDispState);
-    esos_RegisterTask(potenInterface);
     esos_RegisterTask(info);
 }

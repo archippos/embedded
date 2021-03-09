@@ -25,7 +25,7 @@ static uint8_t u8_proccessConst = ESOS_SENSOR_ONE_SHOT;
 static uint16_t pu16_hexOut;
 static char tempStrUpper[16];
 static char tempStrLower[16];
-static bool b_dispState;
+static BOOL b_dispState;
 static uint16_t u16_timeout;
 static char potStr[3];
 static uint8_t au8_slider[8];

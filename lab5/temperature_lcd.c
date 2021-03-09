@@ -96,15 +96,28 @@ ESOS_USER_TASK(info)
 	    } else {		//else, temperature
 	      ESOS_ALLOCATE_CHILD_TASK(getADC);
 				ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, TEMP_CHANNEL, ESOS_SENSOR_VREF_3V3);
-				ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, ESOS_SENSOR_ONE_SHOT, ESOS_SENSOR_FORMAT_VOLTAGE);
+				ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
 				ESOS_SENSOR_CLOSE();
 
 				esos_lcd44780_init_custom_chars_bar();		//we got BARS baby
 
 				//code to format our temperature stuff goes here
+				convert_temp_to_str(pu16_hexOut, tempStrUpper, tempStrLower);
+				ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();   //now we wait to send our data
+	      ESOS_TASK_WAIT_ON_SEND_STRING("Temp is ");
+	      ESOS_TASK_WAIT_ON_SEND_STRING(tempStrUpper);
+	      ESOS_TASK_WAIT_ON_SEND_STRING(".");
+	      ESOS_TASK_WAIT_ON_SEND_STRING(tempStrLower);
+	      ESOS_TASK_WAIT_ON_SEND_STRING(" degrees Celsius\n");
+	      ESOS_TASK_WAIT_ON_SEND_UINT8('\n');      //slap in a newline to made it purty
+	      ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();   //all done!
+				//above is all console output; we need stuff for lcd output
 
+				//we need to determine how many bars to put; we can put it after number outputs
 
-
+				//tidying up
+				esos_lcd44780_writeChar(0, 7, u8_barTop);
+        esos_lcd44780_writeChar(1, 7, u8_barBottom);	//done
 			}
 
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();

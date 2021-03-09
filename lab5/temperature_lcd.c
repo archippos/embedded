@@ -16,8 +16,10 @@
 #include "esos_pic24_lcd44780.h"
 #include "esos_lcd44780_customChars.h"
 
+//defines
 #define REFRESH_RATE 200
 
+//static variable definitions
 static uint8_t u8_state;
 static uint8_t u8_proccessConst = ESOS_SENSOR_ONE_SHOT;
 static uint16_t pu16_hexOut;
@@ -51,12 +53,12 @@ ESOS_USER_TASK(heartbeat)
 	ESOS_TASK_BEGIN();
 	while(TRUE){
 		esos_uiF14_toggleLED3();
-		ESOS_TASK_WAIT_TICKS( 500 );
+		ESOS_TASK_WAIT_TICKS( 500 );	//500ms period
 	}
 	ESOS_TASK_END();
 }
 
-//LCD FUNCTIONALITY
+//LCD FUNCTIONALITY + thermo and pot reading
 ESOS_USER_TASK(info)
 {
   static ESOS_TASK_HANDLE getADC; //this is the handle for the child we're gonna birth
@@ -78,8 +80,8 @@ ESOS_USER_TASK(info)
 
 				ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 				ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(pu16_hexOut);	//send out pot output to console
-				ESOS_TASK_WAIT_ON_SEND_UINT8('\n');											//make purty
-				ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();									//doneso
+				ESOS_TASK_WAIT_ON_SEND_UINT8('\n');										 	 //make purty
+				ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();									 //doneso
 
 				esos_lcd44780_writeString(0, 0, "pot 0x");				//write to our lcd
 
@@ -170,15 +172,15 @@ ESOS_USER_TASK(info)
         esos_lcd44780_writeChar(1, 7, u8_barBottom);	//done
 			}
 
+			//finish up our console output
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-			ESOS_TASK_WAIT_ON_SEND_STRING("Thank You.\n");
+			ESOS_TASK_WAIT_ON_SEND_STRING("Thank You.\n");	//politeness is key
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-			u8_state = 0;
 		}
 		} else {
 			u16_timeout += 10;
 			ESOS_TASK_WAIT_TICKS(10);
-			continue;
+			continue;		//update our timeout and proceed
 		}
     ESOS_TASK_YIELD();
   	}
@@ -187,10 +189,12 @@ ESOS_USER_TASK(info)
 
 void user_init()
 {
+		//basic initializers
     config_esos_uiF14();
 		esos_lcd44780_init();
 		esos_lcd44780_configDisplay();
 
+		//now we register our tasks
     esos_RegisterTask(heartbeat);
     esos_RegisterTask(setDispState);
     esos_RegisterTask(info);

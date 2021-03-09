@@ -111,10 +111,60 @@ ESOS_USER_TASK(info)
 	      ESOS_TASK_WAIT_ON_SEND_STRING(" degrees Celsius\n");
 	      ESOS_TASK_WAIT_ON_SEND_UINT8('\n');      //slap in a newline to made it purty
 	      ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();   //all done!
+
 				//above is all console output; we need stuff for lcd output
+        esos_lcd44780_writeString(1, 0, tempStrUpper);
+        esos_lcd44780_writeChar(1, 2, ' ');
+        esos_lcd44780_writeChar(1, 3, 'C');
 
 				//we need to determine how many bars to put; we can put it after number outputs
+				uint8_t u8_barTop = ' ';
+        uint8_t u8_barBot = ' ';	//keep these empty to start with
 
+				if (pu16_hexOut < 200) {
+            //no bars if it's below this threshold
+        } else if (pu16_hexOut >= 200 && pu16_hexOut < 210) {
+            u8_barBot = _1EIGTH_BAR;
+        } else if (pu16_hexOut >= 210 && pu16_hexOut < 220) {
+            u8_barBot = _2EIGTH_BAR;
+        } else if (pu16_hexOut >= 220 && pu16_hexOut < 230) {
+            u8_barBot = _3EIGTH_BAR;
+        } else if (pu16_hexOut >= 230 && pu16_hexOut < 240) {
+            u8_barBot = _4EIGTH_BAR;
+        } else if (pu16_hexOut >= 240 && pu16_hexOut < 250) {
+            u8_barBot = _5EIGTH_BAR;
+        } else if (pu16_hexOut >= 250 && pu16_hexOut < 260) {
+            u8_barBot = _6EIGTH_BAR;
+        } else if (pu16_hexOut >= 260 && pu16_hexOut < 270) {
+            u8_barBot = _7EIGTH_BAR;
+        } else if (pu16_hexOut >= 270 && pu16_hexOut < 280) {
+            u8_barBot = _8EIGTH_BAR;
+        } else if (pu16_hexOut >= 280 && pu16_hexOut < 290) {
+            u8_barBot = _8EIGTH_BAR;
+            u8_barTop = _1EIGTH_BAR;
+        } else if (pu16_hexOut >= 290 && pu16_hexOut < 300) {
+            u8_barBot = _8EIGTH_BAR;
+            u8_barTop = _2EIGTH_BAR;
+        } else if (pu16_hexOut >= 300 && pu16_hexOut < 310) {
+            u8_barBot = _8EIGTH_BAR;
+            u8_barTop = _3EIGTH_BAR;
+        } else if (pu16_hexOut >= 310 && pu16_hexOut < 320) {
+            u8_barBot = _8EIGTH_BAR;
+            u8_barTop = _4EIGTH_BAR;
+        } else if (pu16_hexOut >= 320 && pu16_hexOut < 330) {
+            u8_barBot = _8EIGTH_BAR;
+            u8_barTop = _5EIGTH_BAR;
+        } else if (pu16_hexOut >= 330 && pu16_hexOut < 340) {
+            u8_barBot = _8EIGTH_BAR;
+            u8_barTop = _6EIGTH_BAR;
+        } else if (pu16_hexOut >= 340 && pu16_hexOut < 350) {
+            u8_barBot = _8EIGTH_BAR;
+            u8_barTop = _7EIGTH_BAR;
+        } else {
+					//when above this threshold, all the bars
+            u8_barBot = _8EIGTH_BAR;
+            u8_barTop = _8EIGTH_BAR;
+        }
 				//tidying up
 				esos_lcd44780_writeChar(0, 7, u8_barTop);
         esos_lcd44780_writeChar(1, 7, u8_barBottom);	//done

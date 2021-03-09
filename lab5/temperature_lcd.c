@@ -66,7 +66,7 @@ ESOS_USER_TASK(info)
   {
 		if (u16_timeout == REFRESH_RATE) {
 			u16_timeout = 0;
-	    if (u8_state) {		//if yes, we do potentiometer stuff
+	    if (!u8_state) {		//if no, we do potentiometer stuff
 				//custom chars Stuff
 				esos_lcd44780_init_custom_chars_slider();
 				//do the adc
@@ -94,34 +94,18 @@ ESOS_USER_TASK(info)
 				esos_lcd44780_writeBuffer(1, 0, au8_slider, 8);
 
 	    } else {		//else, temperature
-	      //if u8_state case 2: output every 1s until "state" flag unset
 	      ESOS_ALLOCATE_CHILD_TASK(getADC);
+				ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, TEMP_CHANNEL, ESOS_SENSOR_VREF_3V3);
+				ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, ESOS_SENSOR_ONE_SHOT, ESOS_SENSOR_FORMAT_VOLTAGE);
+				ESOS_SENSOR_CLOSE();
 
-	      do {
-	        //if u8_state case 1: output once before goto state=0
-	        ESOS_ALLOCATE_CHILD_TASK(getADC);
-	        ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, TEMP_CHANNEL, ESOS_SENSOR_VREF_3V3);
+				esos_lcd44780_init_custom_chars_bar();		//we got BARS baby
 
-	        //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
-	        ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
-	        ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
+				//code to format our temperature stuff goes here
 
-	        convert_temp_to_str(pu16_hexOut, tempStrUpper, tempStrLower);
 
-	        ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();   //now we wait to send our data
-	        ESOS_TASK_WAIT_ON_SEND_STRING("Temp is ");
-	        ESOS_TASK_WAIT_ON_SEND_STRING(tempStrUpper);
-	        ESOS_TASK_WAIT_ON_SEND_STRING(".");
-	        ESOS_TASK_WAIT_ON_SEND_STRING(tempStrLower);
-	        ESOS_TASK_WAIT_ON_SEND_STRING(" degrees Celsius\n");
-	        //ESOS_TASK_WAIT_ON_SEND_STRING("\nTemp: ");
-	        // ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(pu16_hexOut);
-	        ESOS_TASK_WAIT_ON_SEND_UINT8('\n');      //slap in a newline to made it purty
-	        ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();   //all done!
 
-	        ESOS_TASK_WAIT_TICKS(1000);             //1000ms = 1s
-	      } while (u8_state == 2);		//dont think we need this
-	     // ESOS_SENSOR_CLOSE();
+			}
 
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_SEND_STRING("Thank You.\n");

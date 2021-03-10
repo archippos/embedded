@@ -36,11 +36,11 @@ ESOS_USER_TASK(setDispState)
 	ESOS_TASK_BEGIN();
 	b_dispState = 0;
 	while (TRUE) {
-		ESOS_TASK_WAIT_UNTIL_UIF14_SW3_PRESSED();
+		ESOS_TASK_WAIT_UNTIL(SW1_PRESSED);
 		b_dispState = !b_dispState;
 		esos_lcd44780_clearScreen();
 		u16_timeout = REFRESH_RATE;
-		ESOS_TASK_WAIT_UNTIL_UIF14_SW3_RELEASED();
+		ESOS_TASK_WAIT_UNTIL(SW2_RELEASED);
 
 		ESOS_TASK_YIELD();
 		}

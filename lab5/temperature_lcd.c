@@ -68,7 +68,7 @@ ESOS_USER_TASK(info)
   {
 		if (u16_timeout == REFRESH_RATE) {
 			u16_timeout = 0;
-	    if (!u8_state) {		//if no, we do potentiometer stuff
+	    if (!b_dispState) {		//if no, we do potentiometer stuff
 				//custom chars Stuff
 				esos_lcd44780_init_custom_chars_slider();
 				//do the adc

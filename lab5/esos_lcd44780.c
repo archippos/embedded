@@ -438,3 +438,63 @@ ESOS_CHILD_TASK( __esos_task_wait_lcd44780_while_busy  )
 
     ESOS_TASK_END();
 }
+
+void convert_temp_to_str(uint16_t convert1, char *strUpper, char *strLower)
+{
+     uint32_t convert = convert1;
+     convert = convert * 1000;
+     convert = convert - 424000;
+     convert = convert / 625;
+     uint32_t upper;
+     uint32_t lower;
+     upper = convert / 100;
+     lower = convert - upper * 100;
+
+
+/*https://www.geeksforgeeks.org/implement-itoa/*/
+
+    int i = 0;
+    int j = 0;
+
+    // Process individual digits
+    while (upper != 0)
+    {
+        int rem = upper % 10;
+        strUpper[i++] = (rem > 9)? (rem-10) + 'a' : rem + '0';
+        upper = upper/10;
+    }
+
+    while (lower != 0)
+    {
+        int rem = lower % 10;
+        strLower[j++] = (rem > 9)? (rem-10) + 'a' : rem + '0';
+        lower = lower/10;
+    }
+
+    strUpper[i] = '\0'; // Append string terminator
+    strLower[i] = '\0'; // Append string terminator
+
+    int start = 0;
+    int end = i - 1;
+    char holdu;
+    char holdl;
+    while (start < end)
+    {
+	holdu = strUpper[start];
+        strUpper[start] = strUpper[end];
+        strUpper[end] = holdu;
+        start++;
+        end--;
+    }
+
+    start = 0;
+    end = j - 1;
+    while (start < end)
+    {
+	holdl = strLower[start];
+        strLower[start] = strLower[end];
+        strLower[end] = holdl;
+        start++;
+        end--;
+    } 
+}

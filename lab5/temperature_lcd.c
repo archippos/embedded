@@ -25,6 +25,7 @@ static uint8_t u8_proccessConst = ESOS_SENSOR_ONE_SHOT;
 static uint16_t pu16_hexOut;
 static char tempStrUpper[16];
 static char tempStrLower[16];
+static char PotStr[8];
 static BOOL b_dispState;
 static uint16_t u16_timeout;
 static char potStr[3];
@@ -73,37 +74,83 @@ ESOS_USER_TASK(info)
 				//custom chars Stuff
 				esos_lcd44780_init_custom_chars_slider();
 				//do the adc
+              //esos_lcd44780_setCursorHome();
 	      ESOS_ALLOCATE_CHILD_TASK(getADC);
 	      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V3);
 	      //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
 	      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
 	      ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
 
+				//Still communicate with BullyCPP
 				ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+				ESOS_TASK_WAIT_ON_SEND_STRING("\nPotentiometer: ");
 				ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(pu16_hexOut);	//send out pot output to console
 				ESOS_TASK_WAIT_ON_SEND_UINT8('\n');										 	 //make purty
 				ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();									 //doneso
 
-				esos_lcd44780_writeString(0, 0, "pot 0x");				//write to our lcd
+				
+
+                               
+
+
+
+
+                                //esos_lcd44780_writeString(0, 0, "pot 0x");				//write to our lcd in the first 6 slots
 
 				for (i=0; i<8; i++) {
 					au8_slider[i] = SLIDER_LINE;		//create our slidey boi
 				}
-				pu8_hexOut = pu16_hexOut & 0xFF;
+				
 
+
+
+				
+				pu8_hexOut = pu16_hexOut & 0x00FF; //change to a uint8 because the max is 0xFF for the output
+				convert_pot8_to_str(pu8_hexOut, PotStr);
+                                
+                                ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+                                ESOS_TASK_WAIT_ON_SEND_UINT8(PotStr[1]);	//send out pot output to console
+				ESOS_TASK_WAIT_ON_SEND_UINT8(PotStr[2]);	//send out pot output to console
+				ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
+				ESOS_TASK_WAIT_ON_SEND_STRING("\nHEX: ");
+				ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(pu8_hexOut);
+                               // ESOS_TASK_WAIT_ON_SEND_UINT8(PotStr[2]);	//send out pot output to console
+				ESOS_TASK_WAIT_ON_SEND_UINT8('\n');	 	 //make purty
+				ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();	
+
+				esos_lcd44780_setCursor(0,0);
+
+				esos_lcd44780_writeChar(0,0,'p');
+                                esos_lcd44780_writeChar(0,1,'o');
+			        esos_lcd44780_writeChar(0,2,'t');
+                                esos_lcd44780_writeChar(0,3,' ');
+				esos_lcd44780_writeChar(0,4,'0');
+				esos_lcd44780_writeChar(0,5,'x');
+
+				esos_lcd44780_writeChar(0,6,PotStr[1]);
+                                esos_lcd44780_writeChar(0,7,PotStr[2]);
+				esos_lcd44780_setCursor(0,0);
+
+
+                                ESOS_TASK_WAIT_TICKS(750);
+                                /*
 				i = pu16_hexOut >> 9;			//need to determine which cell gets our indicator
 				au8_slider[i] = ((pu16_hexOut & 0x1FF) / 0x067) + 1;		//scale fifths
 				convert_uint32_t_to_str(pu16_hexOut >> 4, potStr, 3, 16);
+                                esos_lcd44780_writeString(0, 7, PotStr);
 
 				//the display was being really weird :(((((
 				if (potStr[1] == 0) {
-            potStr[2] = potStr[1];
-            potStr[1] = potStr[0];
-            potStr[0] = '0';
-        }
+           				 potStr[2] = potStr[1];
+           				 potStr[1] = potStr[0];
+           				 potStr[0] = '0';
+      				}
 
 				esos_lcd44780_writeString(0, 6, potStr);
 				esos_lcd44780_writeBuffer(1, 0, au8_slider, 8);
+				*/
+
+
 
 	    } else {		//else, temperature
 	      ESOS_ALLOCATE_CHILD_TASK(getADC);
@@ -184,7 +231,7 @@ ESOS_USER_TASK(info)
 
 			//finish up our console output
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-			ESOS_TASK_WAIT_ON_SEND_STRING("Thank You.\n");	//politeness is key
+			//ESOS_TASK_WAIT_ON_SEND_STRING("Thank You.\n");	//politeness is key
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
 		} else {
@@ -209,3 +256,4 @@ void user_init()
     esos_RegisterTask(setDispState);
     esos_RegisterTask(info);
 }
+

@@ -45,7 +45,7 @@ ESOS_USER_TASK(setDispState)
 		ESOS_TASK_WAIT_UNTIL(SW3_RELEASED);
 
 		ESOS_TASK_YIELD();
-		}
+	}
 	ESOS_TASK_END();
 }
 
@@ -88,9 +88,9 @@ ESOS_USER_TASK(info)
 				ESOS_TASK_WAIT_ON_SEND_UINT8('\n');										 	 //make purty
 				ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();									 //doneso
 
-				
 
-                               
+
+
 
 
 
@@ -100,14 +100,14 @@ ESOS_USER_TASK(info)
 				for (i=0; i<8; i++) {
 					au8_slider[i] = SLIDER_LINE;		//create our slidey boi
 				}
-				
 
 
 
-				
+
+
 				pu8_hexOut = pu16_hexOut & 0x00FF; //change to a uint8 because the max is 0xFF for the output
 				convert_pot8_to_str(pu8_hexOut, PotStr);
-                                
+
                                 ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
                                 ESOS_TASK_WAIT_ON_SEND_UINT8(PotStr[1]);	//send out pot output to console
 				ESOS_TASK_WAIT_ON_SEND_UINT8(PotStr[2]);	//send out pot output to console
@@ -116,7 +116,7 @@ ESOS_USER_TASK(info)
 				ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(pu8_hexOut);
                                // ESOS_TASK_WAIT_ON_SEND_UINT8(PotStr[2]);	//send out pot output to console
 				ESOS_TASK_WAIT_ON_SEND_UINT8('\n');	 	 //make purty
-				ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();	
+				ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
 				esos_lcd44780_setCursor(0,0);
 
@@ -256,4 +256,3 @@ void user_init()
     esos_RegisterTask(setDispState);
     esos_RegisterTask(info);
 }
-

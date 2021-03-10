@@ -471,6 +471,7 @@ void convert_temp_to_str(uint16_t convert1, char *strUpper, char *strLower)
         lower = lower/10;
     }
 
+
     strUpper[i] = '\0'; // Append string terminator
     strLower[i] = '\0'; // Append string terminator
 
@@ -497,4 +498,51 @@ void convert_temp_to_str(uint16_t convert1, char *strUpper, char *strLower)
         start++;
         end--;
     } 
+}
+
+void convert_pot8_to_str(uint8_t convert, char *strUpper)
+{
+
+/*https://www.geeksforgeeks.org/implement-itoa/*/
+    uint8_t value = convert;
+    int i = 0;
+    int a = 0;
+    
+    while(a < 8){
+	strUpper[a] = '0';
+	a++;
+    }
+    
+    if(convert == 0){
+  	strUpper[0] = '0';
+	strUpper[1] = '0';
+	strUpper[2] = '0';
+        strUpper[3] = '\0';
+        return;
+    }
+
+    // Process individual digits
+    while (value != 0)
+    {
+        int rem = value % 16;
+        strUpper[i++] = (rem > 9)? (rem-10) + 'a' : rem + '0';
+        value = value/16;
+    }
+    strUpper[i++] = '0';
+
+    strUpper[i] = '\0'; // Append string terminator
+
+    int start = 0;
+    int end = i - 1;
+    char holdu;
+    while (start < end)
+    {
+	holdu = strUpper[start];
+        strUpper[start] = strUpper[end];
+        strUpper[end] = holdu;
+        start++;
+        end--;
+    }
+
+   
 }

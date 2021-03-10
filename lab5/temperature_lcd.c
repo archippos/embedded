@@ -86,7 +86,7 @@ ESOS_USER_TASK(info)
 
 				esos_lcd44780_writeString(0, 0, "pot 0x");				//write to our lcd
 
-				for (i=0; i<0; i++) {
+				for (i=0; i<8; i++) {
 					au8_slider[i] = SLIDER_LINE;		//create our slidey boi
 				}
 				pu8_hexOut = pu16_hexOut & 0xFF;

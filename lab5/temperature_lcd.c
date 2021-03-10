@@ -90,7 +90,7 @@ ESOS_USER_TASK(info)
 				}
 
 				i = pu16_hexOut >> 9;			//need to determine which cell gets our indicator
-				au8_slider[i] = ((pu16_hexOut & 0x1FF) / 0x067) + 1		//scale fifths
+				au8_slider[i] = ((pu16_hexOut & 0x1FF) / 0x067) + 1;		//scale fifths
 				convert_uint32_t_to_str(pu16_hexOut >> 4, potStr, 3, 16);
 				esos_lcd44780_writeString(0, 6, potStr);
 				esos_lcd44780_writeBuffer(1, 0, au8_slider, 8);

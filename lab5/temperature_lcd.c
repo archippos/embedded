@@ -75,7 +75,7 @@ ESOS_USER_TASK(info)
 	      ESOS_ALLOCATE_CHILD_TASK(getADC);
 	      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_ON_AVAILABLE_SENSOR, POT_CHANNEL, ESOS_SENSOR_VREF_3V3);
 	      //ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
-	      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_READ, &pu16_hexOut, u8_proccessConst, ESOS_SENSOR_FORMAT_VOLTAGE);
+	      ESOS_TASK_SPAWN_AND_WAIT(getADC, _WAIT_SENSOR_QUICK_READ, &pu16_hexOut);
 	      ESOS_SENSOR_CLOSE();                      //read once, close the sensor channel
 
 				ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
@@ -88,10 +88,19 @@ ESOS_USER_TASK(info)
 				for (i=0; i<0; i++) {
 					au8_slider[i] = SLIDER_LINE;		//create our slidey boi
 				}
+				pu8_hexOut = pu16_hexOut & 0xFF;
 
 				i = pu16_hexOut >> 9;			//need to determine which cell gets our indicator
 				au8_slider[i] = ((pu16_hexOut & 0x1FF) / 0x067) + 1;		//scale fifths
 				convert_uint32_t_to_str(pu16_hexOut >> 4, potStr, 3, 16);
+
+				//the display was being really weird :(((((
+				if (pot_str[1] == 0) {
+            pot_str[2] = pot_str[1];
+            pot_str[1] = pot_str[0];
+            pot_str[0] = '0';
+        }
+
 				esos_lcd44780_writeString(0, 6, potStr);
 				esos_lcd44780_writeBuffer(1, 0, au8_slider, 8);
 

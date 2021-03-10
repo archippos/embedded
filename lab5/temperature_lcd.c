@@ -169,7 +169,7 @@ ESOS_USER_TASK(info)
         }
 				//tidying up
 				esos_lcd44780_writeChar(0, 7, u8_barTop);
-        esos_lcd44780_writeChar(1, 7, u8_barBottom);	//done
+        esos_lcd44780_writeChar(1, 7, u8_barBot);	//done
 			}
 
 			//finish up our console output

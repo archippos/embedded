@@ -29,6 +29,7 @@ static BOOL b_dispState;
 static uint16_t u16_timeout;
 static char potStr[3];
 static uint8_t au8_slider[8];
+static uint8_t pu8_hexOut;
 
 //USER TASK SET DISPLAY STATE (LCD)
 ESOS_USER_TASK(setDispState)
@@ -95,10 +96,10 @@ ESOS_USER_TASK(info)
 				convert_uint32_t_to_str(pu16_hexOut >> 4, potStr, 3, 16);
 
 				//the display was being really weird :(((((
-				if (pot_str[1] == 0) {
-            pot_str[2] = pot_str[1];
-            pot_str[1] = pot_str[0];
-            pot_str[0] = '0';
+				if (potStr[1] == 0) {
+            potStr[2] = potStr[1];
+            potStr[1] = potStr[0];
+            potStr[0] = '0';
         }
 
 				esos_lcd44780_writeString(0, 6, potStr);

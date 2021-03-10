@@ -176,7 +176,7 @@ ESOS_USER_TASK(info)
 			ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
 			ESOS_TASK_WAIT_ON_SEND_STRING("Thank You.\n");	//politeness is key
 			ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-		}
+
 		} else {
 			u16_timeout += 10;
 			ESOS_TASK_WAIT_TICKS(10);

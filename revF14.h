@@ -44,6 +44,8 @@
                               DELAY_US(1);  \
                           }
 #define   SW3             _RC15
+#define   SW3_PRESSED     (_RC15 == 0)
+#define   SW3_RELEASED    (_RC15 == 1)
 
 #define RPGA          _RB8
 #define RPGB          _RB9

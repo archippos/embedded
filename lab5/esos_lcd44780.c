@@ -223,16 +223,13 @@ void esos_lcd44780_setCursor( uint8_t u8_row, uint8_t u8_column )
 
 void esos_lcd44780_writeChar( uint8_t u8_row, uint8_t u8_column, uint8_t u8_data )
 {
-	//esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column] = u8_data;
-	//esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row][u8_column] = TRUE;
-	esos_lcd44780_vars.aac_lcdBuffer[u8_row % ESOS_LCD44780_MEM_HEIGHT][u8_column % ESOS_LCD44780_MEM_WIDTH] = u8_data;
-  esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row % ESOS_LCD44780_MEM_HEIGHT][u8_column % ESOS_LCD44780_MEM_WIDTH] = TRUE;
+	esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column] = u8_data;
+	esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row][u8_column] = TRUE;
 }
 
 uint8_t esos_lcd44780_getChar( uint8_t u8_row, uint8_t u8_column )
 {
-	//return esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column];
-	return esos_lcd44780_vars.aac_lcdBuffer[u8_row % ESOS_LCD44780_MEM_HEIGHT][u8_column % ESOS_LCD44780_MEM_WIDTH];
+	return esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column];
 }
 
 //Kaneboi
@@ -316,7 +313,7 @@ void esos_lcd44780_setCustomChar( uint8_t u8_charSlot, uint8_t *pu8_charData )
 {
     // Set custom character memory for u8_charSlot to data in pu8_charData
 	int i;
-	for (i = 0; i < 8; i++) {
+	for (i = 0; i < 7; i++) {
 		//use customChar memory here. for custom chars. yknow
 		esos_lcd44780_vars.ast_customChar[u8_charSlot].au8_data[i] = pu8_charData[i];
 	}
@@ -328,7 +325,7 @@ void esos_lcd44780_getCustomChar( uint8_t u8_charSlot, uint8_t *pu8_charData )
     // Return pu8_charData with custom character memory for u8_charSlot
 	int i;
 	//return the custom char data
-	for (i = 0; i < 8; i++) {
+	for (i = 0; i < 7; i++) {
 		pu8_charData[i] = esos_lcd44780_vars.ast_customChar[u8_charSlot].au8_data[i];
 	}
 }
@@ -384,8 +381,7 @@ ESOS_CHILD_TASK(__esos_lcd44780_read_u8, uint8_t *pu8_data, BOOL b_isData, BOOL 
 	ESOS_TASK_YIELD();
 	*pu8_data = __esos_lcd44780_hw_getDataPins();
 	__ESOS_LCD44780_HW_SET_E_LOW();
-	//ESOS_TASK_YIELD();
-	ESOS_TASK_WAIT_TICKS(1);
+	ESOS_TASK_YIELD();
 
 	ESOS_TASK_END();
 }
@@ -415,8 +411,7 @@ ESOS_CHILD_TASK(__esos_lcd44780_write_u8, uint8_t u8_data, BOOL b_isData, BOOL b
 	__ESOS_LCD44780_HW_SET_E_HIGH();
 	ESOS_TASK_YIELD();
 	__ESOS_LCD44780_HW_SET_E_LOW();
-	//ESOS_TASK_YIELD();
-	ESOS_TASK_WAIT_TICKS(1);
+	ESOS_TASK_YIELD();
 
 	ESOS_TASK_END();
 }
@@ -502,7 +497,7 @@ void convert_temp_to_str(uint16_t convert1, char *strUpper, char *strLower)
         strLower[end] = holdl;
         start++;
         end--;
-    }
+    } 
 }
 
 void convert_pot8_to_str(uint8_t convert, char *strUpper)
@@ -511,17 +506,17 @@ void convert_pot8_to_str(uint8_t convert, char *strUpper)
 /*https://www.geeksforgeeks.org/implement-itoa/*/
     uint8_t value = convert;
     int i = 0;
-    int a = 0;
-
+    int count = 0;
+    //int a = 0;
+    /*
     while(a < 8){
 	strUpper[a] = '0';
 	a++;
-    }
-
+    }*/
+    
     if(convert == 0){
   	strUpper[0] = '0';
 	strUpper[1] = '0';
-	strUpper[2] = '0';
         strUpper[3] = '\0';
         return;
     }
@@ -529,15 +524,18 @@ void convert_pot8_to_str(uint8_t convert, char *strUpper)
     // Process individual digits
     while (value != 0)
     {
+	if((value < 16) && ( count == 0)){
+        	strUpper[i++] = '0';
+	}
         int rem = value % 16;
-        strUpper[i++] = (rem > 9)? (rem-10) + 'a' : rem + '0';
+        strUpper[i++] = (rem > 9)? (rem-10) + 'A' : rem + '0';
         value = value/16;
+        count++;
     }
-    strUpper[i++] = '0';
 
     strUpper[i] = '\0'; // Append string terminator
 
-    int start = 0;
+   /* int start = 0;
     int end = i - 1;
     char holdu;
     while (start < end)
@@ -548,4 +546,7 @@ void convert_pot8_to_str(uint8_t convert, char *strUpper)
         start++;
         end--;
     }
+	*/
+   
 }
+

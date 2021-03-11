@@ -380,7 +380,7 @@ ESOS_USER_TASK(info)
 				}
 
 				
-                                ESOS_TASK_WAIT_TICKS(10);		//having this kind of helps the lcd not flash and move but not really
+                                ESOS_TASK_WAIT_TICKS(5);		//having this kind of helps the lcd not flash and move but not really
                                 
 
 
@@ -521,7 +521,7 @@ ESOS_USER_TASK(info)
 					esos_lcd44780_writeChar(1,7,au8_bar);
 				}
 
-				ESOS_TASK_WAIT_TICKS(10); //this kind of helps with the jumping but not really
+				ESOS_TASK_WAIT_TICKS(5); //this kind of helps with the jumping but not really
 		}
 
 		} else {

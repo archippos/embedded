@@ -223,13 +223,16 @@ void esos_lcd44780_setCursor( uint8_t u8_row, uint8_t u8_column )
 
 void esos_lcd44780_writeChar( uint8_t u8_row, uint8_t u8_column, uint8_t u8_data )
 {
-	esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column] = u8_data;
-	esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row][u8_column] = TRUE;
+	//esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column] = u8_data;
+	//esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row][u8_column] = TRUE;
+	esos_lcd44780_vars.aac_lcdBuffer[u8_row % ESOS_LCD44780_MEM_HEIGHT][u8_column % ESOS_LCD44780_MEM_WIDTH] = u8_data;
+  esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row % ESOS_LCD44780_MEM_HEIGHT][u8_column % ESOS_LCD44780_MEM_WIDTH] = TRUE;
 }
 
 uint8_t esos_lcd44780_getChar( uint8_t u8_row, uint8_t u8_column )
 {
-	return esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column];
+	//return esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column];
+	return esos_lcd44780_vars.aac_lcdBuffer[u8_row % ESOS_LCD44780_MEM_HEIGHT][u8_column % ESOS_LCD44780_MEM_WIDTH];
 }
 
 //Kaneboi
@@ -381,7 +384,8 @@ ESOS_CHILD_TASK(__esos_lcd44780_read_u8, uint8_t *pu8_data, BOOL b_isData, BOOL 
 	ESOS_TASK_YIELD();
 	*pu8_data = __esos_lcd44780_hw_getDataPins();
 	__ESOS_LCD44780_HW_SET_E_LOW();
-	ESOS_TASK_YIELD();
+	//ESOS_TASK_YIELD();
+	ESOS_TASK_WAIT_TICKS(1);
 
 	ESOS_TASK_END();
 }
@@ -411,7 +415,8 @@ ESOS_CHILD_TASK(__esos_lcd44780_write_u8, uint8_t u8_data, BOOL b_isData, BOOL b
 	__ESOS_LCD44780_HW_SET_E_HIGH();
 	ESOS_TASK_YIELD();
 	__ESOS_LCD44780_HW_SET_E_LOW();
-	ESOS_TASK_YIELD();
+	//ESOS_TASK_YIELD();
+	ESOS_TASK_WAIT_TICKS(1);
 
 	ESOS_TASK_END();
 }
@@ -497,7 +502,7 @@ void convert_temp_to_str(uint16_t convert1, char *strUpper, char *strLower)
         strLower[end] = holdl;
         start++;
         end--;
-    } 
+    }
 }
 
 void convert_pot8_to_str(uint8_t convert, char *strUpper)
@@ -507,12 +512,12 @@ void convert_pot8_to_str(uint8_t convert, char *strUpper)
     uint8_t value = convert;
     int i = 0;
     int a = 0;
-    
+
     while(a < 8){
 	strUpper[a] = '0';
 	a++;
     }
-    
+
     if(convert == 0){
   	strUpper[0] = '0';
 	strUpper[1] = '0';
@@ -543,6 +548,4 @@ void convert_pot8_to_str(uint8_t convert, char *strUpper)
         start++;
         end--;
     }
-
-   
 }

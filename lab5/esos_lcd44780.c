@@ -313,7 +313,7 @@ void esos_lcd44780_setCustomChar( uint8_t u8_charSlot, uint8_t *pu8_charData )
 {
     // Set custom character memory for u8_charSlot to data in pu8_charData
 	int i;
-	for (i = 0; i < 7; i++) {
+	for (i = 0; i < 8; i++) {
 		//use customChar memory here. for custom chars. yknow
 		esos_lcd44780_vars.ast_customChar[u8_charSlot].au8_data[i] = pu8_charData[i];
 	}
@@ -325,7 +325,7 @@ void esos_lcd44780_getCustomChar( uint8_t u8_charSlot, uint8_t *pu8_charData )
     // Return pu8_charData with custom character memory for u8_charSlot
 	int i;
 	//return the custom char data
-	for (i = 0; i < 7; i++) {
+	for (i = 0; i < 8; i++) {
 		pu8_charData[i] = esos_lcd44780_vars.ast_customChar[u8_charSlot].au8_data[i];
 	}
 }

@@ -45,6 +45,7 @@ ESOS_USER_TASK(esos_menu_task)
 			static BOOL b_firstMenu;
 			static BOOL b_lastMenu;
 			static esos_menu_longmenu_t *pst_menu;
+			static uint8_t u8_current;
 
 			// Draw the menu, then wait for a button
 			pst_menu = __esos_menu_conf.pv_data;
@@ -80,12 +81,28 @@ ESOS_USER_TASK(esos_menu_task)
 				}
 				else if(esos_uiF14_isRPGTurning() && esos_uiF14_isRPGTurningCW() && !b_lastMenu) {
 					// Attempt to increase the current value.
+					u8_current = pst_menu->u8_choice;
 					++pst_menu->u8_choice;
+					while (pst_menu->ast_items[pst_menu->u8_choice].b_hidden == 1) {
+          	if (pst_menu->u8_choice == pst_menu->u8_numitems - 1) {
+                pst_menu->u8_choice = u8_current; // the rest of the menus are all hidden
+            } else {
+                ++pst_menu->u8_choice;
+            }
+          }
 					ESOS_TASK_WAIT_UNTIL(!esos_uiF14_isRPGTurning());
 					break;
 				}
 				else if(esos_uiF14_isRPGTurning() && esos_uiF14_isRPGTurningCCW() && !b_firstMenu) {
+					u8_current = pst_menu->u8_choice;
 					--pst_menu->u8_choice;
+					while (pst_menu->ast_items[pst_menu->u8_choice].b_hidden == 1) {
+          	if (pst_menu->u8_choice == 0) {
+                pst_menu->u8_choice = u8_current; // the rest of the menus are all hidden
+            } else {
+                --pst_menu->u8_choice;
+            }
+          }
 					ESOS_TASK_WAIT_UNTIL(!esos_uiF14_isRPGTurning());
 					break;
 				}

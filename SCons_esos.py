@@ -52,6 +52,8 @@ for sourceFile in Glob('chap14/*.c', True, True, True):
         'esos/src/esos_lcd44780.c',         #user added - lab 5
         'esos/src/esos_pic24_sensor.c',     #user added - lab 4
         'esos/src/esos_pic24_lcd44780.c',   #user added - lab 5
+        'esos/src/esos_menu.c',             #user added - lab 6
+        'esos/src/fall17lib.c',             #user added - lab 6
         'esos/src/pic24/esos_pic24_i2c.c',
         'esos/src/pic24/esos_pic24_irq.c',
         'esos/src/pic24/esos_pic24_rs232.c',

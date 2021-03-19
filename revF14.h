@@ -54,6 +54,7 @@
                           CONFIG_RB9_AS_DIG_INPUT(); \
                           ENABLE_RB8_PULLUP(); \
                           ENABLE_RB9_PULLUP(); \
+                          CONFIG_INT1_TO_RP(40); \
                           DELAY_US(1); \
                       }
 //high/low for A
@@ -109,10 +110,6 @@
         AD1CON4bits.ADDMAEN = 0;                                              \
         AD1CON1bits.ADON = 1;   /*turn it back on*/                           \
     }
-
-
-
-
 
 #define LCD44780_RS      (_LATC12)
 #define LCD44780_RW      (_LATD11)

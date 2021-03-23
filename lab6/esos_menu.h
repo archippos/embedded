@@ -8,6 +8,7 @@
 typedef struct {
 	char ac_line1[8];
 	char ac_line2[8];
+	BOOL b_hidden;
 } esos_menu_longmenu_item_t;
 
 /*

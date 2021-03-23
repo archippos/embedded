@@ -2,6 +2,7 @@
 #define REVF14_H
 
 #include "pic24_all.h"
+#include "esos_pic24_spi.h"
 
 //set up the LEDs: led1
 #define   CONFIG_LED1()   CONFIG_RF4_AS_DIG_OUTPUT()

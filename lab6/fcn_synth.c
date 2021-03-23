@@ -28,7 +28,34 @@ static BOOL b_updateLM60;   //update LM60 temp sensor
 static BOOL b_updateDS1631; //update DS1631 temp sensor
 static uint16_t waveformData[128];  //store our waveform data here
 
-//TODO: main menu struct
+//main menu struct
+static esos_menu_longmenu_t home = {
+  .u8_numitems= 0,
+  .u8_choice = 0,
+  .ast_items =
+    {
+      {"Set","wavfrm", 0},
+      {"Set","freqcy", 0},
+      {"Set","ampltd", 0},
+      {"Set","duty", 1},
+      {"Read","LM60", 0},
+      {"Read","DS1631", 0},
+      {"", "about", 0},
+    },
+};
+
+//waveform selection struct
+static esos_menu_longmenu_t wavfrm = {
+  .u8_numitems = 4,
+  .u8_choice = 0,
+  .ast_items =
+  {
+    {"Select","triang", 0},
+    {"Select","square", 0},
+    {"Select","sine", 0},
+    {"Select","user", 0},
+  },
+};
 
 //TODO: frequency struct
 

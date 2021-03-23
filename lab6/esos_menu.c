@@ -5,6 +5,7 @@
 #include "fall17lib.h"
 #include "esos_lcd44780.h"
 #include "esos_f14ui.h"
+#include "esos_lcd44780_customChars.h"
 
 __esos_menu_conf_t __esos_menu_conf;
 

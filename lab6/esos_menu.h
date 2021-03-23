@@ -62,7 +62,7 @@ typedef struct {
 	uint32_t value;
 	uint16_t min;
 	uint16_t max;
-	uint8_8 div;
+	uint8_t div;
 	uint8_t type;
 	char lines[][8];
 } esos_menu_sliderbar_t;

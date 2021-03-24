@@ -232,6 +232,7 @@
 #define CONFIG_SCK1OUT_TO_RP(Rxy_RP)  _CONFIG_SCK1OUT_TO_RP(Rxy_RP)
 #define _CONFIG_SCK1OUT_TO_RP(Rxy_RP) (_RP##Rxy_RP##R = _RPOUT_SCK1OUT)
 
+//stuff for U4
 #define MCP4922_SCK (_LATD5)
 #define MCP4922_SCK_CONFIG()                                                                                           \
     {                                                                                                                  \

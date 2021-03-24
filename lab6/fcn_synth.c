@@ -234,10 +234,10 @@ ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_amp
   u8_currAmpl = u8_ampl * UINT8_MAX / 30;
 
   //formula for triangle waveform
-  if (u8_type == TRI_WVFORM) {
+  if (u8_type == TRI_WAVFORM) {
     // i am going wupwards
     for (i = 0; i < 64; i++) {
-        u8_rawData = i * 2;
+        u8_rawData = i * 2; //even bitches only
         u16_scaledData = u8_rawData * u8_currAmpl;
         waveformData[i] = u16_scaledData * 2;
     }
@@ -251,6 +251,16 @@ ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_amp
   }
 
   //be there or be square (wave)
+  if (u8_type == SQUARE_WVFORM) {
+    // turn duty cycle into fraction of the 128 points per wave period
+    u8_duty = 128 * u8_duty / 100;
+    for (i = 0; i < 128; i++) {
+        u8_rawData = (i < u8_duty) ? 255 : 0;
+        u16_scaledData = u8_rawData * u8_currAmpl;
+
+        waveformData[i] = u16_scaledData;
+    }
+  }
 
   //fetch sine or user waves
 }

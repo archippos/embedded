@@ -297,6 +297,19 @@ ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_amp
 //TODO: lcd menu  user task
 
 //TODO: set LED  user task
+ESOS_USER_TASK(setLED) {
+  ESOS_TASK_BEGIN;
+  LED1_OFF;
+  LED2_OFF;
+  LED3_OFF;
+  while (TRUE) {
+    LED1 = (leds.entries[0].value & 0b100) == 0b100;
+    LED2 = (leds.entries[0].value & 0b010) == 0b010;
+    LED3_HB = (leds.entries[0].value & 0b001) != 0b001;
+    ESOS_TASK_WAIT_TICKS(50);
+  }
+  ESOS_TASK_END();
+}
 
 //TODO: update the lm60  user task
 

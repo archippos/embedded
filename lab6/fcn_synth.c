@@ -106,17 +106,42 @@ static esos_menu_sliderbar_t _1631 = {
   .max = 34,
   .div = 1,
   .type = 1,
-  .lines = {{ "DS1631" }, { "" }},
+  .lines = {{ "DS1631" }, { "" }},  //display
 };
 
 // about menu
 static esos_menu_staticmenu_t about = {
-  .u8_numlines = 2,
+  .u8_numlines = 2,                   //2 lines of text
   .u8_currentline = 0,
-  .lines = {{ "keith" }, { "help" }},
+  .lines = {{ "keith" }, { "help" }}, //display
 };
 
-//TODO: MCP2942 SPI config   funct
+//MCP2942 SPI config   funct
+void configSPI1(void) {
+  //configure our pins:
+  MCP4922_SCK_CONFIG();   //SCK. sick nasty.
+  MCP4922_SDI_CONFIG();   //SDI. serial digital interface
+  MCP4922_SDO_CONFIG();   //SDO. Super DOg (part of the SDI stuff)
+  MCP4922_CS_CONFIG();    //CS: part of the interface logic
+  MCP4922_SHDN_CONFIG();  //SHDN: shutdown DAC channels
+
+  //sety mroe stuff
+  CONFIG_SCK1OUT_TO_RP(RD5_RP); //this is digital output from eeprom; sck
+  CONFIG_SDO1_TO_RP(RD4_RP);    //diogital output for sdo
+  CONFIG_SDI1_TO_RP(RD9_RP);    //digital output for sdi
+
+  //now create our config bits for the SPI
+  SPI1CON1 = PRI_PRESCAL_1_1 |      // 1:1 primary prescale
+             SEC_PRESCAL_3_1 |      // 3:1 secondary prescale
+             CLK_POL_ACTIVE_HIGH |  // clock active high (CKP = 0)
+             SPI_CKE_ON |           // out changes inactive to active (CKE=0)
+             SPI_MODE16_ON |        // 8-bit mode
+             MASTER_ENABLE_ON;      // master mode
+
+  MCP4922_ON();           //wakery wakey motherfucker
+  SLAVE_DISABLE();        //disable chip select. im your daddy now
+  SPI1STATbits.SPIEN = 1; //now set SPI enable bit to 1. yay!
+}
 
 //TODO: write to the SPI bus  funct
 

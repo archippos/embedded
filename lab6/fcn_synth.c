@@ -152,6 +152,7 @@ void writeSPI(uint16_t *pu16_out, uint16_t  *pu16_in, uint16_t u16_count) {
   static uint16_t u16_i;
   static uint8_t u8_isReading;
   static uint8_t u8_isWriting;
+  static uint8_t u8_waveformIndex = 0;  //start index at 0
 
   //holds stuff from the SPI1BUF
   uint16_t u16_junk;
@@ -210,7 +211,14 @@ void writeDAC(uint16_t u16_data) {
   SLAVE_DISABLE();                  //ok i'm bored of you
 }
 
-//TODO: IRQ interrupt  interrupt
+//IRQ interrupt  interrupt
+ESOS_USER_INTERRUPT(ESOS_IRQ_PIC24_T4) {
+  writeDAC(waveformData[u8_waveformIndex]);
+  //we want the modulo 128 because there's two halves of our EEPROM storage:
+  //first half is for the sine wave, second half for user defined wave.
+  u8_waveformIndex = ++u8_waveformIndex % 128;
+  ESOS_MARK_PIC24_USER_INTERRUPT_SERVICED(ESOS_IRQ_PIC24_T4);
+}
 
 //TODO: update waveform  child task
 

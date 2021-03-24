@@ -143,7 +143,7 @@ void configSPI1(void) {
   SPI1STATbits.SPIEN = 1; //now set SPI enable bit to 1. yay!
 }
 
-//TODO: write to the SPI bus  funct
+//write to the SPI bus  funct
 void writeSPI(uint16_t *pu16_out, uint16_t  *pu16_in, uint16_t u16_count) {
   //define some static variables
   static uint16_t *pu16_tempPtrIn;
@@ -153,6 +153,7 @@ void writeSPI(uint16_t *pu16_out, uint16_t  *pu16_in, uint16_t u16_count) {
   static uint8_t u8_isReading;
   static uint8_t u8_isWriting;
 
+  //holds stuff from the SPI1BUF
   uint16_t u16_junk;
 
   //assign our incoming variables to the ones in this func
@@ -183,20 +184,31 @@ void writeSPI(uint16_t *pu16_out, uint16_t  *pu16_in, uint16_t u16_count) {
       SPI1BUF = 0;  //otherwise, buffer gets zilch
     }
 
-  //if our buffers are full, do jack shit
-  while (SPI1STAT & SPI_TX_BUFFER_FULL) {} //don't do anything
-  while (!(SPI1STAT & SPI_RX_BUFFER_FULL)) {} //don't do anything
+    //if our buffers are full, do jack shit
+    while (SPI1STAT & SPI_TX_BUFFER_FULL) {} //don't do anything
+    while (!(SPI1STAT & SPI_RX_BUFFER_FULL)) {} //don't do anything
 
-  u16_junk = SPI1BUF;   //clear out the buffer again
+    u16_junk = SPI1BUF;   //clear out the buffer again
 
-  if (u8_isReading) {
-    *pu16_tempPtrIn = u16_junk; //maybe i shouldnt have named it junk. sorry
-    pu16_tempPtrIn++
+    if (u8_isReading) {
+      *pu16_tempPtrIn = u16_junk; //maybe i shouldnt have named it junk. sorry
+      pu16_tempPtrIn++
+    }
   }
- }
 }
 
-//TODO: write to the DAC  funct
+//write to the DAC  funct
+/*  command format is: 0b<a/b><buf><GA><SHDN><d11:0>
+    eg, ob0011         (max 16b number)
+*/
+void writeDAC(uint16_t u16_data) {
+  //send the write command bb
+  u16_data = 0x3000 | (u16_data >> 4);
+
+  SLAVE_ENABLE();                   //cmere, you
+  writeSPI(&u16_data, NULLPTR, 1);  //have some data
+  SLAVE_DISABLE();                  //ok i'm bored of you
+}
 
 //TODO: IRQ interrupt  interrupt
 

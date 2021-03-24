@@ -310,7 +310,7 @@ ESOS_USER_TASK(setLED) {
     LED1 = (leds.entries[0].value & 0b100) == 0b100;
     LED2 = (leds.entries[0].value & 0b010) == 0b010;
     LED3 = (leds.entries[0].value & 0b001) != 0b001;
-    
+
     ESOS_TASK_WAIT_TICKS(50);   //delay
   }
 
@@ -323,9 +323,14 @@ ESOS_USER_TASK(setLED) {
 
 void user_init() {
   //menu task?
-  //TODO: call configI2C1, config SPI1, register all tasks, call user interrupt
+  //TODO: init menu, register tasks menu, lm60, ds1631
+  esos_menu_init();
+  esos_pic24_configI2C1(400);   //baud rate of 400
+  configSPI1();
+  esos_RegisterTask(setLED);
 
-  /*
+  ESOS_REGISTER_PIC24_USER_INTERRUPT(ESOS_IRQ_PIC24_T4, ESOS_USER_IRQ_LEVEL2, _T4Interrupt);
+
   //configure period, timer, fcy, etc
   T4CONbits.T32 = 0;
   T4CON = T4_PS_1_8 | T4_SOURCE_INT;
@@ -334,7 +339,7 @@ void user_init() {
   TMR4 = 0;
   ESOS_MARK_PIC24_USER_INTERRUPT_SERVICED(ESOS_IRQ_PIC24_T4);
   T4CONbits.TON = 1;
-  */
 
   //enable T4 user interrupt
+  ESOS_ENABLE_PIC24_USER_INTERRUPT(ESOS_IRQ_PIC24_T4);
 }

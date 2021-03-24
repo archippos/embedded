@@ -221,6 +221,39 @@ ESOS_USER_INTERRUPT(ESOS_IRQ_PIC24_T4) {
 }
 
 //TODO: update waveform  child task
+ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_ampl) {
+  ESOS_TASK_BEGIN();
+
+  //define some static variables
+  static uint8_t u16_addr;
+  static uint16_t u16_scaledData;
+  static uint8_t u8_rawData;
+  static uint16_t i;
+  static uint8_t u8_currAmpl
+
+  u8_currAmpl = u8_ampl * UINT8_MAX / 30;
+
+  //formula for triangle waveform
+  if (u8_type == TRI_WVFORM) {
+    // i am going wupwards
+    for (i = 0; i < 64; i++) {
+        u8_rawData = i * 2;
+        u16_scaledData = u8_rawData * u8_currAmpl;
+        waveformData[i] = u16_scaledData * 2;
+    }
+
+    // down
+    for (i = 64; i > 0; i--) {
+        u8_rawData = i * 2;
+        u16_scaledData = u8_rawData * u8_currAmpl;
+        waveformData[64 + (64 - i)] = u16_scaledData * 2;
+    }
+  }
+
+  //be there or be square (wave)
+
+  //fetch sine or user waves
+}
 
 //TODO: lcd menu  user task
 

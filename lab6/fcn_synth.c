@@ -57,17 +57,64 @@ static esos_menu_longmenu_t wavfrm = {
   },
 };
 
-//TODO: frequency struct
+//frequency struct
+static esos_menu_entry_t freq = {
+  .entries[0].label = "Freq = ",
+  .entries[0].value = 1000, //default is 1k Hz
+  .entries[0].min = 64,
+  .entries[0].max = 2047,
+};
 
-//TODO: amplitude struct
+//amplitude struct
+//we want to multiply the value by 10 in order to eliminate decimals
+static esos_menu_entry_t ampl = {
+  .entries[0].label = "Ampl = ",
+  .entries[0].value = 10, //default is 1V
+  .entries[0].min = 0,
+  .entries[0].max = 30,
+};
 
-//TODO: duty cycle struct
+//duty cycle struct
+static esos_menu_entry_t duty = {
+  .entries[0].label = "Duty = ",
+  .entries[0].value = 50, //default is 50%
+  .entries[0].min = 0,
+  .entries[0].max = 100,
+};
 
-//TODO: lm60 sliderbar struct
+static esos_menu_entry_t leds = {
+  .entries[0].label = "LEDs = ",
+  .entries[0].value = 3,
+  .entries[0].min = 0,
+  .entries[0].max = 7,
+};
 
-//TODO: ds1631 struct
+//slider bar stuff for the LM60
+static esos_menu_sliderbar_t lm60 = {
+  .value = 2500,
+  .min = 2000,
+  .max = 3500,
+  .div = 100,
+  .type = 1,
+  .lines = {{ "LM60" }, { "" }},
+};
 
-//TODO: about page struct
+//slider bar stuff for the DS1631
+static esos_menu_sliderbar_t _1631 = {
+  .value = 25,
+  .min = 18,
+  .max = 34,
+  .div = 1,
+  .type = 1,
+  .lines = {{ "DS1631" }, { "" }},
+};
+
+// about menu
+static esos_menu_staticmenu_t about = {
+  .u8_numlines = 2,
+  .u8_currentline = 0,
+  .lines = {{ "keith" }, { "help" }},
+};
 
 //TODO: MCP2942 SPI config   funct
 

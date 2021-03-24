@@ -298,16 +298,22 @@ ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_amp
 
 //TODO: set LED  user task
 ESOS_USER_TASK(setLED) {
-  ESOS_TASK_BEGIN;
-  LED1_OFF;
-  LED2_OFF;
-  LED3_OFF;
+  ESOS_TASK_BEGIN();
+
+  //turn them all off
+  LED1_OFF();
+  LED2_OFF();
+  LED3_OFF();
+
+  //now go through and do the actual setting of stuff
   while (TRUE) {
     LED1 = (leds.entries[0].value & 0b100) == 0b100;
     LED2 = (leds.entries[0].value & 0b010) == 0b010;
-    LED3_HB = (leds.entries[0].value & 0b001) != 0b001;
-    ESOS_TASK_WAIT_TICKS(50);
+    LED3 = (leds.entries[0].value & 0b001) != 0b001;
+    
+    ESOS_TASK_WAIT_TICKS(50);   //delay
   }
+
   ESOS_TASK_END();
 }
 

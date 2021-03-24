@@ -59,6 +59,6 @@ void esos_sensor_initiate_hw (void); //fixed this function name to match esos_se
 uint16_t esos_sensor_getvalue_u16_hw (void);
 void esos_sensor_release_hw (void);
 BOOL esos_sensor_is_converting_hw (void);
-void convert_temp_to_str(uint16_t convert, char *strUpper, char *strLower);
+void convert_temp_to_str(uint32_t u32_val, char *str, uint32_t len, int base);
 
 #endif

@@ -28,9 +28,11 @@
 #define __ESOS_UIF14_UI_PERIOD_MS       10
 #define __DOUBLE_PRESS_TIME_MULT        250         //250ms = period for double press
 #define __ESOS_UIF14_RPG_CLICKS_PER_REV 12          //12 clicks per 360*
-//#define __ESOS_UIF14_DEFAULT_RPGS_THRESHOLD (10)    //threshold for slow
-//#define __ESOS_UIF14_DEFAULT_RPGM_THRESHOLD (24)    //threshold for med
-//#define __ESOS_UIF14_DEFAULT_RPGF_THRESHOLD (35)    //threshold for fast
+#define __ESOS_UIF14_RPG_POLL_RATE 1
+#define __ESOS_UIF14_RPG_VEL_RATE 128
+#define __ESOS_UIF14_DEFAULT_RPGS_THRESHOLD (10)    //threshold for slow
+#define __ESOS_UIF14_DEFAULT_RPGM_THRESHOLD (24)    //threshold for med
+#define __ESOS_UIF14_DEFAULT_RPGF_THRESHOLD (35)    //threshold for fast
 
 // STRUCTURES
 
@@ -62,7 +64,7 @@ typedef struct _st_esos_uiF14Data {
     uint16_t u16_lastRPGCounter;
     //the following were originally int16_t
     //we'll see how they behave and if we need to change them back
-    //uint16_t i16_RPGCounter;
+    uint16_t i16_RPGCounter;
     uint16_t i16_RPGVelocity;
     uint16_t u16_RPGSlowestSpeed;  //uint
     uint16_t u16_RPGSlowThreshold;
@@ -133,8 +135,8 @@ inline void esos_uiF14_setSW2DoublePressPeriod (uint16_t);
 inline void esos_uiF14_setSW3DoublePressPeriod (uint16_t);
 
 inline uint16_t esos_uiF14_getRPGValue_u16(void);
-//inline int16_t esos_uiF14_getRPGValue_i16(void);
-//inline int16_t esos_uiF14_getRPGVelocity_i16(void);
+inline int16_t esos_uiF14_getRPGValue_i16(void);
+inline int16_t esos_uiF14_getRPGVelocity_i16(void);
 inline BOOL esos_uiF14_isRPGTurning(void);
 inline BOOL esos_uiF14_isRPGTurningSlow(void);
 inline BOOL esos_uiF14_isRPGTurningMedium(void);

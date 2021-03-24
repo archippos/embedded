@@ -262,7 +262,36 @@ ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_amp
     }
   }
 
-  //fetch sine or user waves
+  //read out the sine or user waves:
+  //first, check which one we're doing, then go to approp. addr
+  if (u8_type == SINE_WAVFORM || u8_type == USER_WAVFORM) {
+    if (u8_type == SINE_WAVFORM) {
+        u16_addr = SINE_WAVFORM_ADDR;
+    } else {
+        u16_addr = USER_WVAFORM_ADDR;
+    }
+
+    //disable T4 interrupt
+    ESOS_DISABLE_PIC24_USER_INTERRUPT(ESOS_IRQ_PIC24_T4);
+    //for every piece of the 128 thing...
+    for (i = 0; i < 128; i++) {
+        ESOS_TASK_WAIT_ON_AVAILABLE_I2C();
+        ESOS_TASK_WAIT_ON_WRITE1I2C1(AT24C02D_ADDR, u16_addr + i);
+        ESOS_TASK_WAIT_ON_READ1I2C1(AT24C02D_ADDR, u8_rawData);
+        ESOS_TASK_SIGNAL_AVAILABLE_I2C(); //release I2C once done
+        ESOS_TASK_WAIT_TICKS(1);
+
+        uint16_t a = u8_rawData;
+        uint16_t b = u8_currAmpl;
+        u16_scaledData = a*b;
+
+        waveformData[i] = u16_scaledData;   //munch
+    }
+    //we're done; raise T4
+    ESOS_ENABLE_PIC24_USER_INTERRUPT(ESOS_IRQ_PIC24_T4);
+  }
+  ESOS_TASK_YIELD();
+  ESOS_TASK_END();
 }
 
 //TODO: lcd menu  user task

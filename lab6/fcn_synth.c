@@ -144,6 +144,57 @@ void configSPI1(void) {
 }
 
 //TODO: write to the SPI bus  funct
+void writeSPI(uint16_t *pu16_out, uint16_t  *pu16_in, uint16_t u16_count) {
+  //define some static variables
+  static uint16_t *pu16_tempPtrIn;
+  static uint16_t *pu16_tempPtrOut;
+  static uint16_t u16_tempCount;
+  static uint16_t u16_i;
+  static uint8_t u8_isReading;
+  static uint8_t u8_isWriting;
+
+  uint16_t u16_junk;
+
+  //assign our incoming variables to the ones in this func
+  pu16_tempPtrOut = pu16_out;
+  pu16_tempPtrIn = pu16_in;
+  u16_tempCount = u16_count;
+
+  //if we havea nullptr, then we're not reading
+  if (pu16_tempPtrIn == NULLPTR) u8_isReading = FALSE;
+  else u8_isReading = TRUE;
+
+  //if we have a nullptr, then we're not writing
+  if (pu16_tempPtrOut == NULLPTR) u8_isWriting = FALSE;
+  else u8_isWriting = TRUE;
+
+  //clear any overflow bits we may have
+  if (SPI1STATbits.SPIROV) SPI1STATbits.SPIROV = 0;
+  _SPI1IF = 0;          //clear interrupt; we want to start writing
+  u16_junk = SPI1BUF;   //clear out our buffer
+
+  for (u16_i = 0; u16_i < u16_tempCount; u16_i++) {
+    //first, check if we're writing
+    if (u8_isWriting) {
+      //then, store current item of PtrOut into the buffer
+      SPI1BUF = *pu16_tempPtrOut;
+      pu16_tempPtrOut++;
+    } else {
+      SPI1BUF = 0;  //otherwise, buffer gets zilch
+    }
+
+  //if our buffers are full, do jack shit
+  while (SPI1STAT & SPI_TX_BUFFER_FULL) {} //don't do anything
+  while (!(SPI1STAT & SPI_RX_BUFFER_FULL)) {} //don't do anything
+
+  u16_junk = SPI1BUF;   //clear out the buffer again
+
+  if (u8_isReading) {
+    *pu16_tempPtrIn = u16_junk; //maybe i shouldnt have named it junk. sorry
+    pu16_tempPtrIn++
+  }
+ }
+}
 
 //TODO: write to the DAC  funct
 

@@ -295,7 +295,7 @@ ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_amp
   ESOS_TASK_END();
 }
 
-//TODO: lcd menu  user task
+//lcd menu  user task
 ESOS_USER_TASK(menuScreen) {
   //define static variables
   static ESOS_TASK_HANDLE updateDisp;
@@ -338,12 +338,12 @@ ESOS_USER_TASK(menuScreen) {
     } else if (mainMenu.u8_choice == 4) {
       //read from the lm60
       b_updateLM60 = 1;
-      ESOS_TASK_WAIT_ESOS_MENU_SLIDERBAR(ls60);  //should this be upper or lower?
+      ESOS_TASK_WAIT_ESOS_MENU_SLIDERBAR(lm60);  //should this be upper or lower?
       b_updateLM60 = 0;
     } else if (mainMenu.u8_choice == 5) {
       //read from the ds1631
       b_updateDS1631 = 1;
-      ESOS_TASK_WAIT_ESOS_MENU_SLIDERBAR(_1631);  //should this be lowercase?
+      ESOS_TASK_WAIT_ESOS_MENU_SLIDERBAR(_1631);
       b_updateDS1631 = 0;
     } else if (mainMenu.u8_choice == 6) {
       //set the leds
@@ -356,7 +356,7 @@ ESOS_USER_TASK(menuScreen) {
   ESOS_TASK_END();
 }
 
-//TODO: set LED  user task
+//set LED  user task
 ESOS_USER_TASK(setLED) {
   ESOS_TASK_BEGIN();
 

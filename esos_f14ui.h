@@ -93,7 +93,8 @@ void esos_ui_setLastRPGCounter (uint16_t);
 
 //TODO: should this be "__uiF14_task" instead?
 ESOS_USER_TASK( __esos_uiF14_task );
-
+ESOS_USER_TIMER(__esos_uiF14_rpg_poll);
+ESOS_USER_TIMER(__esos_uiF14_rpg_vel);
 // PUBLIC API FUNCTION PROTOTYPES
 
 inline BOOL esos_uiF14_isSW1Pressed (void);
@@ -147,6 +148,18 @@ inline void esos_uiF14_setRPGTurningFast(uint16_t);
 inline BOOL esos_uiF14_isRPGTurningCW(void);
 inline BOOL esos_uiF14_isRPGTurningCCW(void);
 inline void esos_uiF14_resetRPG(void);
+inline BOOL esos_uiF14_isRPGTurning(void);
+inline BOOL esos_uiF14_isRPGTurningSlow(void);
+inline BOOL esos_uiF14_isRPGTurningMedium(void);
+inline BOOL esos_uiF14_isRPGTurningFast(void);
+inline BOOL esos_uiF14_isRPGTurningCW(void);
+inline BOOL esos_uiF14_isRPGTurningCCW(void);
+inline int16_t esos_uiF14_getRPGSlowThreshold(void);
+inline void esos_uiF14_setRPGSlowThreshold(int16_t threshold);
+inline int16_t esos_uiF14_getRPGMediumThreshold(void);
+inline void esos_uiF14_setRPGMediumThreshold(int16_t threshold);
+inline int16_t esos_uiF14_getRPGFastThreshold(void);
+inline void esos_uiF14_setRPGFastThreshold(int16_t threshold);
 
 void config_esos_uiF14();
 inline int16_t esos_uiF14_getRPGVelocity_i16(void);

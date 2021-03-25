@@ -426,6 +426,50 @@ ESOS_USER_TASK(updateDS1631) {
 }
 
 //TODO: update lm60  user task
+ESOS_USER_TASK(updateLM60) {
+  static ESOS_TASK_HANDLE read_temp;
+  static uint16_t pu16_out;
+  static uint32_t pu32_out, temp32_ipart, temp32_fpart;
+  static char str_temp32[12];
+  static uint8_t i;
+
+  ESOS_TASK_BEGIN();
+
+  while (TRUE) {
+    if (b_updateLM60) {
+      ESOS_ALLOCATE_CHILD_TASK(read_temp);
+      ESOS_TASK_SPAWN_AND_WAIT(read_temp, _WAIT_ON_AVAILABLE_SENSOR, TEMP_CHANNEL, ESOS_SENSOR_VREF_3V0);
+      ESOS_TASK_SPAWN_AND_WAIT(read_temp, _WAIT_SENSOR_READ, &pu16_out, ESOS_SENSOR_ONE_SHOT,
+                               ESOS_SENSOR_FORMAT_VOLTAGE);
+      ESOS_SENSOR_CLOSE();
+
+      pu32_out = (uint32_t)pu16_out * 1000; //we don't want decimals, so *1000
+      pu32_out = (pu32_out - 424000) / 625; //take mV -> temperature
+
+      temp32_ipart = pu32_out / 100; //get just the integer part
+      temp32_fpart = pu32_out - temp32_ipart * 100; //now get just the decimal part
+
+      convert_uint32_t_to_str(temp32_ipart, str_temp32, 12, 10);
+      str_temp32[2] = '.';
+      convert_uint32_t_to_str(temp32_fpart, str_temp32 + 3, 8, 10);
+
+      if (temp32_fpart >= 0 && temp32_fpart <= 9) {
+        str_temp32[4] = str_temp32[3];
+        str_temp32[3] = '0';
+      }
+
+      str_temp32[5] = 'C';
+
+      for (i = 0; i < 8; i++) {
+        lm60.lines[1][i] = str_temp32[i];
+      }
+
+      lm60.value = pu32_out;
+    }
+      ESOS_TASK_WAIT_TICKS(125);
+  }
+  ESOS_TASK_END();
+}
 
 void user_init() {
   //menu task?
@@ -434,6 +478,8 @@ void user_init() {
   esos_pic24_configI2C1(400);   //baud rate of 400
   configSPI1();
   esos_RegisterTask(setLED);
+  esos_RegisterTask(updateLM60);
+  esos_RegisterTask(updateDS1631);
 
   ESOS_REGISTER_PIC24_USER_INTERRUPT(ESOS_IRQ_PIC24_T4, ESOS_USER_IRQ_LEVEL2, _T4Interrupt);
 

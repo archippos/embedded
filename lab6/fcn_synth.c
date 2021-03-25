@@ -221,7 +221,7 @@ ESOS_USER_INTERRUPT(ESOS_IRQ_PIC24_T4) {
   ESOS_MARK_PIC24_USER_INTERRUPT_SERVICED(ESOS_IRQ_PIC24_T4);
 }
 
-//TODO: update waveform  child task
+//update waveform  child task
 ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_ampl) {
   ESOS_TASK_BEGIN();
 
@@ -472,15 +472,16 @@ ESOS_USER_TASK(updateLM60) {
 }
 
 void user_init() {
-  //menu task?
-  //TODO: register tasks menu, lm60, ds1631
+  //init/call/register our stuff
   esos_menu_init();
   esos_pic24_configI2C1(400);   //baud rate of 400
   configSPI1();
+  esos_RegisterTask(menuScreen);
   esos_RegisterTask(setLED);
   esos_RegisterTask(updateLM60);
   esos_RegisterTask(updateDS1631);
 
+  //register user interrupt
   ESOS_REGISTER_PIC24_USER_INTERRUPT(ESOS_IRQ_PIC24_T4, ESOS_USER_IRQ_LEVEL2, _T4Interrupt);
 
   //configure period, timer, fcy, etc

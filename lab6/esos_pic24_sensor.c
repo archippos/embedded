@@ -124,65 +124,38 @@ void esos_sensor_release_hw (void)
   AD1CON1bits.ADON = 0; //turn the thing off
 }
 
-// void convert_temp_to_str(uint16_t convert1, char *strUpper, char *strLower)
-// {
-     // uint32_t convert = convert1;
-     // convert = convert * 1000;
-     // convert = convert - 424000;
-     // convert = convert / 625;
-     // uint32_t upper;
-     // uint32_t lower;
-     // upper = convert / 100;
-     // lower = convert - upper * 100;
-     
-     
-// /*https://www.geeksforgeeks.org/implement-itoa/*/
+int void convert_temp_to_str(uint32_t u32_val, char *str, uint32_t len, int base)
+{
+    uint32_t i = 0;
+    uint32_t digit;
 
-    // int i = 0; 
-    // int j = 0;
-  
-    ////Process individual digits 
-    // while (upper != 0) 
-    // { 
-        // int rem = upper % 10; 
-        // strUpper[i++] = (rem > 9)? (rem-10) + 'a' : rem + '0'; 
-        // upper = upper/10; 
-    // }  
+    if (len == 0)
+        return -1;
+    for (; i < 10; i++)
+        str[i] = 0;
+    i = 0;
+    do {
+        digit = u32_val % base;
+        if (digit < 0xA)
+            str[i++] = '0' + digit;
+        else
+            str[i++] = 'A' + digit - 0xA;
 
-    // while (lower != 0) 
-    // { 
-        // int rem = lower % 10; 
-        // strLower[j++] = (rem > 9)? (rem-10) + 'a' : rem + '0'; 
-        // lower = lower/10; 
-    // }  
-  
-    // strUpper[i] = '\0'; // Append string terminator 
-    // strLower[i] = '\0'; // Append string terminator 
-  
-    // int start = 0; 
-    // int end = i - 1; 
-    // char holdu;
-    // char holdl;
-    // while (start < end) 
-    // { 
-	// holdu = strUpper[start];
-        // strUpper[start] = strUpper[end];
-        // strUpper[end] = holdu;
-        // start++; 
-        // end--; 
-    // } 
+        u32_val /= base;
+    } while (u32_val && (i < (len - 1)));
 
-    // start = 0; 
-    // end = j - 1; 
-    // while (start < end) 
-    // { 
-	// holdl = strLower[start];
-        // strLower[start] = strLower[end];
-        // strLower[end] = holdl;
-        // start++; 
-        // end--; 
-    // } 
-	
+    if (i == (len - 1) && u32_val)
+        return -1;
 
+    str[i] = '\0';
 
-// }
+    // strrev:
+    char *p = str;
+    char *q = p;
+    while (q && *q)
+        ++q;
+    for (--q; p < q; ++p, --q)
+        *p = *p ^ *q, *q = *p ^ *q, *p = *p ^ *q;
+
+    return 0;
+}

@@ -11,6 +11,10 @@
  #include "revF14.h"
  #include "esos_f14ui.h"
 
+//DEFINES
+
+#define ABSOLUTE(x) (x < 0 ? -x : x)
+
 // PRIVATE FUNCTIONS
 volatile _st_esos_uiF14Data_t _st_esos_uiF14Data;
 
@@ -199,6 +203,12 @@ inline void esos_uiF14_flashLED3( uint16_t u16_period) {
 
 // PUBLIC RPG FUNCTIONS
 
+static volatile int32_t i32fp_vel_avg = 0;
+static volatile int32_t i32fp_vel_cur = 0;
+static volatile int32_t i32fp_pos_prev = 0;
+static volatile int32_t i32fp_pos_curr = 0;
+static volatile int16_t vel;
+
 //gets data from the encoder
 inline uint16_t esos_uiF14_getRpgValue_u16 ( void ) {
     return _st_esos_uiF14Data.u16_RPGCounter;
@@ -208,73 +218,63 @@ inline uint16_t esos_uiF14_getLastRpgValue_u16 ( void ) {
     return _st_esos_uiF14Data.u16_lastRPGCounter;
 }
 
+inline void esos_uiF14_resetRPG(void) {
+    _st_esos_uiF14Data.i16_RPGCounter = 0;
+    _st_esos_uiF14Data.i16_RPGVelocity = 0;
+    i32fp_vel_avg = i32fp_vel_cur = i32fp_pos_prev = i32fp_pos_curr = 0;
+}
+
+ESOS_USER_TIMER(__esos_uiF14_rpg_vel)
+{
+    i32fp_pos_curr = ((int32_t)_st_esos_uiF14Data.i16_RPGCounter) << 12;
+
+    i32fp_vel_cur = (i32fp_pos_curr - i32fp_pos_prev);
+    i32fp_vel_avg = (3 * i32fp_vel_cur / 8) + (5 * i32fp_vel_avg / 8); // Moving exponential average
+    _st_esos_uiF14Data.i16_RPGVelocity = i32fp_vel_avg;
+
+    i32fp_pos_prev = i32fp_pos_curr;
+}
+
 //determines whether or not the encoder is turning
-inline BOOL esos_uiF14_isRpgTurning ( void ) {
-  //if it's turning, velocity is not 0
-  if (esos_uiF14_getRpgVelocity_i16() != 0) {
-		return TRUE;
-	} else {return FALSE;}
+inline BOOL esos_uiF14_isRPGTurning(void)
+{
+    return esos_uiF14_isRPGTurningCW() || esos_uiF14_isRPGTurningCCW();
 }
 
 //is the new-old delta between 1 and 10?
-inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
-  // static char sz_reportSlow[64];
-  // sz_reportSlow = "Turning slow";
-  // //TODO: use getRpgVelocity for this (ditto on medium and fast)
-  // //code for determining slow goes here
-  // // this is the code for console output --carol
-  // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-  // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportSlow);
-  // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+inline BOOL esos_uiF14_isRPGTurningSlow(void)
+{
+    vel = ABSOLUTEOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
+    return esos_uiF14_getRPGSlowThreshold() <= vel && vel < esos_uiF14_getRPGMediumThreshold();
 }
 
-//is the new-old delta between 11 and 24?
-inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
-  // static char sz_reportMed[64];
-  // sz_reportMed = "Turning medium";
-  // // code for determining medium goes here
-  // //code for console output
-  // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-  // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportMed);
-  // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+inline BOOL esos_uiF14_isRPGTurningMedium(void)
+{
+    vel = ABSOLUTEOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
+    return esos_uiF14_getRPGMediumThreshold() <= vel && vel < esos_uiF14_getRPGFastThreshold();
 }
 
-//is the new-old delta above 25?
-inline BOOL esos_uiF14_isRpgTurningFast( void ) {
-  // static char sz_reportFast[64];
-  // sz_reportFast = "Turning fast";
-  // // code for determining speedy boi goes here
-  // //code for console output
-  // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-  // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportFast);
-  // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+inline BOOL esos_uiF14_isRPGTurningFast(void)
+{
+    return esos_uiF14_getRPGFastThreshold() < ABSOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
 }
 
 //determines if the encoder turning clockwise
 inline BOOL esos_uiF14_isRpgTurningCW( void ) {
-  // static char sz_reportCW[64];
-  // sz_reportCW = "Turning clockwise";
-  // // code for determining CW goes here
-  // //code for console output
-  // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-  // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportCW);
-  // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+  vel = _st_esos_uiF14Data.i16_RPGVelocity;
+  return (vel > 0) && (esos_uiF14_getRPGSlowThreshold() <= ABSOLUTE(vel));
 }
 
 //is the encoder turning counterclockwise
 inline BOOL esos_uiF14_isRpgTurningCCW( void ) {
-  // static char sz_reportCCW[64];
-  // sz_reportCCW = "Turning counterclockwise";
-  // // code for determining ccw goes here
-  // //code for console output
-  // ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-  // ESOS_TASK_WAIT_ON_SEND_STRING(sz_reportCCW);
-  // ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+  vel = _st_esos_uiF14Data.i16_RPGVelocity;
+  return (vel < 0) && (esos_uiF14_getRPGSlowThreshold() <= ABSOLUTE(vel));
 }
 
 //obtains the velocity of the encoder
-int16_t esos_uiF14_getRpgVelocity_i16( void ) {
-	return (esos_uiF14_getRpgValue_u16 - esos_uiF14_getLastRpgValue_u16);
+inline int16_t esos_uiF14_getRPGVelocity_i16(void)
+{
+    return _st_esos_uiF14Data.i16_RPGVelocity;
 }
 
 // task for double pressing sw1

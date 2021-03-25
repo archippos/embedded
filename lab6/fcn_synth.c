@@ -377,9 +377,55 @@ ESOS_USER_TASK(setLED) {
   ESOS_TASK_END();
 }
 
-//TODO: update the lm60  user task
+//TODO: update the ds1631  user task
+ESOS_USER_TASK(updateDS1631) {
+  ESOS_TASK_BEGIN();
 
-//TODO: update ds1631  user task
+  //define some static variables
+  static uint8_t i, u8_low, u8_hi;
+  static char str_temp32[12];
+
+  //initialize i2c
+  ESOS_TASK_WAIT_ON_AVAILABLE_I2C();
+  ESOS_TASK_WAIT_ON_WRITE2I2C1(DS1631ADDR, 0xAC, 0x0C);
+  ESOS_TASK_WAIT_ON_WRITE1I2C1(DS1631ADDR, 0x51);
+  ESOS_TASK_SIGNAL_AVAILABLE_I2C();
+  ESOS_TASK_WAIT_TICKS(250); // delay
+
+  while (TRUE) {
+    if (b_updateDS1631) {
+      ESOS_TASK_WAIT_ON_AVAILABLE_I2C();
+      ESOS_TASK_WAIT_ON_WRITE1I2C1(DS1631ADDR, 0xAA); //0xAA = read cmd
+      ESOS_TASK_WAIT_ON_READ2I2C1(DS1631ADDR, u8_hi, u8_low);
+      ESOS_TASK_SIGNAL_AVAILABLE_I2C();
+
+      convert_uint32_t_to_str(u8_hi, str_temp32, 12, 10);
+      str_temp32[2] = '.';
+      u8_low = u8_low * 100 / 256;
+      convert_uint32_t_to_str(u8_low, str_temp32 + 3, 8, 10);
+      //if between these two values...
+      if (u8_low >= 0 && u8_low <= 9) {
+          //...do this
+          str_temp32[4] = str_temp32[3];
+          str_temp32[3] = '0';
+      }
+
+      str_temp32[5] = 'C';  //celsius :)
+
+      for (i = 0; i < 8; i++) {
+        _1631.lines[1][i] = str_temp32[i];
+      }
+      _1631.value = u8_hi;
+
+      ESOS_TASK_WAIT_TICKS(750); //delay 750ms - polling rate of 12b mode
+      continue;
+    }
+    ESOS_TASK_YIELD();
+  }
+  ESOS_TASK_END();
+}
+
+//TODO: update lm60  user task
 
 void user_init() {
   //menu task?

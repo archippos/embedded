@@ -203,6 +203,12 @@ inline void esos_uiF14_flashLED3( uint16_t u16_period) {
 
 // PUBLIC RPG FUNCTIONS
 
+static volatile int32_t i32fp_vel_avg = 0;
+static volatile int32_t i32fp_vel_cur = 0;
+static volatile int32_t i32fp_pos_prev = 0;
+static volatile int32_t i32fp_pos_curr = 0;
+static volatile int16_t vel;
+
 //gets data from the encoder
 inline uint16_t esos_uiF14_getRpgValue_u16 ( void ) {
     return _st_esos_uiF14Data.u16_RPGCounter;
@@ -218,7 +224,6 @@ inline void esos_uiF14_resetRPG(void) {
     i32fp_vel_avg = i32fp_vel_cur = i32fp_pos_prev = i32fp_pos_curr = 0;
 }
 
-static volatile int32_t i32fp_vel_avg = 0, i32fp_vel_cur = 0, i32fp_pos_prev = 0, i32fp_pos_curr = 0;
 ESOS_USER_TIMER(__esos_uiF14_rpg_vel)
 {
     i32fp_pos_curr = ((int32_t)_st_esos_uiF14Data.i16_RPGCounter) << 12;
@@ -239,13 +244,13 @@ inline BOOL esos_uiF14_isRPGTurning(void)
 //is the new-old delta between 1 and 10?
 inline BOOL esos_uiF14_isRPGTurningSlow(void)
 {
-    int16_t vel = ABS(_st_esos_uiF14Data.i16_RPGVelocity);
+    vel = ABSOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
     return esos_uiF14_getRPGSlowThreshold() <= vel && vel < esos_uiF14_getRPGMediumThreshold();
 }
 
 inline BOOL esos_uiF14_isRPGTurningMedium(void)
 {
-    int16_t vel = ABS(_st_esos_uiF14Data.i16_RPGVelocity);
+    vel = ABSOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
     return esos_uiF14_getRPGMediumThreshold() <= vel && vel < esos_uiF14_getRPGFastThreshold();
 }
 
@@ -256,13 +261,13 @@ inline BOOL esos_uiF14_isRPGTurningFast(void)
 
 //determines if the encoder turning clockwise
 inline BOOL esos_uiF14_isRpgTurningCW( void ) {
-  int16_t vel = _st_esos_uiF14Data.i16_RPGVelocity;
+  vel = _st_esos_uiF14Data.i16_RPGVelocity;
   return (vel > 0) && (esos_uiF14_getRPGSlowThreshold() <= ABS(vel));
 }
 
 //is the encoder turning counterclockwise
 inline BOOL esos_uiF14_isRpgTurningCCW( void ) {
-  int16_t vel = _st_esos_uiF14Data.i16_RPGVelocity;
+  vel = _st_esos_uiF14Data.i16_RPGVelocity;
   return (vel < 0) && (esos_uiF14_getRPGSlowThreshold() <= ABS(vel));
 }
 

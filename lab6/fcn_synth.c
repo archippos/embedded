@@ -40,6 +40,7 @@ static esos_menu_longmenu_t home = {
       {"Set","duty", 1},
       {"Read","LM60", 0},
       {"Read","DS1631", 0},
+      {"Set", "LEDs", 0},
       {"", "about", 0},
     },
 };
@@ -58,7 +59,7 @@ static esos_menu_longmenu_t wavfrm = {
 };
 
 //frequency struct
-static esos_menu_entry_t freq = {
+static esos_menu_entry_t freqcy = {
   .entries[0].label = "Freq = ",
   .entries[0].value = 1000, //default is 1k Hz
   .entries[0].min = 64,
@@ -67,7 +68,7 @@ static esos_menu_entry_t freq = {
 
 //amplitude struct
 //we want to multiply the value by 10 in order to eliminate decimals
-static esos_menu_entry_t ampl = {
+static esos_menu_entry_t ampltd = {
   .entries[0].label = "Ampl = ",
   .entries[0].value = 10, //default is 1V
   .entries[0].min = 0,
@@ -268,7 +269,7 @@ ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_amp
     if (u8_type == SINE_WAVFORM) {
         u16_addr = SINE_WAVFORM_ADDR;
     } else {
-        u16_addr = USER_WVAFORM_ADDR;
+        u16_addr = USER_WAVFORM_ADDR;
     }
 
     //disable T4 interrupt
@@ -295,6 +296,65 @@ ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_amp
 }
 
 //TODO: lcd menu  user task
+ESOS_USER_TASK(menuScreen) {
+  //define static variables
+  static ESOS_TASK_HANDLE updateDisp;
+
+  ESOS_TASK_BEGIN();
+  ESOS_ALLOCATE_CHILD_TASK(updateDisp);
+  ESOS_TASK_SPAWN_AND_WAIT(updateDisp, updateWaveform, wavfrm.u8_choice, duty.entries[0].value, ampl.entries[0].value);
+
+  while (TRUE) {
+    //keep the dispaly static until user presses SW3 to confirm a choice
+
+    //when square wave chosen, show duty cycle (make it not hidden)
+    if (wavfrm.u8_choice == 1) {
+      mainMenu.ast_items[3].b_hidden = FALSE;
+    } else {
+      mainMenu.ast_items[3].b_hidden = TRUE;
+    }
+
+    //now do long menu stuff
+    ESOS_TASK_WAIT_ESOS_MENU_LONGMENU(mainMenu);
+    if (mainMenu.u8_choice == 0) {
+      //waveform selection menu
+      ESOS_TASK_WAIT_ESOS_MENU_ENTRY(wavfrm);
+      ESOS_ALLOCATE_CHILD_TASK(updateDisp);
+      ESOS_TASK_SPAWN_AND_WAIT(updateDisp, updateWaveform, wavfrm.u8_choice, duty.entries[0].value, ampltd.entries[0].value);
+    } else if (mainMenu.u8_choice == 1) {
+      //frequency value menu
+      ESOS_TASK_WAIT_ESOS_MENU_ENTRY(freqcy);
+      PR4 = FCY/8/128/freqcy.entries[0].value;
+      ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(PR4);
+      ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
+    } else if (mainMenu.u8_choice == 2) {
+      //amplitude menu
+      ESOS_TASK_WAIT_ESOS_MENU_ENTRY(ampltd);
+      ESOS_TASK_SPAWN_AND_WAIT(updateDisp, updateWaveform, wavfrm.u8_choice, duty.entries[0].value, ampltd.entries[0].value);
+    } else if (mainMenu.u8_choice == 3) {
+      //duty cycle menu
+      ESOS_TASK_WAIT_ESOS_MENU_ENTRY(duty);
+      ESOS_TASK_SPAWN_AND_WAIT(updateDisp, updateWaveform, wavfrm.u8_choice, duty.entries[0].value, ampltd.entries[0].value);
+    } else if (mainMenu.u8_choice == 4) {
+      //read from the lm60
+      b_updateLM60 = 1;
+      ESOS_TASK_WAIT_ESOS_MENU_SLIDERBAR(ls60);  //should this be upper or lower?
+      b_updateLM60 = 0;
+    } else if (mainMenu.u8_choice == 5) {
+      //read from the ds1631
+      b_updateDS1631 = 1;
+      ESOS_TASK_WAIT_ESOS_MENU_SLIDERBAR(_1631);  //should this be lowercase?
+      b_updateDS1631 = 0;
+    } else if (mainMenu.u8_choice == 6) {
+      //set the leds
+      ESOS_TASK_WAIT_ESOS_MENU_ENTRY(leds);
+    } else if (mainMenu.u8_choice == 7) {
+      //go to the about menu
+      ESOS_TASK_WAIT_ESOS_MENU_STATICMENU(about);
+    }
+  }
+  ESOS_TASK_END();
+}
 
 //TODO: set LED  user task
 ESOS_USER_TASK(setLED) {
@@ -323,7 +383,7 @@ ESOS_USER_TASK(setLED) {
 
 void user_init() {
   //menu task?
-  //TODO: init menu, register tasks menu, lm60, ds1631
+  //TODO: register tasks menu, lm60, ds1631
   esos_menu_init();
   esos_pic24_configI2C1(400);   //baud rate of 400
   configSPI1();

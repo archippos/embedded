@@ -315,7 +315,7 @@ ESOS_USER_TASK(menuScreen) {
     }
 
     //now do long menu stuff
-    ESOS_TASK_WAIT_ESOS_MENU_LONGMENU(mainMenu);
+    ESOS_TASK_WAIT_ESOS_MENU_LONGMENU(home);
     if (mainMenu.u8_choice == 0) {
       //waveform selection menu
       ESOS_TASK_WAIT_ESOS_MENU_ENTRY(wavfrm);

@@ -31,7 +31,7 @@
         ESOS_TASK_WAIT_ON_READ1I2C1(AT24C02D_ADDR, *pu8_data);                                                         \
     } while (0);
 
-//define a task to perform sequential reads 
+//define a task to perform sequential reads
 #define ESOS_AT34C02D_READ_SEQ(u8_addr, pu8_buffer, u16_len)                                                           \
     do {                                                                                                               \
         ESOS_TASK_WAIT_ON_WRITE1I2C1(AT24C02D_ADDR, u8_addr);                                                          \

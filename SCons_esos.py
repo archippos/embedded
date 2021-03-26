@@ -43,6 +43,7 @@ for sourceFile in Glob('chap14/*.c', True, True, True):
         'lib/src/pic24_util.c',
         'lib/src/pic24_serial.c',
         'lib/src/pic24_uart.c',
+        #'esos/include/esos_lcd44780_customChars.h', #user added - lab 5
         'esos/src/esos.c',
         'esos/src/esos_comm.c',
         'esos/src/esos_cb.c',
@@ -52,9 +53,11 @@ for sourceFile in Glob('chap14/*.c', True, True, True):
         'esos/src/esos_lcd44780.c',         #user added - lab 5
         'esos/src/esos_pic24_sensor.c',     #user added - lab 4
         'esos/src/esos_pic24_lcd44780.c',   #user added - lab 5
-        'esos/src/esos_menu.c',             #user added - lab 6
+        #'esos/include/esos_at24c02d.h',      #user added - lab 6
         'esos/src/fall17lib.c',             #user added - lab 6
-        'esos/src/pic24/esos_pic24_i2c.c',
+        #'esos/include/esos_menu.h',             #user added - lab 6
+        #'esos/src/pic24/esos_pic24_i2c.c',
+        'esos/src/esos_pic24_i2c.c',
         'esos/src/pic24/esos_pic24_irq.c',
         'esos/src/pic24/esos_pic24_rs232.c',
         'esos/src/pic24/esos_pic24_spi.c',

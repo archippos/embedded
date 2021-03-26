@@ -309,46 +309,46 @@ ESOS_USER_TASK(menuScreen) {
 
     //when square wave chosen, show duty cycle (make it not hidden)
     if (wavfrm.u8_choice == 1) {
-      mainMenu.ast_items[3].b_hidden = FALSE;
+      home.ast_items[3].b_hidden = FALSE;
     } else {
-      mainMenu.ast_items[3].b_hidden = TRUE;
+      home.ast_items[3].b_hidden = TRUE;
     }
 
     //now do long menu stuff
     ESOS_TASK_WAIT_ESOS_MENU_LONGMENU(home);
-    if (mainMenu.u8_choice == 0) {
+    if (home.u8_choice == 0) {
       //waveform selection menu
       ESOS_TASK_WAIT_ESOS_MENU_ENTRY(wavfrm);
       ESOS_ALLOCATE_CHILD_TASK(updateDisp);
       ESOS_TASK_SPAWN_AND_WAIT(updateDisp, updateWaveform, wavfrm.u8_choice, duty.entries[0].value, ampltd.entries[0].value);
-    } else if (mainMenu.u8_choice == 1) {
+    } else if (home.u8_choice == 1) {
       //frequency value menu
       ESOS_TASK_WAIT_ESOS_MENU_ENTRY(freqcy);
       PR4 = FCY/8/128/freqcy.entries[0].value;
       ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(PR4);
       ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
-    } else if (mainMenu.u8_choice == 2) {
+    } else if (home.u8_choice == 2) {
       //amplitude menu
       ESOS_TASK_WAIT_ESOS_MENU_ENTRY(ampltd);
       ESOS_TASK_SPAWN_AND_WAIT(updateDisp, updateWaveform, wavfrm.u8_choice, duty.entries[0].value, ampltd.entries[0].value);
-    } else if (mainMenu.u8_choice == 3) {
+    } else if (home.u8_choice == 3) {
       //duty cycle menu
       ESOS_TASK_WAIT_ESOS_MENU_ENTRY(duty);
       ESOS_TASK_SPAWN_AND_WAIT(updateDisp, updateWaveform, wavfrm.u8_choice, duty.entries[0].value, ampltd.entries[0].value);
-    } else if (mainMenu.u8_choice == 4) {
+    } else if (home.u8_choice == 4) {
       //read from the lm60
       b_updateLM60 = 1;
       ESOS_TASK_WAIT_ESOS_MENU_SLIDERBAR(lm60);  //should this be upper or lower?
       b_updateLM60 = 0;
-    } else if (mainMenu.u8_choice == 5) {
+    } else if (home.u8_choice == 5) {
       //read from the ds1631
       b_updateDS1631 = 1;
       ESOS_TASK_WAIT_ESOS_MENU_SLIDERBAR(_1631);
       b_updateDS1631 = 0;
-    } else if (mainMenu.u8_choice == 6) {
+    } else if (home.u8_choice == 6) {
       //set the leds
       ESOS_TASK_WAIT_ESOS_MENU_ENTRY(leds);
-    } else if (mainMenu.u8_choice == 7) {
+    } else if (home.u8_choice == 7) {
       //go to the about menu
       ESOS_TASK_WAIT_ESOS_MENU_STATICMENU(about);
     }

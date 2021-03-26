@@ -210,11 +210,15 @@ static volatile int32_t i32fp_pos_curr = 0;
 static volatile int16_t vel;
 
 //gets data from the encoder
-inline uint16_t esos_uiF14_getRpgValue_u16 ( void ) {
+inline uint16_t esos_uiF14_getRPGValue_u16 ( void ) {
     return _st_esos_uiF14Data.u16_RPGCounter;
 }
 
-inline uint16_t esos_uiF14_getLastRpgValue_u16 ( void ) {
+inline uint16_t esos_uiF14_getRPGCounter_i16 (void) {
+	return _st_esos_uiF14Data.i16_RPGCounter;
+}
+
+inline uint16_t esos_uiF14_getLastRPGValue_u16 ( void ) {
     return _st_esos_uiF14Data.u16_lastRPGCounter;
 }
 
@@ -244,13 +248,13 @@ inline BOOL esos_uiF14_isRPGTurning(void)
 //is the new-old delta between 1 and 10?
 inline BOOL esos_uiF14_isRPGTurningSlow(void)
 {
-    vel = ABSOLUTEOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
+    vel = ABSOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
     return esos_uiF14_getRPGSlowThreshold() <= vel && vel < esos_uiF14_getRPGMediumThreshold();
 }
 
 inline BOOL esos_uiF14_isRPGTurningMedium(void)
 {
-    vel = ABSOLUTEOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
+    vel = ABSOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
     return esos_uiF14_getRPGMediumThreshold() <= vel && vel < esos_uiF14_getRPGFastThreshold();
 }
 
@@ -260,13 +264,13 @@ inline BOOL esos_uiF14_isRPGTurningFast(void)
 }
 
 //determines if the encoder turning clockwise
-inline BOOL esos_uiF14_isRpgTurningCW( void ) {
+inline BOOL esos_uiF14_isRPGTurningCW( void ) {
   vel = _st_esos_uiF14Data.i16_RPGVelocity;
   return (vel > 0) && (esos_uiF14_getRPGSlowThreshold() <= ABSOLUTE(vel));
 }
 
 //is the encoder turning counterclockwise
-inline BOOL esos_uiF14_isRpgTurningCCW( void ) {
+inline BOOL esos_uiF14_isRPGTurningCCW( void ) {
   vel = _st_esos_uiF14Data.i16_RPGVelocity;
   return (vel < 0) && (esos_uiF14_getRPGSlowThreshold() <= ABSOLUTE(vel));
 }

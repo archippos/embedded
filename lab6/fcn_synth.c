@@ -11,7 +11,7 @@
 #include "esos_pic24_spi.h"
 #include "esos_pic24_i2c.h"
 #include "esos_pic24_irq.h"
-#include "esos_at24c02d.h"
+//#include "esos_at24c02d.h"
 #include "pic24_timer.h"
 
 //defines
@@ -194,7 +194,7 @@ void writeSPI(uint16_t *pu16_out, uint16_t  *pu16_in, uint16_t u16_count) {
 
     if (u8_isReading) {
       *pu16_tempPtrIn = u16_junk; //maybe i shouldnt have named it junk. sorry
-      pu16_tempPtrIn++
+      pu16_tempPtrIn++;
     }
   }
 }
@@ -252,7 +252,7 @@ ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_amp
   }
 
   //be there or be square (wave)
-  if (u8_type == SQUARE_WVFORM) {
+  if (u8_type == SQUARE_WAVFORM) {
     // turn duty cycle into fraction of the 128 points per wave period
     u8_duty = 128 * u8_duty / 100;
     for (i = 0; i < 128; i++) {
@@ -271,7 +271,7 @@ ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_amp
     } else {
         u16_addr = USER_WAVFORM_ADDR;
     }
-
+/*
     //disable T4 interrupt
     ESOS_DISABLE_PIC24_USER_INTERRUPT(ESOS_IRQ_PIC24_T4);
     //for every piece of the 128 thing...
@@ -287,7 +287,7 @@ ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_amp
         u16_scaledData = a*b;
 
         waveformData[i] = u16_scaledData;   //munch
-    }
+    } */
     //we're done; raise T4
     ESOS_ENABLE_PIC24_USER_INTERRUPT(ESOS_IRQ_PIC24_T4);
   }

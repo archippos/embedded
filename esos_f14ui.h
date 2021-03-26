@@ -86,7 +86,7 @@ extern volatile _st_esos_uiF14Data_t _st_esos_uiF14Data;
 // PRIVATE FUNCTION PROTOTYPES
 
 inline uint16_t esos_uiF14_getRPGCounter (void);
-inline uint16_t esos_uiF14_getRPGCounter_i16 (void)
+inline uint16_t esos_uiF14_getRPGCounter_i16 (void);
 void esos_ui_setRPGCounter (uint16_t);
 
 uint16_t esos_uiF14_getLastRPGCounter (void);
@@ -155,11 +155,11 @@ inline BOOL esos_uiF14_isRPGTurningMedium(void);
 inline BOOL esos_uiF14_isRPGTurningFast(void);
 inline BOOL esos_uiF14_isRPGTurningCW(void);
 inline BOOL esos_uiF14_isRPGTurningCCW(void);
-inline int16_t esos_uiF14_getRPGSlowThreshold(void);
+inline uint16_t esos_uiF14_getRPGSlowThreshold(void);
 inline void esos_uiF14_setRPGSlowThreshold(int16_t threshold);
-inline int16_t esos_uiF14_getRPGMediumThreshold(void);
+inline uint16_t esos_uiF14_getRPGMediumThreshold(void);
 inline void esos_uiF14_setRPGMediumThreshold(int16_t threshold);
-inline int16_t esos_uiF14_getRPGFastThreshold(void);
+inline uint16_t esos_uiF14_getRPGFastThreshold(void);
 inline void esos_uiF14_setRPGFastThreshold(int16_t threshold);
 
 void config_esos_uiF14();

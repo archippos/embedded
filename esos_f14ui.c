@@ -222,6 +222,18 @@ inline uint16_t esos_uiF14_getLastRPGValue_u16 ( void ) {
     return _st_esos_uiF14Data.u16_lastRPGCounter;
 }
 
+inline uint16_t esos_uiF14_getRPGSlowThreshold ( void ) {
+	return _st_esos_uiF14Data.u16_RPGSlowThreshold;
+}
+
+inline uint16_t esos_uiF14_getRPGMediumThreshold ( void ) {
+	return _st_esos_uiF14Data.u16_RPGMediumThreshold;
+}
+
+inline uint16_t esos_uiF14_getRPGFastThreshold ( void ) {
+	return _st_esos_uiF14Data.u16_RPGFastThreshold;
+}
+
 inline void esos_uiF14_resetRPG(void) {
     _st_esos_uiF14Data.i16_RPGCounter = 0;
     _st_esos_uiF14Data.i16_RPGVelocity = 0;

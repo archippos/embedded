@@ -27,6 +27,7 @@
 static BOOL b_updateLM60;   //update LM60 temp sensor
 static BOOL b_updateDS1631; //update DS1631 temp sensor
 static uint16_t waveformData[128];  //store our waveform data here
+static uint8_t u8_waveformIndex = 0;
 
 //main menu struct
 static esos_menu_longmenu_t home = {
@@ -153,7 +154,7 @@ void writeSPI(uint16_t *pu16_out, uint16_t  *pu16_in, uint16_t u16_count) {
   static uint16_t u16_i;
   static uint8_t u8_isReading;
   static uint8_t u8_isWriting;
-  static uint8_t u8_waveformIndex = 0;  //start index at 0
+  //static uint8_t u8_waveformIndex = 0;  //start index at 0
 
   //holds stuff from the SPI1BUF
   uint16_t u16_junk;

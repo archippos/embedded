@@ -230,7 +230,7 @@ ESOS_CHILD_TASK(updateWaveform, uint8_t u8_type, uint8_t u8_duty, uint8_t u8_amp
   static uint16_t u16_scaledData;
   static uint8_t u8_rawData;
   static uint16_t i;
-  static uint8_t u8_currAmpl
+  static uint8_t u8_currAmpl;
 
   u8_currAmpl = u8_ampl * UINT8_MAX / 30;
 
@@ -302,7 +302,7 @@ ESOS_USER_TASK(menuScreen) {
 
   ESOS_TASK_BEGIN();
   ESOS_ALLOCATE_CHILD_TASK(updateDisp);
-  ESOS_TASK_SPAWN_AND_WAIT(updateDisp, updateWaveform, wavfrm.u8_choice, duty.entries[0].value, ampl.entries[0].value);
+  ESOS_TASK_SPAWN_AND_WAIT(updateDisp, updateWaveform, wavfrm.u8_choice, duty.entries[0].value, ampltd.entries[0].value);
 
   while (TRUE) {
     //keep the dispaly static until user presses SW3 to confirm a choice
@@ -488,7 +488,7 @@ void user_init() {
   T4CONbits.T32 = 0;
   T4CON = T4_PS_1_8 | T4_SOURCE_INT;
   TMR4 = 0;
-  PR4 = FCY / 8 / 128 / freq.entries[0].value;
+  PR4 = FCY / 8 / 128 / freqcy.entries[0].value;
   TMR4 = 0;
   ESOS_MARK_PIC24_USER_INTERRUPT_SERVICED(ESOS_IRQ_PIC24_T4);
   T4CONbits.TON = 1;

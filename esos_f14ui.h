@@ -69,15 +69,13 @@ typedef struct _st_esos_uiF14Data {
     uint16_t u16_LED3FlashPeriod;
 
     uint16_t u16_RPGCounter;
-    uint16_t u16_lastRPGCounter;
-    //the following were originally int16_t
-    //we'll see how they behave and if we need to change them back
+    int16_t i16_lastRPGCounter;
     uint16_t i16_RPGCounter;
     uint16_t i16_RPGVelocity;
     //uint16_t u16_RPGSlowestSpeed;  //uint
-    uint16_t u16_RPGSlowThreshold;
-    uint16_t u16_RPGMediumThreshold;
-    uint16_t u16_RPGFastThreshold;
+    int16_t u16_RPGSlowThreshold;
+    int16_t u16_RPGMediumThreshold;
+    int16_t u16_RPGFastThreshold;
     //uint16_t u16_RPGSlowSpeed;   //hee
     //uint16_t u16_RPGMediumSpeed;
     //uint16_t u16_RPGFastSpeed;
@@ -103,7 +101,7 @@ void esos_ui_setLastRPGCounter (uint16_t);
 ESOS_USER_TASK( __esos_uiF14_task );
 ESOS_USER_TIMER(__esos_uiF14_rpg_poll);
 ESOS_USER_TIMER(__esos_uiF14_rpg_vel);
-ESOS_USER_TIMER(__esos_uiF14_sw_poll);
+//ESOS_USER_TIMER(__esos_uiF14_sw_poll);
 // PUBLIC API FUNCTION PROTOTYPES
 
 inline BOOL esos_uiF14_isSW1Pressed (void);
@@ -163,11 +161,11 @@ inline BOOL esos_uiF14_isRPGTurningMedium(void);
 inline BOOL esos_uiF14_isRPGTurningFast(void);
 inline BOOL esos_uiF14_isRPGTurningCW(void);
 inline BOOL esos_uiF14_isRPGTurningCCW(void);
-inline uint16_t esos_uiF14_getRPGSlowThreshold(void);
+inline int16_t esos_uiF14_getRPGSlowThreshold(void);
 inline void esos_uiF14_setRPGSlowThreshold(int16_t threshold);
-inline uint16_t esos_uiF14_getRPGMediumThreshold(void);
+inline int16_t esos_uiF14_getRPGMediumThreshold(void);
 inline void esos_uiF14_setRPGMediumThreshold(int16_t threshold);
-inline uint16_t esos_uiF14_getRPGFastThreshold(void);
+inline int16_t esos_uiF14_getRPGFastThreshold(void);
 inline void esos_uiF14_setRPGFastThreshold(int16_t threshold);
 
 void config_esos_uiF14();
@@ -230,7 +228,9 @@ inline int16_t esos_uiF14_getRPGVelocity_i16(void);
         int16_t i16_cntr = _esos_uiF14_getRPGValue_i16();                                                              \
         ESOS_TASK_WAIT_UNTIL(_esos_uiF14_getRPGCounter() == i16_cntr - (y * __ESOS_UIF14_RPG_TURNS_PER_REV));          \
     }
-
+#define __RPGA_CLEAN_PIN _RD6
+#define __RPGB_CLEAN_PIN _RD7
+#define __RPG_VALUE (((uint8_t)__RPGA_CLEAN_PIN << 1) | __RPGB_CLEAN_PIN)
 
 
 #endif    // ESOS_UIF14_H

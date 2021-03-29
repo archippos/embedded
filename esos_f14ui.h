@@ -23,6 +23,16 @@
 */
 
 // DEFINEs and CONSTANTs
+// Constants
+#define __ESOS_UIF14_SW_POLL_RATE 64
+#define __ESOS_UIF14_RPG_POLL_RATE 1
+#define __ESOS_UIF14_RPG_VEL_RATE 128
+#define __ESOS_UIF14_DEFAULT_SWDP_PERIOD 500
+#define __ESOS_UIF14_DEFAULT_RPGS_THRESHOLD (0x10)
+#define __ESOS_UIF14_DEFAULT_RPGM_THRESHOLD (0x1000)
+#define __ESOS_UIF14_DEFAULT_RPGF_THRESHOLD (0x2200)
+#define __ESOS_UIF14_RPG_CLICKS_PER_REV 12
+/*
 #define __ESOS_TICKS_TO_MS(x)           (x/1)
 #define __ESOS_MS_TO_TICKS(x)           (x*1)
 #define __ESOS_UIF14_UI_PERIOD_MS       10
@@ -33,6 +43,7 @@
 #define __ESOS_UIF14_DEFAULT_RPGS_THRESHOLD (10)    //threshold for slow
 #define __ESOS_UIF14_DEFAULT_RPGM_THRESHOLD (24)    //threshold for med
 #define __ESOS_UIF14_DEFAULT_RPGF_THRESHOLD (35)    //threshold for fast
+*/
 
 // STRUCTURES
 
@@ -66,17 +77,17 @@ typedef struct _st_esos_uiF14Data {
     //we'll see how they behave and if we need to change them back
     uint16_t i16_RPGCounter;
     uint16_t i16_RPGVelocity;
-    uint16_t u16_RPGSlowestSpeed;  //uint
+    //uint16_t u16_RPGSlowestSpeed;  //uint
     uint16_t u16_RPGSlowThreshold;
     uint16_t u16_RPGMediumThreshold;
     uint16_t u16_RPGFastThreshold;
-    uint16_t u16_RPGSlowSpeed;   //hee
-    uint16_t u16_RPGMediumSpeed;
-    uint16_t u16_RPGFastSpeed;
+    //uint16_t u16_RPGSlowSpeed;   //hee
+    //uint16_t u16_RPGMediumSpeed;
+    //uint16_t u16_RPGFastSpeed;
 
-    BOOL b_isRPGSlow;
-    BOOL b_isRPGMedium;
-    BOOL b_isRPGFast;
+    //BOOL b_isRPGSlow;
+    //BOOL b_isRPGMedium;
+    //BOOL b_isRPGFast;
 } _st_esos_uiF14Data_t;
 
 // PRIVATE DATA
@@ -92,10 +103,10 @@ void esos_ui_setRPGCounter (uint16_t);
 uint16_t esos_uiF14_getLastRPGCounter (void);
 void esos_ui_setLastRPGCounter (uint16_t);
 
-//TODO: should this be "__uiF14_task" instead?
 ESOS_USER_TASK( __esos_uiF14_task );
 ESOS_USER_TIMER(__esos_uiF14_rpg_poll);
 ESOS_USER_TIMER(__esos_uiF14_rpg_vel);
+ESOS_USER_TIMER(__esos_uiF14_sw_poll);
 // PUBLIC API FUNCTION PROTOTYPES
 
 inline BOOL esos_uiF14_isSW1Pressed (void);
@@ -143,9 +154,9 @@ inline BOOL esos_uiF14_isRPGTurning(void);
 inline BOOL esos_uiF14_isRPGTurningSlow(void);
 inline BOOL esos_uiF14_isRPGTurningMedium(void);
 inline BOOL esos_uiF14_isRPGTurningFast(void);
-inline void esos_uiF14_setRPGTurningSlow(uint16_t);
-inline void esos_uiF14_setRPGTurningMedium(uint16_t);
-inline void esos_uiF14_setRPGTurningFast(uint16_t);
+//inline void esos_uiF14_setRPGTurningSlow(uint16_t);
+//inline void esos_uiF14_setRPGTurningMedium(uint16_t);
+//inline void esos_uiF14_setRPGTurningFast(uint16_t);
 inline BOOL esos_uiF14_isRPGTurningCW(void);
 inline BOOL esos_uiF14_isRPGTurningCCW(void);
 inline void esos_uiF14_resetRPG(void);

@@ -37,9 +37,9 @@
 #define __ESOS_MS_TO_TICKS(x)           (x*1)
 #define __ESOS_UIF14_UI_PERIOD_MS       10
 #define __DOUBLE_PRESS_TIME_MULT        250         //250ms = period for double press
-#define __ESOS_UIF14_DEFAULT_RPGS_THRESHOLD (10)    //threshold for slow
-#define __ESOS_UIF14_DEFAULT_RPGM_THRESHOLD (24)    //threshold for med
-#define __ESOS_UIF14_DEFAULT_RPGF_THRESHOLD (35)    //threshold for fast
+//#define __ESOS_UIF14_DEFAULT_RPGS_THRESHOLD (10)    //threshold for slow
+//#define __ESOS_UIF14_DEFAULT_RPGM_THRESHOLD (24)    //threshold for med
+//#define __ESOS_UIF14_DEFAULT_RPGF_THRESHOLD (35)    //threshold for fast
 
 
 // STRUCTURES

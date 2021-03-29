@@ -31,7 +31,7 @@ static uint8_t u8_waveformIndex = 0;
 
 //main menu struct
 static esos_menu_longmenu_t home = {
-  .u8_numitems= 0,
+  .u8_numitems= 8,
   .u8_choice = 0,
   .ast_items =
     {

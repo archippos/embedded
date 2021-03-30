@@ -79,7 +79,8 @@ ESOS_USER_TASK(esos_menu_task)
 					// The user has chosen.  Bail out.
 					__esos_menu_conf.e_menutype = NONE;
 					break;
-				} else if(esos_uiF14_isRPGTurning() && esos_uiF14_isRPGTurningCW() && !b_lastMenu) {
+				} else if(esos_uiF14_isRPGTurning() && esos_uiF14_isRPGTurningCW() && !b_lastMenu
+								&& esos_uiF14_getRPGVelocity_i16() > 750) {
 					// Attempt to increase the current value.
 					u8_current = pst_menu->u8_choice;
 					++pst_menu->u8_choice;
@@ -90,7 +91,7 @@ ESOS_USER_TASK(esos_menu_task)
                 ++pst_menu->u8_choice;
             }
           }
-					ESOS_TASK_WAIT_UNTIL(!esos_uiF14_isRPGTurning());
+					ESOS_TASK_WAIT_UNTIL(esos_uiF14_getRPGVelocity_i16() < 750);
 					break;
 				} else if(esos_uiF14_isRPGTurning() && esos_uiF14_isRPGTurningCCW() && !b_firstMenu) {
 					u8_current = pst_menu->u8_choice;
@@ -102,7 +103,7 @@ ESOS_USER_TASK(esos_menu_task)
                 --pst_menu->u8_choice;
             }
           }
-					ESOS_TASK_WAIT_UNTIL(!esos_uiF14_isRPGTurning());
+					ESOS_TASK_WAIT_UNTIL(esos_uiF14_getRPGVelocity_i16() > -750);
 					break;
 				}
 				ESOS_TASK_YIELD();
@@ -200,8 +201,8 @@ ESOS_USER_TASK(esos_menu_task)
 						__esos_menu_conf.e_menutype = NONE;
 						break;
 					}
-					else if(esos_uiF14_getRPGCounter_i16() <= -4) {
-						_esos_uiF14_setRPGCounter(esos_uiF14_getRPGCounter_i16() + 4);
+					else if(esos_uiF14_getRPGCounter_i16() <= -1) {
+						//_esos_uiF14_setRPGCounter(esos_uiF14_getRPGCounter_i16() + 4);
 						if(esos_uiF14_isRPGTurningFast())
 							pst_entry->value -= 100;
 						else if(esos_uiF14_isRPGTurningMedium())
@@ -214,12 +215,12 @@ ESOS_USER_TASK(esos_menu_task)
 							pst_entry->value -= 1;
 						break;
 					}
-					else if(esos_uiF14_getRPGCounter_i16() >= 4) {
-						_esos_uiF14_setRPGCounter(esos_uiF14_getRPGCounter_i16() - 4);
+					else if(esos_uiF14_getRPGCounter_i16() >= 1) {
+						//_esos_uiF14_setRPGCounter(esos_uiF14_getRPGCounter_i16() - 4);
 						if(esos_uiF14_isRPGTurningFast())
 							pst_entry->value += 100;
 						else if(esos_uiF14_isRPGTurningMedium())
-							pst_entry->value += 20;
+							pst_entry->value += 40;
 						else if (esos_uiF14_isSW1Pressed())
 							pst_entry->value -= 100;
 						else if (esos_uiF14_isSW2Pressed())

@@ -347,9 +347,7 @@ ESOS_USER_TASK( SW1_double_press ) {
 
 }
 
-
 // UIF14 INITIALIZATION FUNCTION
-
 void config_esos_uiF14() {
   // setup your UI implementation
   CONFIG_LED1();
@@ -364,7 +362,7 @@ void config_esos_uiF14() {
   __RPG_UI_CONFIG();
 
   esos_RegisterTask( SW1_double_press );
-  esos_RegisterTask( __esos_uiF14_task );
+  //esos_RegisterTask( __esos_uiF14_task );
 
   //set thresholds
   esos_uiF14_setRPGSlowThreshold(__ESOS_UIF14_DEFAULT_RPGS_THRESHOLD);
@@ -378,8 +376,8 @@ void config_esos_uiF14() {
 }
 
 // UIF14 task to manage user-interface
+/*
 ESOS_USER_TASK( __esos_uiF14_task ){
-
 
   ESOS_TASK_BEGIN();
   while(TRUE) {
@@ -411,8 +409,7 @@ ESOS_USER_TASK( __esos_uiF14_task ){
 		LED3 = 0;
 	}
 
-
     ESOS_TASK_WAIT_TICKS( __ESOS_UIF14_UI_PERIOD_MS );
   }
   ESOS_TASK_END();
-}
+} */

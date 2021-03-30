@@ -233,7 +233,7 @@ inline int16_t esos_uiF14_getRPGVelocity_i16(void);
 #define __RPG_VALUE (((uint8_t)__RPGA_CLEAN_PIN << 1) | __RPGB_CLEAN_PIN)
 #define __RPG_UI_CONFIG()                                                                                              \
     {                                                                                                                  \
-        RPG_CONFIG();                                                                                                  \
+        CONFIG_RPG();                                                                                                  \
         CONFIG_RD6_AS_DIG_OUTPUT(); /* Use RD6 as debounced output from RPGA */                                        \
         CONFIG_RD7_AS_DIG_OUTPUT(); /* Use RD7 as debounced output from RPGB */                                        \
     }

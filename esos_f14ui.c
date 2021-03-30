@@ -15,16 +15,30 @@
 
 #define ABSOLUTE(x) (x < 0 ? -x : x)
 
-// PRIVATE FUNCTIONS
 volatile _st_esos_uiF14Data_t _st_esos_uiF14Data;
+
+static uint8_t u8_rpg_prv = 3; // 3 = starting position
+ESOS_USER_TIMER(__esos_uiF14_rpg_poll)
+{
+    __RPGA_CLEAN_PIN = RPGA;
+    __RPGB_CLEAN_PIN = RPGB;
+
+    // Check for increment/decrement condition
+    if (u8_rpg_prv == 0 && (__RPG_VALUE == 1 || __RPG_VALUE == 2)) {
+        _st_esos_uiF14Data.i16_RPGCounter += (__RPG_VALUE == 1) ? -1 : 1; // Increment/Decrement counter
+    }
+    u8_rpg_prv = __RPG_VALUE;
+}
+
+// PRIVATE FUNCTIONS
 
 inline void _esos_uiF14_setRPGCounter (uint16_t newValue) {
     _st_esos_uiF14Data.u16_RPGCounter = newValue;
     return;
 }
 
-inline void _esos_uiF14_setLastRPGCounter (uint16_t newValue) {
-    _st_esos_uiF14Data.u16_lastRPGCounter = newValue;
+inline void _esos_uiF14_setLastRPGCounter (int16_t newValue) {
+    _st_esos_uiF14Data.i16_lastRPGCounter = newValue;
     return;
 }
 
@@ -202,39 +216,48 @@ inline void esos_uiF14_flashLED3( uint16_t u16_period) {
 /****** RED, GREEN, and YELLOW functions need to be created *******/
 
 // PUBLIC RPG FUNCTIONS
-
-static volatile int32_t i32fp_vel_avg = 0;
-static volatile int32_t i32fp_vel_cur = 0;
-static volatile int32_t i32fp_pos_prev = 0;
-static volatile int32_t i32fp_pos_curr = 0;
-static volatile int16_t vel;
-
 //gets data from the encoder
-inline uint16_t esos_uiF14_getRPGValue_u16 ( void ) {
-    return _st_esos_uiF14Data.u16_RPGCounter;
+inline int16_t esos_uiF14_getRPGValue_i16 ( void ) {
+    return _st_esos_uiF14Data.i16_RPGCounter; //OK
 }
 
 inline uint16_t esos_uiF14_getRPGCounter_i16 (void) {
 	return _st_esos_uiF14Data.i16_RPGCounter;
 }
 
-inline uint16_t esos_uiF14_getLastRPGValue_u16 ( void ) {
-    return _st_esos_uiF14Data.u16_lastRPGCounter;
+inline uint16_t esos_uiF14_getLastRPGValue_i16 ( void ) {
+    return _st_esos_uiF14Data.i16_lastRPGCounter;
 }
 
-inline uint16_t esos_uiF14_getRPGSlowThreshold ( void ) {
+inline int16_t esos_uiF14_getRPGSlowThreshold ( void ) {
 	return _st_esos_uiF14Data.u16_RPGSlowThreshold;
 }
 
-inline uint16_t esos_uiF14_getRPGMediumThreshold ( void ) {
+inline int16_t esos_uiF14_getRPGMediumThreshold ( void ) {
 	return _st_esos_uiF14Data.u16_RPGMediumThreshold;
 }
 
-inline uint16_t esos_uiF14_getRPGFastThreshold ( void ) {
+inline int16_t esos_uiF14_getRPGFastThreshold ( void ) {
 	return _st_esos_uiF14Data.u16_RPGFastThreshold;
 }
 
-inline void esos_uiF14_resetRPG(void) {
+inline void esos_uiF14_setRPGSlowThreshold(int16_t threshold)
+{
+    _st_esos_uiF14Data.u16_RPGSlowThreshold = threshold;
+}
+
+inline void esos_uiF14_setRPGMediumThreshold(int16_t threshold)
+{
+    _st_esos_uiF14Data.u16_RPGMediumThreshold = threshold;
+}
+
+inline void esos_uiF14_setRPGFastThreshold(int16_t threshold)
+{
+    _st_esos_uiF14Data.u16_RPGFastThreshold = threshold;
+}
+static volatile int32_t i32fp_vel_avg = 0, i32fp_vel_cur = 0;
+static volatile i32fp_pos_prev = 0, i32fp_pos_curr = 0;
+inline void esos_uiF14_resetRPG(void) {  //OK
     _st_esos_uiF14Data.i16_RPGCounter = 0;
     _st_esos_uiF14Data.i16_RPGVelocity = 0;
     i32fp_vel_avg = i32fp_vel_cur = i32fp_pos_prev = i32fp_pos_curr = 0;
@@ -252,38 +275,38 @@ ESOS_USER_TIMER(__esos_uiF14_rpg_vel)
 }
 
 //determines whether or not the encoder is turning
-inline BOOL esos_uiF14_isRPGTurning(void)
+inline BOOL esos_uiF14_isRPGTurning(void) //OK
 {
     return esos_uiF14_isRPGTurningCW() || esos_uiF14_isRPGTurningCCW();
 }
 
-//is the new-old delta between 1 and 10?
+//OK
 inline BOOL esos_uiF14_isRPGTurningSlow(void)
 {
-    vel = ABSOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
+    int16_t vel = ABSOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
     return esos_uiF14_getRPGSlowThreshold() <= vel && vel < esos_uiF14_getRPGMediumThreshold();
 }
 
-inline BOOL esos_uiF14_isRPGTurningMedium(void)
+inline BOOL esos_uiF14_isRPGTurningMedium(void) //OK
 {
-    vel = ABSOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
+    int16_t vel = ABSOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
     return esos_uiF14_getRPGMediumThreshold() <= vel && vel < esos_uiF14_getRPGFastThreshold();
 }
 
-inline BOOL esos_uiF14_isRPGTurningFast(void)
+inline BOOL esos_uiF14_isRPGTurningFast(void) //OK
 {
     return esos_uiF14_getRPGFastThreshold() < ABSOLUTE(_st_esos_uiF14Data.i16_RPGVelocity);
 }
 
 //determines if the encoder turning clockwise
 inline BOOL esos_uiF14_isRPGTurningCW( void ) {
-  vel = _st_esos_uiF14Data.i16_RPGVelocity;
+  int16_t vel = _st_esos_uiF14Data.i16_RPGVelocity;
   return (vel > 0) && (esos_uiF14_getRPGSlowThreshold() <= ABSOLUTE(vel));
 }
 
 //is the encoder turning counterclockwise
 inline BOOL esos_uiF14_isRPGTurningCCW( void ) {
-  vel = _st_esos_uiF14Data.i16_RPGVelocity;
+  int16_t vel = _st_esos_uiF14Data.i16_RPGVelocity;
   return (vel < 0) && (esos_uiF14_getRPGSlowThreshold() <= ABSOLUTE(vel));
 }
 
@@ -337,10 +360,21 @@ void config_esos_uiF14() {
   CONFIG_SW2();
   CONFIG_SW3();
 
-  CONFIG_RPG();
+  //CONFIG_RPG();
+  __RPG_UI_CONFIG();
 
   esos_RegisterTask( SW1_double_press );
   esos_RegisterTask( __esos_uiF14_task );
+
+  //set thresholds
+  esos_uiF14_setRPGSlowThreshold(__ESOS_UIF14_DEFAULT_RPGS_THRESHOLD);
+  esos_uiF14_setRPGMediumThreshold(__ESOS_UIF14_DEFAULT_RPGM_THRESHOLD);
+  esos_uiF14_setRPGFastThreshold(__ESOS_UIF14_DEFAULT_RPGF_THRESHOLD);
+
+  // Register and start tasks/timers
+  //esos_RegisterTimer(__esos_uiF14_sw_poll, __ESOS_UIF14_SW_POLL_RATE);
+  esos_RegisterTimer(__esos_uiF14_rpg_poll, __ESOS_UIF14_RPG_POLL_RATE);
+  esos_RegisterTimer(__esos_uiF14_rpg_vel, __ESOS_UIF14_RPG_VEL_RATE);
 }
 
 // UIF14 task to manage user-interface
